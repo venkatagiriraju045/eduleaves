@@ -13,7 +13,7 @@ const [loading, setLoading] = useState(false);
 
 
 const serverPort = 3000;
-const serverURL = `http://localhost:${serverPort}`;
+const serverURL = `https://eduleaves-api.vercel.app`;
 const navigate = useNavigate();
 
 const handleLoginEmailChange = (e) => {
