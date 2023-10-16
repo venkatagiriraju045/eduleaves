@@ -1,0 +1,158 @@
+.attendance-calendar {
+  text-align: center;
+  align-items: center;
+  display: flex;
+}
+.calendar-container{
+  width:400px;
+  text-align: center;
+  height:600px;
+  border:1px solid #d4ebff;
+  background-color: #fafafa8a;
+  padding: 15px;
+  border-radius: 30px;
+  box-shadow: inset 5px 5px 15px #ffffff, 15px 15px 22px rgba(105, 174, 238, 0.16);
+
+}
+.month-name{
+  color: rgb(70, 70, 70);
+}
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.month-nav {
+  font-size: 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  background-color: #f0f0f0;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.monthly-chart-container{
+  justify-content: center;
+  display: flex;
+  padding:2%;
+  border-radius: 30px;
+  box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+
+
+}
+.attendance-present-details{
+  padding:2%;
+  margin-bottom: 2%;
+  border-radius: 20px;
+  box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+  width:auto;
+}
+.day-label {
+  font-weight: bold;
+  padding: 5px;
+  color: black;
+}
+
+.date-block-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.header-blocks{
+  display: flex;
+  height: 50px;
+    width: 375px;
+    background-color: #ffffff;
+    box-shadow: inset 5px 5px 12px #ffffff, inset -8px -8px 12px rgba(68, 163, 252, 0.16);
+    border-radius: 5px;
+    border: none;
+    color: rgb(70, 70, 70);
+    font-size: 18px;
+    text-align: center;
+    margin: auto;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    justify-content: space-between;
+}
+.head-block{
+
+  height: 24px;
+  width: 48px;
+  border-radius:2px;
+  border: none;
+  background-color: #ecf0f321;
+  box-shadow: inset 2px 2px 4px #ffffff;
+  margin: auto;
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+.calendar-header{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+}
+.attendance-overlay-heading{
+  color: rgb(70, 70, 70);
+  font-size:24px;
+}
+.date-block {
+  height: 48px;
+  width: 48px;
+  border-radius: 18px;
+  border: none;
+  background-color: #fdfdfd;
+  box-shadow: inset 2px 2px 4px #ffffff, inset -10px -10px 15px rgba(68, 163, 252, 0.16);
+  margin: auto;
+  color: rgb(70, 70, 70);
+  margin-top: 0;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+.present-date {
+  background-color: #b6e7b19b; 
+}
+
+.absent-date {
+  background-color: #f5bcbc9f; 
+}
+.current-date {
+  border: 2px solid #007bff79;
+}
+.attendance-summary {
+  width:100%;
+  text-align: center;
+  align-items: center;
+  font-size: 22px;
+  color:  rgb(70, 70, 70);
+  margin-bottom: 25px; 
+  padding:40px;
+}
+.attendance-details{
+  font-size: 18px;
+  color: rgb(70, 70, 70);
+  font-weight: 100;
+}
+p {
+  margin: 0;
+}

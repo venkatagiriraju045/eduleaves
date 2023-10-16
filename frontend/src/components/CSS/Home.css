@@ -1,0 +1,84 @@
+.home-container {
+    padding: 40px;
+    transition: all 0.3s ease;
+    min-height: 100vh;
+    align-items: center;
+}
+.home-page-content-container{
+margin-top:3%;
+display: flex;
+width:100%;
+justify-content: space-between;
+align-items: center;
+color: #1f1313;
+
+}
+.radio-buttons{
+    display:flex;
+    width:100%;
+    padding-left:22%;
+    padding-right:22%;
+    justify-content: space-between;
+}
+
+.form-container-menu{
+    display: flex;
+    flex-direction: column;
+    margin-left:7%;
+
+}
+#college-name{
+    text-align: center;
+    font-size: 70px;
+    color: #2c2d7c;
+    text-shadow: 1px 1px 5px rgba(113, 113, 113, 0.668);
+
+}
+#place-name{
+    font-size: 60px;
+    color: #2c2d7c;
+    text-shadow: 1px 1px 5px rgba(113, 113, 113, 0.668);
+
+}
+.home-page-content-container img{
+    width:600px;
+    height:500px;
+
+}
+.home-button {
+
+    padding: 10px 0px;
+    background-color: #1abc9c00;
+    color: #1f1313;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.admin-login-button{
+
+    padding: 10px 50px;
+    background-color: #1abc9c00;
+    color: #1f1313;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+
+}
+.left-message{
+    left: 20%;
+    margin-right:8%;
+
+}
+    .radio-label {
+        display: inline-block;
+        margin-right: 10px;
+        cursor: pointer;
+        position: relative;
+    }
+    
+    .radio-label input[type="radio"] {
+        height:16px;
+        width:16px;
+    }
+    
+    
