@@ -4,6 +4,13 @@ const { MongoClient } = require('mongodb');
 const cors = require('cors');
 
 const app = express();
+app.use(cors(
+    {
+        origin:["https://"],
+        methods:["POST","GET"],
+        credentials:true
+    }
+    ));
 const PORT = process.env.PORT || 3000;
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
@@ -48,7 +55,13 @@ accomplishments:{type:String},
 
     const User = mongoose.model('students', userSchema);
 
-    app.use(cors());
+    app.use(cors(
+    {
+        origin:["https://"],
+        methods:["POST","GET"],
+        credentials:true
+    }
+    ));
     app.use(express.json());
 
     app.post('/api/signup', async (req, res) => {
