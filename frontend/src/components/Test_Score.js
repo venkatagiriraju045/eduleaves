@@ -44,7 +44,7 @@ const Test_Score = ({ email, department, year }) => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/students_data');
+                const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
                 const studentData = response.data.filter((data) => data.role === 'student' && data.department === department && data.class === year);
                 setStudents(studentData);
                 setLoading(false);
@@ -63,7 +63,7 @@ const Test_Score = ({ email, department, year }) => {
     useEffect(() => {
         const fetchTestScores = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/students?email=${email}`);
+                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
                 const { subjects } = response.data;
                 setTestScores(subjects);
                 setLoading(false);
