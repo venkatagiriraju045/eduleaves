@@ -193,7 +193,7 @@ const handleUpdateAttendance = async () => {
     selectedDepartmentStudents.forEach((student) => {
         presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
     });
-    await axios.post('http://localhost:3000/api/update_all_attendance', {
+    await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
         date,
         present: presentDataForSelectedDept,
         selectedDepartment,
