@@ -75,7 +75,7 @@ return (
     <div>
         
     <div className="home-container">
-        <p id="college-name">Eduleaves<span id="place-name">, Bloody buggers</span></p>
+        <p id="college-name">Edutainment<span id="place-name">,moonsun enterprises</span></p>
 
         <div className="home-page-content-container">
         <div className="form-container-menu">
