@@ -11,7 +11,7 @@ useEffect(() => {
     // Fetch student data
     const fetchStudentData = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/students_data');
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
         const studentData = response.data.filter(
         data => data.role === 'student' && data.department === department && data.class === year
         );
