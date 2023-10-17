@@ -68,21 +68,21 @@ app.post('/api/signup', async (req, res) => {
     }
 });
 
-app.post('/api/admin-login', async (req, res) => {
-    const { email, admin_password } = req.body;
+       app.post('/api/admin-login', async (req, res) => {
+            const { email, password } = req.body;
 
-    try {
-        const admin = await User.findOne({ email, role: 'admin', admin_password });
-        if (!admin) {
-            return res.status(401).json({ message: 'Authentication failed' });
-        }
+            try {
+                const admin = await User.findOne({ email, role: 'admin', admin_password: password });
+                if (!admin) {
+                    return res.status(401).json({ message: 'Authentication failed' });
+                }
 
-        res.status(200).json({ success: true });
-    } catch (error) {
-        console.error('Error authenticating admin:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
+                res.status(200).json({ success: true });
+            } catch (error) {
+                console.error('Error authenticating admin:', error);
+                res.status(500).json({ message: 'Internal Server Error' });
+            }
+        });
 
 app.get('/api/students', async (req, res) => {
     const { email } = req.query;
