@@ -79,7 +79,7 @@ return (
         <div className="home-page-content-container">
         <div className="form-container-menu">
             <div className="welcome-message">
-            <img src="/uploads/menu-image.jpeg" alt="menu image" className="menu-image" />
+            <img src="../public/uploads/menu-image.jpeg" alt="menu image" className="menu-image" />
             </div>
         </div>
         <div className="left-message">

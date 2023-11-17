@@ -41,7 +41,7 @@ const handlePreviewUpdate = (e) => {
         <div key={index} className='message'>
         <div className='message-content'>
             <div className="message-point">
-            <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+            <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
             <p className="sentence-text">{sentence.trim()}</p>
             </div>
         </div>
@@ -117,7 +117,7 @@ return (
         <div className='message-students-container'>
         {searchedStudent === null && (
         <div className="message-to-select">
-            <img src="/uploads/present.png" alt="Present Icon" className="present-icon" />
+            <img src="../public/uploads/present.png" alt="Present Icon" className="present-icon" />
             <h3>Search the students using the name or register number!</h3>
         </div>
         )}
@@ -129,7 +129,7 @@ return (
                 <div className="message-content">
                     {searchedStudent.accomplishments && searchedStudent.accomplishments.split('. ').map((sentence, index) => (
                     <div key={index} className="message-point">
-                        <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                        <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
                         <p className="sentence-text">{sentence.trim()}</p>
                     </div>
                     ))}
@@ -149,7 +149,7 @@ return (
                     onClick={updateStudentAccomplishments}
                     disabled={loading}
                 >
-                    <img src="./uploads/send-icon.png" alt="Send Icon" className="send-icon" />
+                    <img src="../public/uploads/send-icon.png" alt="Send Icon" className="send-icon" />
                 </button>
                 </div>
             </div>

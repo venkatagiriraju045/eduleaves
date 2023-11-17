@@ -29,7 +29,7 @@ const DepartmentMessage = ({ students }) => {
                 <div key={index} className="message">
                     <div className="message-content">
                         <div className="message-point">
-                            <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                            <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
                             <p className="sentence-text">{sentence.trim()}</p>
                         </div>
                     </div>
@@ -119,13 +119,13 @@ const DepartmentMessage = ({ students }) => {
                 <div className="message-students-container">
                     {welcomeMessage && (
                         <div className="message-to-select">
-                            <img src="/uploads/present.png" alt="Present Icon" className="present-icon" />
+                            <img src="../public/uploads/present.png" alt="Present Icon" className="present-icon" />
                             <h3>Please find the student using the name or reg no.</h3>
                         </div>
                     )}
                     {studentNotFound && (
                         <div className="message-to-select">
-                            <img src="/uploads/present.png" alt="Present Icon" className="present-icon" />
+                            <img src="../public/uploads/present.png" alt="Present Icon" className="present-icon" />
                             <h3>Student not found. Please retry with a valid student id!</h3>
                         </div>
                     )}
@@ -138,7 +138,7 @@ const DepartmentMessage = ({ students }) => {
                                         {searchedStudent.messages &&
                                             searchedStudent.messages.split('. ').map((sentence, index) => (
                                                 <div key={index} className="message-point">
-                                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                                    <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
                                                     <p className="sentence-text">{sentence.trim()}</p>
                                                 </div>
                                             ))}
@@ -158,7 +158,7 @@ const DepartmentMessage = ({ students }) => {
                                         onClick={updateStudentAccomplishments}
                                         disabled={loading}
                                     >
-                                        <img src="./uploads/send-icon.png" alt="Send Icon" className="send-icon" />
+                                        <img src="../public/uploads/send-icon.png" alt="Send Icon" className="send-icon" />
                                     </button>
                                 </div>
                             </div>

@@ -45,7 +45,7 @@ return (
         <div className='accomplishments-container'>
         <div>
         {accomplishments.map((accomplishment, index) => (
-            <div key={index}><img src="./uploads/pin.png" alt="Point Icon" className="accomplishments-point-icon" />
+            <div key={index}><img src="../../public/uploads/pin.png" alt="Point Icon" className="accomplishments-point-icon" />
             {accomplishment}</div>
         ))}
         </div>

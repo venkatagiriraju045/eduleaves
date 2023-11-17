@@ -230,7 +230,7 @@ const DepartmentMenu = () => {
         <header
           className="admin-header">
           <div className='nav-bar-hider'>
-            <img src="/uploads/nav-menu.png" href="#" onClick={handleShowNav} id='nav-menu-button' alt="Dashboard-icon Icon"
+            <img src="../public/uploads/nav-menu.png" href="#" onClick={handleShowNav} id='nav-menu-button' alt="Dashboard-icon Icon"
               className={`nav-button-menu ${showNavBar ? "with-nav-bar" : "without-nav-bar"
                 }`} />
           </div>
