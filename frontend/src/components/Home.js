@@ -13,7 +13,7 @@ const [loading, setLoading] = useState(false);
 
 
 const serverPort = 3000;
-const serverURL = `http://localhost:${serverPort}`;
+const serverURL = `https://eduleaves-api.vercel.app`;
 const navigate = useNavigate();
 
 const handleLoginEmailChange = (e) => {
@@ -75,8 +75,7 @@ return (
     <div>
         
     <div className="home-container">
-        <p id="college-name">Eduleaves<span id="place-name">, Bloody buggers</span></p>
-
+        <p id="college-name">Edutainment</p>
         <div className="home-page-content-container">
         <div className="form-container-menu">
             <div className="welcome-message">

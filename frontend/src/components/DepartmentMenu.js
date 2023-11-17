@@ -83,7 +83,7 @@ const[showConfirmationPrompt,setShowConfirmationPrompt]=useState(false);
 useEffect(() => {
     const fetchStudentData = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/students_data');
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
         const studentData = response.data.filter((data) => data.role === 'student');
         setStudents(studentData);
         setLoading(false);
@@ -119,7 +119,7 @@ useEffect(() => {
 useEffect(() => {
     const fetchAdminData = async () => {
     try {
-        const response = await axios.get(`http://localhost:3000/api/students?email=${email}`);
+        const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
         const admin = response.data;
         setAdminData(admin);
         setLoading(false);

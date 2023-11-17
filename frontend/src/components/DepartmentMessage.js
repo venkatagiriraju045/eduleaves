@@ -20,7 +20,7 @@ const [searchedStudent, setSearchedStudent] = useState(null);
 useEffect(() => {
     const fetchStudentData = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/students_data');
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
         const studentData = response.data.filter((data) => data.role === 'student');
         setStudents(studentData);
         setLoading(false);
@@ -78,7 +78,7 @@ const updateStudentAccomplishments = async () => {
     const accomplishmentsToUpdate = message.trim();
 
 
-    await axios.post('http://localhost:3000/api/update_messages', {
+    await axios.post('https://eduleaves-api.vercel.app/api/update_messages', {
         email: searchedStudent.email,
         messages: accomplishmentsToUpdate,
     });

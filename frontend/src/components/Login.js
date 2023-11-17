@@ -9,9 +9,8 @@ const [loginEmail, setLoginEmail] = useState('');
 const [loginPassword, setLoginPassword] = useState('');
 const [loginError, setLoginError] = useState('');
 const [loginSuccess, setLoginSuccess] = useState(false);
-
-const serverPort = 3000; // Update the server port number
-const serverURL = `http://localhost:${serverPort}`; // Construct the server URL
+    
+const serverURL = `https://eduleaves-api.vercel.app`;
 
 const navigate = useNavigate();
 
