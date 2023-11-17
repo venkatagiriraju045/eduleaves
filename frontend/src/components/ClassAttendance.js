@@ -4,72 +4,64 @@ import './CSS/AttendanceCalendar.css';
 import './CSS/ClassAttendance.css';
 
 const AttendanceCalendar = ({ classStudents}) => {
-    const [currentDate, setCurrentDate] = useState(new Date());
-    useEffect(() => {
-        const canvas = document.getElementById('attendanceClassMonthlyChart');
-        const ctx = canvas.getContext('2d');
-        const attendanceData = getAttendancePercentageByMonth();
-        const absentData = getAbsentPercentageByMonth(attendanceData);
-        if (typeof canvas.chart !== 'undefined') {
-        canvas.chart.destroy();
-        }
-        const chartWidth =855 ;
-        const chartHeight = 240;
-        canvas.width = chartWidth;
-        canvas.height = chartHeight;
-        canvas.chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-            ],
-            datasets: [
-            {
-                label: 'Attendance Percentage',
-                data: attendanceData,
-                borderColor: 'rgb(0, 127, 255)',
-                borderWidth: 2,
-                fill: true,
-            },
-            {
-                label: 'Absent Percentage',
-                data: absentData,
-                borderColor: 'rgb(251, 79, 20)',
-                borderWidth: 2,
-                fill: true,
-            },
-            ],
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            scales: {
-            y: {
-                beginAtZero: true,
-                suggestedMax: 100,
-                ticks: {
-                stepSize: 10,
-                color: 'rgba(0, 0, 0, 0.6)',
-                },
-            },
-            x: {
-                ticks: {
-                color: 'rgba(0,0,0, 0.6)',
-                },
-            },
-            },
-        },
-        });
-    }, [currentDate, classStudents]);
-    
 
-if (!classStudents.length) {
-    return;
-}
+const [currentDate, setCurrentDate] = useState(new Date());
+useEffect(() => {
+    if (!classStudents.length) {
+        return;
+    }
+    const canvas = document.getElementById('attendanceClassMonthlyChart');
+    const ctx = canvas.getContext('2d');
+    const attendanceData = getAttendancePercentageByMonth();
+    if (typeof canvas.chart !== 'undefined') {
+    canvas.chart.destroy();
+    }
+    const chartWidth =855 ;
+    const chartHeight = 240;
+    canvas.width = chartWidth;
+    canvas.height = chartHeight;
+    canvas.chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+        ],
+        datasets: [
+        {
+            label: 'Attendance Percentage',
+            data: attendanceData,
+            borderColor: 'rgb(0, 127, 255)',
+            borderWidth: 2,
+            fill: true,
+        },
+        ],
+    },
+    options: {
+        responsive: false,
+        maintainAspectRatio: false,
+        scales: {
+        y: {
+            beginAtZero: true,
+            suggestedMax: 100,
+            ticks: {
+            stepSize: 10,
+            color: 'rgba(0, 0, 0, 0.6)',
+            },
+        },
+        x: {
+            ticks: {
+            color: 'rgba(0,0,0, 0.6)',
+            },
+        },
+        },
+    },
+    });
+}, [currentDate, classStudents]);
 
 const presentDates = classStudents.flatMap((student) => student.present_array.map((dateStr) => new Date(dateStr)));
 const absentDates = classStudents.flatMap((student) => student.leave_array.map((dateStr) => new Date(dateStr)));
+
 
 const getAttendancePercentageByMonth = () => {
     const presentAttendanceByMonth = [];
@@ -97,9 +89,7 @@ const getSchoolDaysCount = (startDate, endDate) => {
     return count;
 };
 
-const getAbsentPercentageByMonth = (attendanceData) => {
-    return attendanceData.map((percentage) => (100 - parseFloat(percentage)).toFixed(2));
-};
+
 
 
 return (

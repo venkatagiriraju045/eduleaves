@@ -49,7 +49,6 @@ const AttendanceCalendar = ({ student }) => {
         });
     }, [currentDate, student]);
 
-
     if (!student || !student.present_array || !student.leave_array) {
         return <div>no data found</div>;
     }
@@ -63,13 +62,11 @@ const AttendanceCalendar = ({ student }) => {
         return date.toLocaleDateString(undefined, { day: '2-digit' });
     };
 
+    
+
     const getAttendancePercentageByMonth = () => {
         const presentAttendanceByMonth = [];
-        const year = currentDate.getFullYear();
         for (let month = 0; month < 12; month++) {
-            const firstDayOfMonth = new Date(year, month, 1);
-            const lastDayOfMonth = new Date(year, month + 1, 0);
-            const totalSchoolDaysInMonth = getSchoolDaysCount(firstDayOfMonth, lastDayOfMonth);
             const daysPresentInMonth = presentDates.filter(
                 (date) => date.getMonth() === month
             ).length;
@@ -83,15 +80,6 @@ const AttendanceCalendar = ({ student }) => {
         return presentAttendanceByMonth;
     };
 
-    const getSchoolDaysCount = (startDate, endDate) => {
-        let count = 0;
-        let currentDate = new Date(startDate);
-        while (currentDate <= endDate) {
-            count++;
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
-        return count;
-    };
 
 
     const currentMonth = currentDate.getMonth();
@@ -126,6 +114,15 @@ const AttendanceCalendar = ({ student }) => {
     const percentagePresent = ((totalDaysPresent / totalDays) * 100).toFixed(2);
     return (
         <div className="attendance-calendar">
+            <div className="attendance-summary">
+                <div className='attendance-present-details'>
+                    <h2 className='attendance-overlay-heading'>Attendance Details for {student.name}</h2>
+                    <p className='attendance-details'>Present Days: {totalDaysPresent}</p>
+                    <p className='attendance-details'>Total Days: {totalDays}</p>
+                    <p className='attendance-details'>Percentage of Present: {percentagePresent}%</p>
+                    <canvas id="attendanceMonthlyChart"></canvas>
+                </div>
+            </div>
             <div className='calendar-container'>
                 <div className='calendar-header'>
                     <button
@@ -152,20 +149,6 @@ const AttendanceCalendar = ({ student }) => {
                     <div className="head-block">Sun</div>
                 </div>
                 <div className="calendar-grid">{generateCalendar(currentDate.getFullYear(), currentMonth)}</div>
-            </div>
-            <div className="attendance-summary">
-                <div className='attendance-present-details'>
-                    <h2 className='attendance-overlay-heading'>Attendance Details for {student.name}</h2>
-                    <p className='attendance-details'>Present Days: {totalDaysPresent}</p>
-                    <br></br>
-                    <p className='attendance-details'>Total Days: {totalDays}</p>
-                    <br></br>
-                    <p className='attendance-details'>Percentage of Present: {percentagePresent}%</p>
-                    <br></br>
-                </div>
-                <div className="monthly-chart-container">
-                    <canvas id="attendanceMonthlyChart"></canvas>
-                </div>
             </div>
         </div>
     );

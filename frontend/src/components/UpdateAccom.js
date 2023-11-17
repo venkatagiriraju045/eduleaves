@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import './CSS/UpdateAccom.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +9,6 @@ const [students, setStudents] = useState([]);
 const [loading, setLoading] = useState(true);
 const [appMessage, setAppMessage] = useState('');
 const [message, setMessage] = useState('');
-const navigate = useNavigate();
 const [messagePreview, setMessagePreview] = useState('');
 const [searchQuery, setSearchQuery] = useState('');
 const [searchedStudent, setSearchedStudent] = useState(null);
@@ -18,7 +16,7 @@ const [searchedStudent, setSearchedStudent] = useState(null);
 useEffect(() => {
     const fetchStudentData = async () => {
     try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
+        const response = await axios.get('http://localhost:3000/api/students_data');
         const studentData = response.data.filter((data) => data.role === 'student');
         setStudents(studentData);
         setLoading(false);
@@ -77,7 +75,7 @@ const updateStudentAccomplishments = async () => {
         ? `${searchedStudent.accomplishments}. ${message.trim()}`
         : message.trim();
 
-    await axios.post('https://eduleaves-api.vercel.app/api/update_accomplishments', {
+    await axios.post('http://localhost:3000/api/update_accomplishments', {
         email: searchedStudent.email,
         accomplishments: accomplishmentsToUpdate,
     });

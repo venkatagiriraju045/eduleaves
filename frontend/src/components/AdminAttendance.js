@@ -5,12 +5,11 @@ import './CSS/AdminAttendance.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AdminAttendance = ({students, department}) => {
+const AdminAttendance = ({students, department, instituteName}) => {
 
 const [loading, setLoading] = useState(false);
 const selectedDepartment = department;
 const [selectedYear, setSelectedYear] = useState("");
-
 const [searchQuery, setSearchQuery] = useState('');
 const [date, setDate] = useState('');
 const [message, setMessage] = useState('');
@@ -193,11 +192,12 @@ const handleUpdateAttendance = async () => {
     selectedDepartmentStudents.forEach((student) => {
         presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
     });
-    await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
+    await axios.post('http://localhost:3000/api/update_all_attendance', {
         date,
         present: presentDataForSelectedDept,
         selectedDepartment,
         selectedYear,
+        instituteName,
     });
 
     setMessage('Attendance updated successfully!');
@@ -221,7 +221,7 @@ const handleUpdateAttendance = async () => {
 
     setLoading(false);
 };
-
+console.log("ins name"+instituteName);
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (

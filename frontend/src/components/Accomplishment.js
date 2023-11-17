@@ -10,7 +10,7 @@ const email = location && location.state ? location.state.email : null;
 
 const fetchAccomplishments = async () => {
     try {
-    const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
+    const response = await axios.get(`http://localhost:3000/api/students?email=${email}`);
     const { accomplishments } = response.data;
     if (accomplishments) {
         const parsedAccomplishments = accomplishments.split('. ').filter(acc => acc !== '');

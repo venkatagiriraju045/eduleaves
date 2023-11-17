@@ -618,7 +618,7 @@ const handleTodayClick=()=>{
         {showAttendanceOverlay && (
             <div className="overlay">
                 <div className="overlay-content">
-                <button className="close-button" id="close-button" onClick={handleCloseOverlay}>
+                <button className="main-admin-overlay-close-button" onClick={handleCloseOverlay}>
                     Close
                 </button>
             <div className="attendance-details-container">
@@ -674,7 +674,7 @@ const handleTodayClick=()=>{
       </div>
       </div>
       </div>
-      <div className='department-overlay-chart-container'>
+      <div className='profile-chart-container'>
           <div className='overall-department-performance-chart-container'>
               <div className='inside-container'>
                   <div className='sub-charts-container'>
@@ -691,6 +691,10 @@ const handleTodayClick=()=>{
               </div>
               <p className='chart-heads'>Overall Activities</p>
           </div>
+          </div>
+
+          <div className='profile-chart-container'>
+
           <div className='overall-department-performance-chart-container'>
             <div className='inside-container'>
               <div className='sub-charts-container'>

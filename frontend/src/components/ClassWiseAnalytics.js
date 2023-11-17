@@ -267,34 +267,16 @@ canvas.chart=new Chart(ctx, {
     },
 });
 };
-const calculateAverageByGender = (gender) => {
-const filteredStudents = students.filter((student) => student.gender === gender && student.class === year && student.department===department);
-const iatAverages = [0, 0, 0]; 
-    const iatCounts = [0, 0, 0];
-    filteredStudents.forEach(student => {
-        student.subjects.forEach(subject => {
-        if (subject.scores.iat_1 !== undefined) {
-            iatAverages[0] += parseInt(subject.scores.iat_1);
-            iatCounts[0]++;
-        }
-        if (subject.scores.iat_2 !== undefined) {
-            iatAverages[1] += parseInt(subject.scores.iat_2);
-            iatCounts[1]++;
-        }
-        if (subject.scores.iat_3 !== undefined) {
-            iatAverages[2] += parseInt(subject.scores.iat_3);
-            iatCounts[2]++;
-        }
-        });
-    });
-    for (let i = 0; i < 3; i++) {
-        if (iatCounts[i] > 0) {
-            iatAverages[i] /= iatCounts[i];
-        }
-    }
-    return iatAverages;
+const calculateAverageByGender = (iatIndex, gender) => {
+    const filteredStudents = students.filter((student) => student.gender === gender && student.department === department && student.class === year);
+    const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
+    const totalScore = studentsWithScores.reduce((total, student) => {
+        const iatScore = parseInt(student.subjects.find((subject) => subject.scores[`iat_${iatIndex}`])?.scores[`iat_${iatIndex}`]);
+        return total + iatScore;
+    }, 0);
+    const averageScore = totalScore / studentsWithScores.length;
+    return averageScore;
 };
-
 const createGenderLineChart = () => {
     Chart.register(LinearScale, CategoryScale, LineController, LineElement);
     const canvas = document.getElementById('iat-performance-chart');
@@ -306,71 +288,71 @@ const createGenderLineChart = () => {
     const chartHeight = 240;
     canvas.width = chartWidth;
     canvas.height = chartHeight;
-    const maleAverages = calculateAverageByGender('male');
-    const femaleAverages =calculateAverageByGender('female');
-    canvas.chart=new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['iat1', 'iat2', 'iat3'],
-        datasets: [
-        {
-            label: 'Male',
-            data: maleAverages,
-            borderColor: 'rgb( 0, 127, 255)',
-            fill: true,
+    const maleAverages = [1, 2, 3].map((iatIndex) => calculateAverageByGender(iatIndex, 'male'));
+    const femaleAverages = [1, 2, 3].map((iatIndex) => calculateAverageByGender(iatIndex, 'female'));
+    canvas.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['iat1', 'iat2', 'iat3'],
+            datasets: [
+                {
+                    label: 'Male',
+                    data: maleAverages,
+                    borderColor: 'rgb( 0, 127, 255)',
+                    fill: true,
+                },
+                {
+                    label: 'Female',
+                    data: femaleAverages,
+                    borderColor: 'rgb(0, 204, 153)',
+                    fill: true,
+                },
+            ],
         },
-        {
-            label: 'Female',
-            data: femaleAverages,
-            borderColor: 'rgb(0, 204, 153)',
-            fill: true,
-        },
-        ],
-    },
-    options: {
-        responsive: false,
-        maintainAspectRatio: false,
-        plugins: {
-            
-        legend: {
-            display: true,
-            position: 'right',
-            labels: {
-            color: 'black',
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            plugins: {
+
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        color: 'black',
+                    },
+                },
+                annotation: {
+                    annotations: {
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: false,
+                        text: 'IAT',
+                        color: 'black',
+                    },
+                    ticks: {
+                        color: 'black',
+                    },
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: false,
+                        text: 'Scores',
+                        color: 'black',
+                    },
+                    ticks: {
+                        color: 'black',
+                        beginAtZero: true,
+                        stepSize: 20,
+                    },
+                },
             },
         },
-        annotation: {
-            annotations: {
-            },
-        },
-        },
-        scales: {
-        x: {
-            display: true,
-            title: {
-            display: false,
-            text: 'IAT',
-            color: 'black',
-            },
-            ticks: {
-            color: 'black',
-            },
-        },
-        y: {
-            display: true,
-            title: {
-            display: false,
-            text: 'Scores',
-            color: 'black',
-            },
-            ticks: {
-            color: 'black',
-            beginAtZero: true,
-            stepSize: 20,
-            },
-        },
-        },
-    },
     });
 };
 
