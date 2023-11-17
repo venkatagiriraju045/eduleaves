@@ -32,7 +32,7 @@ const Home = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`${serverURL}/api/login`, {
+            const response = await axios.post(`https://eduleaves-api.vercel.app/api/login`, {
                 email: loginEmail,
                 password: loginPassword,
             });
@@ -52,7 +52,7 @@ const Home = () => {
         // Define a function to fetch admin data
         const fetchAdminData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/students?email=${loginEmail}`);
+                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loginEmail}`);
                 const adminData = response.data;
                 setAdmin(adminData);
                 setLoading(false);
@@ -102,7 +102,7 @@ const Home = () => {
 
         try {
             if (admin) {
-                const response = await axios.post(`${serverURL}/api/admin-login`, {
+                const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
                     email: loginEmail,
                     password: loginPassword,
                 });

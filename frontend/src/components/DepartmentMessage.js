@@ -73,7 +73,7 @@ const DepartmentMessage = ({ students }) => {
             // Send the POST request to update accomplishments
             const accomplishmentsToUpdate = message.trim();
 
-            await axios.post('http://localhost:3000/api/update_messages', {
+            await axios.post('https://eduleaves-api.vercel.app/api/update_messages', {
                 email: searchedStudent.email,
                 messages: accomplishmentsToUpdate,
             });
