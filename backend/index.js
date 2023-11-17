@@ -286,6 +286,3 @@ app.post('/api/update_messages', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
-startServer().catch(console.error);
