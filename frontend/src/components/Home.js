@@ -132,7 +132,7 @@ const Home = () => {
             <div className="home-container">
                 <div className="home-page-left-container">
                     <div className="home-page-main-logo-container">
-                        <img src="./uploads/tsg-logo.png" alt="menu image" id="home-page-main-logo" />
+                        <img src="./uploads/tsg-logo.PNG" alt="menu image" id="home-page-main-logo" />
                     </div>
                     <div id="about-company-container">
                         <div>
