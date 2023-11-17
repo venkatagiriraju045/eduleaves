@@ -29,7 +29,7 @@ const DepartmentMessage = ({ students }) => {
                 <div key={index} className="message">
                     <div className="message-content">
                         <div className="message-point">
-                            <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
+                            <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
                             <p className="sentence-text">{sentence.trim()}</p>
                         </div>
                     </div>

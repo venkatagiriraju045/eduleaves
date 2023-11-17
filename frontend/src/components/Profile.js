@@ -485,7 +485,7 @@ const Profile = () => {
                     <div className="message-content">
                         {sentences.map((sentence, index) => (
                             <div key={index} className="message-point">
-                                <img src="../public/uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
                                 <p className="sentence-text">{sentence.trim()}</p>
                             </div>
                         ))}
@@ -558,7 +558,7 @@ const Profile = () => {
         subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
         subjectAverages.length;
 
-    const imageUrl = `../public/uploads/${student.email}.jpg`;
+    const imageUrl = `./uploads/${student.email}.jpg`;
 
     function getInstituteFullName(instituteName) {
         const instituteNameMap = {
@@ -615,7 +615,7 @@ const Profile = () => {
                 <header
                     className="admin-header">
                     <div className='nav-bar-hider'>
-                        <img src="../public/uploads/nav-menu.png" href="#" onClick={handleShowNav} id='nav-menu-button' alt="Dashboard-icon Icon"
+                        <img src="./uploads/nav-menu.png" href="#" onClick={handleShowNav} id='nav-menu-button' alt="Dashboard-icon Icon"
                             className={`nav-button-menu ${showNavBar ? "with-nav-bar" : "without-nav-bar"
                                 }`} />
                     </div>
