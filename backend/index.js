@@ -4,14 +4,20 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: ["https://edutainment-nine.vercel.app"],
+    origin: ["https://the-students-gate.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true
 }));
 
-const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
+
+app.get('/', (req, res) => {
+    const message = "Hello, World!";
+    res.send(`<html><body><h1>${message}</h1></body></html>`);
+});
+
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
@@ -21,8 +27,6 @@ mongoose.connect(MONGODB_URI, {
 const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: String }, // Add a role property for users
-    admin_password: { type: String }, // Add admin_password property for admin users
     subjects: [
         {
             subject_code: { type: String },
@@ -43,14 +47,18 @@ const userSchema = new mongoose.Schema({
     leave_array: [{ type: Date }],
     messages: { type: String },
     accomplishments: { type: String },
+    institute_name: { type: String },
+    role: { type: String },
+
 }, { versionKey: false });
+
+
 
 const User = mongoose.model('students', userSchema);
 
-app.use(express.json());
 
 app.post('/api/signup', async (req, res) => {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -58,7 +66,7 @@ app.post('/api/signup', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const newUser = new User({ email, password, role });
+        const newUser = new User({ email, password });
         await newUser.save();
 
         res.status(200).json({ message: 'User registered successfully' });
@@ -68,21 +76,21 @@ app.post('/api/signup', async (req, res) => {
     }
 });
 
-       app.post('/api/admin-login', async (req, res) => {
-            const { email, password } = req.body;
+app.post('/api/admin-login', async (req, res) => {
+    const { email, password } = req.body;
 
-            try {
-                const admin = await User.findOne({ email, role: 'admin', admin_password: password });
-                if (!admin) {
-                    return res.status(401).json({ message: 'Authentication failed' });
-                }
+    try {
+        const admin = await User.findOne({ email, role: 'admin', admin_password: password });
+        if (!admin) {
+            return res.status(401).json({ message: 'Authentication failed' });
+        }
 
-                res.status(200).json({ success: true });
-            } catch (error) {
-                console.error('Error authenticating admin:', error);
-                res.status(500).json({ message: 'Internal Server Error' });
-            }
-        });
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('Error authenticating admin:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 
 app.get('/api/students', async (req, res) => {
     const { email } = req.query;
@@ -102,7 +110,37 @@ app.get('/api/students', async (req, res) => {
 
 app.get('/api/students_data', async (req, res) => {
     try {
-        const students = await User.find({});
+        // Extract the filtering parameters from the query string
+        const { role, department, instituteName } = req.query;
+
+        // Create a filter object to match the specified fields
+        const filter = {
+            role: role, // Filter by role
+            department: department, // Filter by department
+            institute_name: instituteName, // Filter by institute_name
+        };
+        // Use the filter to find students
+        const students = await User.find(filter);
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+app.get('/api/admin_students_data', async (req, res) => {
+    try {
+        // Extract the filtering parameters from the query string
+        const { role, instituteName } = req.query;
+
+        // Create a filter object to match the specified fields
+        const filter = {
+            role: role, // Filter by role
+            institute_name: instituteName, // Filter by institute_name
+        };
+        // Use the filter to find students
+        const students = await User.find(filter);
+
         res.status(200).json(students);
     } catch (error) {
         console.error('Error fetching students data:', error);
@@ -147,10 +185,10 @@ app.post('/api/attendance', async (req, res) => {
 });
 
 app.post('/api/update_all_attendance', async (req, res) => {
-    const { date, present, selectedDepartment, selectedYear } = req.body;
+    const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 
     try {
-        const students = await User.find({ department: selectedDepartment, class: selectedYear });
+        const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
 
         for (const student of students) {
             if (present[student.email]) {
@@ -184,7 +222,6 @@ app.post('/api/update_all_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/send_message', async (req, res) => {
     const { message, selectedDepartment } = req.body;
 
@@ -203,6 +240,7 @@ app.post('/api/send_message', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.post('/api/update_accomplishments', async (req, res) => {
     const { email, accomplishments } = req.body;
@@ -226,7 +264,6 @@ app.post('/api/update_accomplishments', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/update_messages', async (req, res) => {
     const { email, messages } = req.body;
 
@@ -250,12 +287,5 @@ app.post('/api/update_messages', async (req, res) => {
     }
 });
 
-// Define a route that returns a "Hello, World!" message
-app.get('/', (req, res) => {
-    const message = "Hello, World!";
-    res.send(`<html><body><h1>${message}</h1></body></html>`);
-});
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+startServer().catch(console.error);
