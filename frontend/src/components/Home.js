@@ -11,7 +11,7 @@ const Home = () => {
     const [admin, setAdmin] = useState(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    
+
     const serverURL = `https://eduleaves-api.vercel.app`;
 
     const navigate = useNavigate();
@@ -139,7 +139,7 @@ const Home = () => {
                             <p>" Welcome to our dynamic student and admin portal, where learning meets efficiency. Dive into tailored analytics that track your academic progress and stay on top of attendance effortlessly. Experience a smarter way to manage your educational journey with us. "</p>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div className="home-page-right-container">
 
@@ -191,12 +191,13 @@ const Home = () => {
 
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
-
+                        
                     </div>
                     <footer id="home-page-footer">
-                        &copy; The Students Gate. All rights reserved.
-                        MD Mr.Venkatagiriraju U, B.E.CSE.,
-                    </footer>
+                            &copy; The Students Gate. All rights reserved.
+                            MD Mr.Venkatagiriraju U, B.E.CSE.,
+                        </footer>
+
                 </div>
             </div>
         </div>

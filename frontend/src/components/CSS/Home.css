@@ -13,6 +13,8 @@ html {
 .home-page-right-container {
     justify-content: space-between;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -144,10 +146,9 @@ html {
     color: #000000;
     text-align: center;
     clear: both;
-    bottom: 0;
     font-size: calc(0.1rem + 1vw);
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 #login-page-line {

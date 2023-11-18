@@ -20,7 +20,7 @@ const Profile = () => {
 
     useEffect(() => {
         function handleResize() {
-            if (window.innerWidth > 620) {
+            if (window.innerWidth > 250) {
                 setShowNavBar(true);
             } else {
                 setShowNavBar(false);
