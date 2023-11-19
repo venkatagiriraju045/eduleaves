@@ -498,6 +498,7 @@ const Profile = () => {
     };
     const handleLogout = () => {
         setShowConfirmationPrompt(false);
+        localStorage.removeItem('loggedInEmail');
         navigate('/');
     };
 
