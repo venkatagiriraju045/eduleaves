@@ -5,8 +5,8 @@ const cors = require('cors');
 const app = express();
 const corsOptions = {
     origin: [
+        "https://eduleaves-api.vercel.app/api/update_all_attendance",
         "https://the-students-gate.vercel.app",
-        "https://eduleaves-api.vercel.app/api/update_all_attendance"
     ],
     methods: ["POST", "GET"],
     credentials: true
