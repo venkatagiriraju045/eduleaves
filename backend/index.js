@@ -62,6 +62,20 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('students', userSchema);
 
+app.get('/api/checknetspeed', async (req, res) => {
+    try {
+        const speedTest = new SpeedTest({ token: 'your-api-token' }); // Replace 'your-api-token' with an actual API token
+        const speed = await speedTest.getSpeed();
+
+        // Convert speed to kbps
+        const speedInKbps = speed / 1024;
+
+        res.json({ speed: speedInKbps });
+    } catch (error) {
+        console.error('Error checking network speed:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 app.post('/api/signup', async (req, res) => {
     const { email, password } = req.body;
