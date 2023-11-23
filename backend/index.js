@@ -2,17 +2,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const app = express();
 const corsOptions = {
     origin: [
-        "https://eduleaves-api.vercel.app/api/update_all_attendance"
+        "https://eduleaves-api.vercel.app/api/update_all_attendance",
+        "https://the-students-gate.vercel.app"
     ],
     methods: ["POST", "GET"],
     credentials: true
 };
 
 app.use(cors(corsOptions));
-
 
 const PORT = process.env.PORT || 3000;
 
