@@ -13,6 +13,8 @@ app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.options('/api/students', cors(corsOptions));
+
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
