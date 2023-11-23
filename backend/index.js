@@ -13,7 +13,6 @@ app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.options('/api/students', cors(corsOptions));
 
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
@@ -102,7 +101,7 @@ app.get('/api/students', async (req, res) => {
         const student = await User.findOne({ email });
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
-        }
+        }   
 
         res.status(200).json(student);
     } catch (error) {
