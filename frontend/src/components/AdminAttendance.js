@@ -177,13 +177,7 @@ const filteredStudents = students.filter(
   
 
 const handleUpdateAttendance = async () => {
-    if (!isDateChosen) {    
-    setDateError(true);
-    setLoading(false);
-    return; 
-    }
     setLoading(true);
-    try {
     const selectedDepartmentStudents = students.filter(
         (student) => student.department === selectedDepartment && student.class===selectedYear
     );
@@ -214,10 +208,6 @@ const handleUpdateAttendance = async () => {
 
     setDate('');
     setIsDateChosen(false);
-    } catch (error) {
-    console.error('Error updating attendance:', error);
-    setMessage('An error occurred while updating attendance');
-    }
 
     setLoading(false);
 };
