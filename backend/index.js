@@ -2,18 +2,22 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const app = express();
 const corsOptions = {
-    origin:'*',
+    origin: [
+        "https://the-students-gate.vercel.app",
+        "https://eduleaves-api.vercel.app/api/update_all_attendance"
+    ],
     methods: ["POST", "GET"],
     credentials: true
 };
 
 app.use(cors(corsOptions));
 
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
@@ -101,7 +105,7 @@ app.get('/api/students', async (req, res) => {
         const student = await User.findOne({ email });
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
-        }   
+        }
 
         res.status(200).json(student);
     } catch (error) {
