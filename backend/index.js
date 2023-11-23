@@ -3,10 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const corsOptions = {
-    origin: [
-        "https://eduleaves-api.vercel.app/api/update_all_attendance",
-        "https://the-students-gate.vercel.app"
-    ],
+    origin:'*',
     methods: ["POST", "GET"],
     credentials: true
 };
