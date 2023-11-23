@@ -221,6 +221,9 @@ app.post('/api/update_all_attendance', async (req, res) => {
     try {
         const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
 
+        // Simulate a delay of 20 seconds using a Promise
+        await new Promise((resolve) => setTimeout(resolve, 20000));
+
         for (const student of students) {
             if (present[student.email]) {
                 if (!student.present_array.includes(date)) {
@@ -249,10 +252,14 @@ app.post('/api/update_all_attendance', async (req, res) => {
 
         res.status(200).json({ message: 'Attendance updated successfully for the selected department' });
     } catch (error) {
-        console.error('Error updating attendance for the selected department:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        // Introduce a delay of 20 seconds before handling the error
+        setTimeout(() => {
+            console.error('Error updating attendance for the selected department:', error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }, 20000);
     }
 });
+
 app.post('/api/send_message', async (req, res) => {
     const { message, selectedDepartment } = req.body;
 
