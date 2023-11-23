@@ -1,13 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const SpeedTest = require('fast-speedtest-api');
 
 const app = express();
 const corsOptions = {
     origin: [
-        "https://eduleaves-api.vercel.app/api/update_all_attendance",
         "https://the-students-gate.vercel.app",
+        "https://eduleaves-api.vercel.app/api/update_all_attendance"
     ],
     methods: ["POST", "GET"],
     credentials: true
@@ -63,20 +62,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('students', userSchema);
 
-app.get('/api/checknetspeed', async (req, res) => {
-    try {
-        const speedTest = new SpeedTest({ token: 'your-api-token' }); // Replace 'your-api-token' with an actual API token
-        const speed = await speedTest.getSpeed();
-
-        // Convert speed to kbps
-        const speedInKbps = speed / 1024;
-
-        res.json({ speed: speedInKbps });
-    } catch (error) {
-        console.error('Error checking network speed:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 
 app.post('/api/signup', async (req, res) => {
     const { email, password } = req.body;

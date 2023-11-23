@@ -175,75 +175,52 @@ const filteredStudents = students.filter(
           .includes(searchQuery.toLowerCase()))
   );
   
-  const getNetSpeed = async () => {
-    try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/checknetspeed'); // Replace 'your-server-url' with the actual URL of your server
-        return response.data.speed;
-    } catch (error) {
-        console.error('Error fetching network speed:', error);
-        throw new Error('Unable to determine network speed.');
-    }
-};
 
 const handleUpdateAttendance = async () => {
-  if (!isDateChosen) {    
-      setDateError(true);
-      setLoading(false);
-      return; 
-  }
+    if (!isDateChosen) {    
+    setDateError(true);
+    setLoading(false);
+    return; 
+    }
+    setLoading(true);
+    try {
+    const selectedDepartmentStudents = students.filter(
+        (student) => student.department === selectedDepartment && student.class===selectedYear
+    );
 
-  try {
-      // Add your net speed check logic here
-      const netSpeed = await getNetSpeed();
-      
-      if (netSpeed < 100) {
-          setLoading(false);
-          setMessage('Net speed is below 100kbps. Attendance not updated.');
-          return;
-      }
+    const presentDataForSelectedDept = {};
+    selectedDepartmentStudents.forEach((student) => {
+        presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
+    });
+    await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
+        date,
+        present: presentDataForSelectedDept,
+        selectedDepartment,
+        selectedYear,
+        instituteName,
+    });
 
-      setLoading(true);
+    setMessage('Attendance updated successfully!');
+    setTimeout(() => {
+        setMessage('');
+    }, 5000);
+    const updatedAllStudentsAttendance = { ...allStudentsAttendance };
+    students.forEach((student) => {
+        if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
+        updatedAllStudentsAttendance[student.email] = false;
+        }
+    });
+    setAllStudentsAttendance(updatedAllStudentsAttendance);
 
-      const selectedDepartmentStudents = students.filter(
-          (student) => student.department === selectedDepartment && student.class === selectedYear
-      );
+    setDate('');
+    setIsDateChosen(false);
+    } catch (error) {
+    console.error('Error updating attendance:', error);
+    setMessage('An error occurred while updating attendance');
+    }
 
-      const presentDataForSelectedDept = {};
-      selectedDepartmentStudents.forEach((student) => {
-          presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
-      });
-
-      await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
-          date,
-          present: presentDataForSelectedDept,
-          selectedDepartment,
-          selectedYear,
-          instituteName,
-      });
-
-      setMessage('Attendance updated successfully!');
-      setTimeout(() => {
-          setMessage('');
-      }, 5000);
-
-      const updatedAllStudentsAttendance = { ...allStudentsAttendance };
-      students.forEach((student) => {
-          if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
-              updatedAllStudentsAttendance[student.email] = false;
-          }
-      });
-
-      setAllStudentsAttendance(updatedAllStudentsAttendance);
-      setDate('');
-      setIsDateChosen(false);
-  } catch (error) {
-      console.error('Error updating attendance:', error);
-      setMessage('An error occurred while updating attendance');
-  }
-
-  setLoading(false);
+    setLoading(false);
 };
-
 console.log("ins name"+instituteName);
 const renderTableHeader = () => {
     if (selectedYear === '') {

@@ -14,31 +14,9 @@ const Profile = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
-    const [showNavBar, setShowNavBar] = useState(false);
+    const [showNavBar, setShowNavBar] = useState(true);
     const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
 
-
-    useEffect(() => {
-        function handleResize() {
-            if (window.innerWidth > 250) {
-                setShowNavBar(true);
-            } else {
-                setShowNavBar(false);
-            }
-        }
-
-
-        // Set the initial state based on the screen size.
-        handleResize();
-
-        // Add an event listener to update the state when the window is resized.
-        window.addEventListener('resize', handleResize);
-
-        // Clean up the event listener when the component unmounts.
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const navigate = useNavigate();
