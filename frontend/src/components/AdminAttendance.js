@@ -176,62 +176,51 @@ const filteredStudents = students.filter(
   );
   
 
-  const handleUpdateAttendance = async () => {
-    if (!isDateChosen) {
-        setDateError(true);
-        setLoading(false);
-        return;
+const handleUpdateAttendance = async () => {
+    if (!isDateChosen) {    
+    setDateError(true);
+    setLoading(false);
+    return; 
     }
-
     setLoading(true);
-
     try {
-        const selectedDepartmentStudents = students.filter(
-            (student) => student.department === selectedDepartment && student.class === selectedYear
-        );
+    const selectedDepartmentStudents = students.filter(
+        (student) => student.department === selectedDepartment && student.class===selectedYear
+    );
 
-        const presentDataForSelectedDept = {};
-        selectedDepartmentStudents.forEach((student) => {
-            presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
-        });
+    const presentDataForSelectedDept = {};
+    selectedDepartmentStudents.forEach((student) => {
+        presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
+    });
+    await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
+        date,
+        present: presentDataForSelectedDept,
+        selectedDepartment,
+        selectedYear,
+        instituteName,
+    });
 
-        // Simulate a delay of 20 seconds using a Promise
-        await new Promise((resolve) => setTimeout(resolve, 20000));
+    setMessage('Attendance updated successfully!');
+    setTimeout(() => {
+        setMessage('');
+    }, 5000);
+    const updatedAllStudentsAttendance = { ...allStudentsAttendance };
+    students.forEach((student) => {
+        if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
+        updatedAllStudentsAttendance[student.email] = false;
+        }
+    });
+    setAllStudentsAttendance(updatedAllStudentsAttendance);
 
-        await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
-            date,
-            present: presentDataForSelectedDept,
-            selectedDepartment,
-            selectedYear,
-            instituteName,
-        });
-
-        setMessage('Attendance updated successfully!');
-        setTimeout(() => {
-            setMessage('');
-        }, 5000);
-
-        const updatedAllStudentsAttendance = { ...allStudentsAttendance };
-        students.forEach((student) => {
-            if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
-                updatedAllStudentsAttendance[student.email] = false;
-            }
-        });
-        setAllStudentsAttendance(updatedAllStudentsAttendance);
-
-        setDate('');
-        setIsDateChosen(false);
+    setDate('');
+    setIsDateChosen(false);
     } catch (error) {
-        // Delay the catch block by 20 seconds
-        setTimeout(() => {
-            console.error('Error updating attendance:', error);
-            setMessage('An error occurred while updating attendance');
-        }, 20000);
+    console.error('Error updating attendance:', error);
+    setMessage('An error occurred while updating attendance');
     }
 
     setLoading(false);
 };
-
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (
