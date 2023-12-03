@@ -192,7 +192,6 @@ const filteredStudents = students.filter(
 
         // Update attendance for each student one by one
         for (const student of selectedDepartmentStudents) {
-            presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
 
             await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
                 date,
