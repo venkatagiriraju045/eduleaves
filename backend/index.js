@@ -11,7 +11,6 @@ app.use(cors({
 
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://the-students-gate.vercel.app');
     res.header('Access-Control-Allow-Methods', 'GET, POST');
@@ -19,6 +18,8 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
 });
+app.use(express.json());
+
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
 app.get('/', (req, res) => {
@@ -220,6 +221,7 @@ app.post('/api/update_all_attendance', async (req, res) => {
 
     try {
         const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
+
         for (const student of students) {
             if (present[student.email]) {
                 if (!student.present_array.includes(date)) {

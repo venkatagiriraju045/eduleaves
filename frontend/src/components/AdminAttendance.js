@@ -174,9 +174,9 @@ const filteredStudents = students.filter(
           .toLowerCase()
           .includes(searchQuery.toLowerCase()))
   );
-  
+  console.log(instituteName);
 
-  const handleUpdateAttendance = async () => {
+const handleUpdateAttendance = async () => {
     if (!isDateChosen) {    
     setDateError(true);
     setLoading(false);
@@ -185,7 +185,7 @@ const filteredStudents = students.filter(
     setLoading(true);
     try {
     const selectedDepartmentStudents = students.filter(
-        (student) => student.department === selectedDepartment && student.class===selectedYear
+        (student) => student.department === selectedDepartment && student.class===selectedYear && student.institute_name === instituteName
     );
 
     const presentDataForSelectedDept = {};
@@ -197,6 +197,7 @@ const filteredStudents = students.filter(
         present: presentDataForSelectedDept,
         selectedDepartment,
         selectedYear,
+        instituteName,
     });
 
     setMessage('Attendance updated successfully!');
@@ -220,7 +221,6 @@ const filteredStudents = students.filter(
 
     setLoading(false);
 };
-
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (
