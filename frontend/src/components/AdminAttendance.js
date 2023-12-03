@@ -207,12 +207,6 @@ const filteredStudents = students.filter(
 
         const updatedAllStudentsAttendance = { ...allStudentsAttendance };
 
-        students.forEach((student) => {
-            if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
-                updatedAllStudentsAttendance[student.email] = false;
-            }
-        });
-
         setAllStudentsAttendance(updatedAllStudentsAttendance);
 
         setDate('');
