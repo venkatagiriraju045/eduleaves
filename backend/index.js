@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: 'https://the-students-gate.vercel.app',
+    origin: '*',
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -12,7 +12,13 @@ app.use(cors({
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://the-students-gate.vercel.app');
+    res.header('Access-Control-Allow-Methods', 'GET, POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
+});
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
 app.get('/', (req, res) => {
