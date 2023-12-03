@@ -9,8 +9,6 @@ app.use(cors({
     credentials: true
 }));
 
-const PORT = process.env.PORT || 3000;
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://the-students-gate.vercel.app');
     res.header('Access-Control-Allow-Methods', 'GET, POST');
@@ -317,7 +315,4 @@ app.post('/api/update_messages', async (req, res) => {
         console.error('Error updating message:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
-});
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
 });
