@@ -3,17 +3,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const corsOptions = {
-    origin: [
-        "https://the-students-gate.vercel.app",
-        "https://eduleaves-api.vercel.app/api/update_all_attendance"
-    ],
+app.use(cors({
+    origin: 'https://the-students-gate.vercel.app',
     methods: ["POST", "GET"],
     credentials: true
-};
-
-app.use(cors(corsOptions));
-
+}));
 
 const PORT = process.env.PORT || 3000;
 
@@ -216,7 +210,6 @@ app.post('/api/attendance', async (req, res) => {
 });
 
 app.post('/api/update_all_attendance', async (req, res) => {
-    req.setTimeout(0); 
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 
     try {
