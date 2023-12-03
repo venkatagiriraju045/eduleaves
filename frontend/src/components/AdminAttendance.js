@@ -176,51 +176,69 @@ const filteredStudents = students.filter(
   );
   console.log(instituteName);
 
-const handleUpdateAttendance = async () => {
-    if (!isDateChosen) {    
-    setDateError(true);
-    setLoading(false);
-    return; 
+  const handleUpdateAttendance = async () => {
+    if (!isDateChosen) {
+        setDateError(true);
+        setLoading(false);
+        return;
     }
+
     setLoading(true);
+
     try {
-    const selectedDepartmentStudents = students.filter(
-        (student) => student.department === selectedDepartment && student.class===selectedYear && student.institute_name === instituteName
-    );
+        const selectedDepartmentStudents = students.filter(
+            (student) => student.department === selectedDepartment && student.class === selectedYear && student.institute_name === instituteName
+        );
 
-    const presentDataForSelectedDept = {};
-    selectedDepartmentStudents.forEach((student) => {
-        presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
-    });
-    await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
-        date,
-        present: presentDataForSelectedDept,
-        selectedDepartment,
-        selectedYear,
-        instituteName,
-    });
+        const batchSize = 10; // Set the batch size to the desired number of students per batch
+        const totalStudents = selectedDepartmentStudents.length;
 
-    setMessage('Attendance updated successfully!');
-    setTimeout(() => {
-        setMessage('');
-    }, 5000);
-    const updatedAllStudentsAttendance = { ...allStudentsAttendance };
-    students.forEach((student) => {
-        if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
-        updatedAllStudentsAttendance[student.email] = false;
+        for (let i = 0; i < totalStudents; i += batchSize) {
+            const end = Math.min(i + batchSize, totalStudents);
+            const currentBatch = selectedDepartmentStudents.slice(i, end);
+
+            const presentDataForSelectedDept = {};
+            currentBatch.forEach((student) => {
+                presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
+            });
+
+            await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
+                date,
+                present: presentDataForSelectedDept,
+                selectedDepartment,
+                selectedYear,
+                instituteName,
+            });
+
+            console.log(`Batch ${i / batchSize + 1} done.`); // Console message for each batch
+
+            // Handle any additional logic for each batch if needed
         }
-    });
-    setAllStudentsAttendance(updatedAllStudentsAttendance);
 
-    setDate('');
-    setIsDateChosen(false);
+        setMessage('Attendance updated successfully!');
+        setTimeout(() => {
+            setMessage('');
+        }, 5000);
+
+        const updatedAllStudentsAttendance = { ...allStudentsAttendance };
+        students.forEach((student) => {
+            if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
+                updatedAllStudentsAttendance[student.email] = false;
+            }
+        });
+
+        setAllStudentsAttendance(updatedAllStudentsAttendance);
+
+        setDate('');
+        setIsDateChosen(false);
     } catch (error) {
-    console.error('Error updating attendance:', error);
-    setMessage('An error occurred while updating attendance');
+        console.error('Error updating attendance:', error);
+        setMessage('An error occurred while updating attendance');
     }
 
     setLoading(false);
 };
+
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (
