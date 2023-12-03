@@ -4,10 +4,11 @@ import cors from 'cors';
 
 const app = express();
 app.use(cors({
-    origin: 'https://the-students-gate.vercel.app',
+    origin: ["https://the-students-gate.vercel.app"],
     methods: ["POST", "GET"],
     credentials: true
 }));
+
 
 app.use(express.json());
 
