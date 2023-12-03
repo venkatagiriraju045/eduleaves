@@ -210,13 +210,12 @@ app.post('/api/attendance', async (req, res) => {
 });
 
 app.post('/api/update_all_attendance', async (req, res) => {
-    req.setTimeout(0); 
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
-
 
     try {
         const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
 
+        // Update attendance for each student one by one
         for (const student of students) {
             if (present[student.email]) {
                 if (!student.present_array.includes(date)) {
@@ -240,6 +239,7 @@ app.post('/api/update_all_attendance', async (req, res) => {
             student.total_attendance = student.present_array.length;
             student.total_days = student.present_array.length + student.leave_array.length;
 
+            // Save each student's attendance individually
             await student.save();
         }
 
