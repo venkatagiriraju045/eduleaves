@@ -193,7 +193,12 @@ app.post('/api/attendance', async (req, res) => {
 
     try {
         const student = await User.findOne({ email });
-        if (present[student.email]) {
+
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        if (present) {
             if (!student.present_array.includes(date)) {
                 student.present_array.push(date);
             }
@@ -224,6 +229,7 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;

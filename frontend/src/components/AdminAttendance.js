@@ -67,13 +67,12 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-    const defaultPresentData = {};
-    students.forEach((student) => {
-    defaultPresentData[student.email] = true;
-    });
-    setAllStudentsAttendance(defaultPresentData);
+  const defaultPresentData = {};
+  students.forEach((student) => {
+      defaultPresentData[student.email] = true;
+  });
+  setAllStudentsAttendance(defaultPresentData);
 }, [students]);
-
 
 
 function handleTableScroll(event) {
@@ -192,22 +191,25 @@ const filteredStudents = students.filter(
 
         // Update attendance for each student one by one
         for (const student of selectedDepartmentStudents) {
+            const presentValue = allStudentsAttendance[student.email] || false;
 
             await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
                 date,
-                present: allStudentsAttendance[student.email],
-                email : student.email,
+                present: presentValue,
+                email: student.email,
             });
+
+            // Update local state after making the request
+            setAllStudentsAttendance((prevAttendance) => ({
+                ...prevAttendance,
+                [student.email]: presentValue,
+            }));
         }
 
         setMessage('Attendance updated successfully!');
         setTimeout(() => {
             setMessage('');
         }, 5000);
-
-        const updatedAllStudentsAttendance = { ...allStudentsAttendance };
-
-        setAllStudentsAttendance(updatedAllStudentsAttendance);
 
         setDate('');
         setIsDateChosen(false);
@@ -218,6 +220,7 @@ const filteredStudents = students.filter(
 
     setLoading(false);
 };
+
 console.log(allStudentsAttendance[0]);
 const renderTableHeader = () => {
     if (selectedYear === '') {
