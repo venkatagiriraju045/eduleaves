@@ -16,7 +16,7 @@ app.use(express.json());
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
 app.get('/', (req, res) => {
-    const message = "Hello, World!";
+    const message = "mod 2";
     res.send(`<html><body><h1>${message}</h1></body></html>`);
 });
 
@@ -215,30 +215,39 @@ app.post('/api/update_all_attendance', async (req, res) => {
     try {
         const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
 
-        for (const student of students) {
-            if (present[student.email]) {
-                if (!student.present_array.includes(date)) {
-                    student.present_array.push(date);
-                }
-                const leaveDateIndex = student.leave_array.indexOf(date);
-                if (leaveDateIndex !== -1) {
-                    student.leave_array.splice(leaveDateIndex, 1);
-                }
-            } else {
-                if (!student.leave_array.includes(date)) {
-                    student.leave_array.push(date);
+        // Set the batch size
+        const batchSize = 10;
+
+        // Loop through students in batches
+        for (let i = 0; i < students.length; i += batchSize) {
+            const batch = students.slice(i, i + batchSize);
+
+            // Process the current batch
+            for (const student of batch) {
+                if (present[student.email]) {
+                    if (!student.present_array.includes(date)) {
+                        student.present_array.push(date);
+                    }
+                    const leaveDateIndex = student.leave_array.indexOf(date);
+                    if (leaveDateIndex !== -1) {
+                        student.leave_array.splice(leaveDateIndex, 1);
+                    }
+                } else {
+                    if (!student.leave_array.includes(date)) {
+                        student.leave_array.push(date);
+                    }
+
+                    const presentDateIndex = student.present_array.indexOf(date);
+                    if (presentDateIndex !== -1) {
+                        student.present_array.splice(presentDateIndex, 1);
+                    }
                 }
 
-                const presentDateIndex = student.present_array.indexOf(date);
-                if (presentDateIndex !== -1) {
-                    student.present_array.splice(presentDateIndex, 1);
-                }
+                student.total_attendance = student.present_array.length;
+                student.total_days = student.present_array.length + student.leave_array.length;
+
+                await student.save();
             }
-
-            student.total_attendance = student.present_array.length;
-            student.total_days = student.present_array.length + student.leave_array.length;
-
-            await student.save();
         }
 
         res.status(200).json({ message: 'Attendance updated successfully for the selected department' });
@@ -247,6 +256,7 @@ app.post('/api/update_all_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.post('/api/send_message', async (req, res) => {
     const { message, selectedDepartment } = req.body;
