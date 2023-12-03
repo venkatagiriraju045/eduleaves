@@ -232,7 +232,7 @@ const filteredStudents = students.filter(
         setDate('');
         setIsDateChosen(false);
     } catch (error) {
-        console.error('Error updating attendance:', error);
+        console.error('Error updating attendance mod1:', error);
         setMessage('An error occurred while updating attendance mod1');
     }
 
@@ -310,7 +310,7 @@ const renderTableRows = (students) => {
   
 return (
     <div>
-        <h2 className='department-wise-chart-heading'>Attendance for {selectedDepartment}</h2>
+        <h2 className='department-wise-chart-heading'>Department of {selectedDepartment}</h2>
     <div className='attendance-content-container'>
 
         <div className="department-selection">
