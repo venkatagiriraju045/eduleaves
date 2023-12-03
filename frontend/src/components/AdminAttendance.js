@@ -233,7 +233,7 @@ const filteredStudents = students.filter(
         setIsDateChosen(false);
     } catch (error) {
         console.error('Error updating attendance:', error);
-        setMessage('An error occurred while updating attendance');
+        setMessage('An error occurred while updating attendance mod1');
     }
 
     setLoading(false);
