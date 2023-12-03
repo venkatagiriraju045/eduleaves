@@ -9,6 +9,7 @@ app.use(cors({
     credentials: true
 }));
 
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -309,4 +310,7 @@ app.post('/api/update_messages', async (req, res) => {
         console.error('Error updating message:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
+});
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
