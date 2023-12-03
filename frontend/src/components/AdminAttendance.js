@@ -190,18 +190,14 @@ const filteredStudents = students.filter(
             (student) => student.department === selectedDepartment && student.class === selectedYear && student.institute_name === instituteName
         );
 
-        const presentDataForSelectedDept = {};
-
         // Update attendance for each student one by one
         for (const student of selectedDepartmentStudents) {
             presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
 
-            await axios.post('https://eduleaves-api.vercel.app/api/update_all_attendance', {
+            await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
                 date,
-                present: presentDataForSelectedDept,
-                selectedDepartment,
-                selectedYear,
-                instituteName,
+                present: allStudentsAttendance[student.email],
+                email : student.email,
             });
         }
 
@@ -229,7 +225,7 @@ const filteredStudents = students.filter(
 
     setLoading(false);
 };
-
+console.log(allStudentsAttendance[0]);
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (

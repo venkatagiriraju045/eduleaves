@@ -193,13 +193,29 @@ app.post('/api/attendance', async (req, res) => {
 
     try {
         const student = await User.findOne({ email });
-        if (!student) {
-            return res.status(404).json({ message: 'Student not found' });
+        if (present[student.email]) {
+            if (!student.present_array.includes(date)) {
+                student.present_array.push(date);
+            }
+            const leaveDateIndex = student.leave_array.indexOf(date);
+            if (leaveDateIndex !== -1) {
+                student.leave_array.splice(leaveDateIndex, 1);
+            }
+        } else {
+            if (!student.leave_array.includes(date)) {
+                student.leave_array.push(date);
+            }
+
+            const presentDateIndex = student.present_array.indexOf(date);
+            if (presentDateIndex !== -1) {
+                student.present_array.splice(presentDateIndex, 1);
+            }
         }
 
-        student.total_attendance += present ? 1 : 0;
-        student.total_days += 1;
+        student.total_attendance = student.present_array.length;
+        student.total_days = student.present_array.length + student.leave_array.length;
 
+        // Save each student's attendance individually
         await student.save();
 
         res.status(200).json({ message: 'Attendance updated successfully' });
