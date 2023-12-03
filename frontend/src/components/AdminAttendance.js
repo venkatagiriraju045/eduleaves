@@ -193,11 +193,13 @@ const filteredStudents = students.filter(
         const batchSize = 10; // Set the batch size to the desired number of students per batch
         const totalStudents = selectedDepartmentStudents.length;
 
+        let presentDataForSelectedDept; // Declare it outside the loop
+
         for (let i = 0; i < totalStudents; i += batchSize) {
             const end = Math.min(i + batchSize, totalStudents);
             const currentBatch = selectedDepartmentStudents.slice(i, end);
 
-            const presentDataForSelectedDept = {};
+            presentDataForSelectedDept = {};
             currentBatch.forEach((student) => {
                 presentDataForSelectedDept[student.email] = allStudentsAttendance[student.email] || false;
             });
@@ -238,6 +240,7 @@ const filteredStudents = students.filter(
 
     setLoading(false);
 };
+
 
 const renderTableHeader = () => {
     if (selectedYear === '') {
