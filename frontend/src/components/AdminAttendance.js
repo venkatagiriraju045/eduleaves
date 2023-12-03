@@ -201,9 +201,7 @@ const handleUpdateAttendance = async () => {
     });
 
     setMessage('Attendance updated successfully!');
-    setTimeout(() => {
-        setMessage('');
-    }, 5000);
+    
     const updatedAllStudentsAttendance = { ...allStudentsAttendance };
     students.forEach((student) => {
         if (!presentDataForSelectedDept.hasOwnProperty(student.email)) {
@@ -216,7 +214,7 @@ const handleUpdateAttendance = async () => {
     setIsDateChosen(false);
     } catch (error) {
     console.error('Error updating attendance:', error);
-    setMessage('An error occurred while updating attendance mod 2');
+    setMessage('An error occurred while updating attendance mod 3');
     }
 
     setLoading(false);

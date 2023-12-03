@@ -16,7 +16,7 @@ app.use(express.json());
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
 app.get('/', (req, res) => {
-    const message = "mod 2";
+    const message = "mod 3";
     res.send(`<html><body><h1>${message}</h1></body></html>`);
 });
 
@@ -253,7 +253,7 @@ app.post('/api/update_all_attendance', async (req, res) => {
         res.status(200).json({ message: 'Attendance updated successfully for the selected department' });
     } catch (error) {
         console.error('Error updating attendance for the selected department:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(10000).json({ message: 'Internal Server Error' });
     }
 });
 
