@@ -176,7 +176,7 @@ const filteredStudents = students.filter(
   );
   
 
-const handleUpdateAttendance = async () => {
+  const handleUpdateAttendance = async () => {
     if (!isDateChosen) {    
     setDateError(true);
     setLoading(false);
@@ -197,7 +197,6 @@ const handleUpdateAttendance = async () => {
         present: presentDataForSelectedDept,
         selectedDepartment,
         selectedYear,
-        instituteName,
     });
 
     setMessage('Attendance updated successfully!');
@@ -221,6 +220,7 @@ const handleUpdateAttendance = async () => {
 
     setLoading(false);
 };
+
 const renderTableHeader = () => {
     if (selectedYear === '') {
     return (

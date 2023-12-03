@@ -214,7 +214,6 @@ app.post('/api/update_all_attendance', async (req, res) => {
 
     try {
         const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
-
         for (const student of students) {
             if (present[student.email]) {
                 if (!student.present_array.includes(date)) {
