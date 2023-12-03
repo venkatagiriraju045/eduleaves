@@ -72,7 +72,7 @@ const DepartmentMessage = ({ students }) => {
         try {
             // Send the POST request to update accomplishments
             const accomplishmentsToUpdate = message.trim();
-            console.log(accomplishmentsToUpdate)
+            console.log(accomplishmentsToUpdate);
 
             await axios.post('https://eduleaves-api.vercel.app/api/update_messages', {
                 email: searchedStudent.email,
@@ -157,7 +157,6 @@ const DepartmentMessage = ({ students }) => {
                                     <button
                                         className="send-button"
                                         onClick={updateStudentAccomplishments}
-                                        disabled={loading}
                                     >
                                         <img src="./uploads/send-icon.png" alt="Send Icon" className="send-icon" />
                                     </button>
