@@ -598,35 +598,35 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       const studentsInYear = students.filter((student) => student.class === year && student.department === department);
       const totalStudents = studentsInYear.length;
       if (totalStudents === 0) return NaN;
-  
+
       const totalAverage =
         studentsInYear.reduce((total, student) => total + parseFloat(calculateStudentTestAverage(student)), 0) /
         totalStudents;
-  
-  
+
+
       return totalAverage;
     }
     const calculateAverageByGender = (iatIndex, gender) => {
       const filteredStudents = students.filter((student) => student.gender === gender && student.department === department);
-  
+
       // Filter out students who have scores for the given iatIndex
       const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
-  
+
       // Calculate the total score and count of students with scores for the iatIndex
       const totalScore = studentsWithScores.reduce((total, student) => {
         const iatScore = parseInt(student.subjects.find((subject) => subject.scores[`iat_${iatIndex}`])?.scores[`iat_${iatIndex}`]);
         return total + iatScore;
       }, 0);
-  
+
       const averageScore = totalScore / studentsWithScores.length;
       return averageScore;
     };
-  
-    if (students){
-    createChart();
-    createYearWiseTestChart();
-    createOverallDepartmentPerformanceChart();
-    createGenderDepartmentLineChart();
+
+    if (students) {
+      createChart();
+      createYearWiseTestChart();
+      createOverallDepartmentPerformanceChart();
+      createGenderDepartmentLineChart();
     }
 
   }, [department, students]);
@@ -805,7 +805,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
-          <h2 className='department-wise-chart-heading'>{department} Department</h2>
+          <h1 className='department-wise-chart-heading'>{department} Department</h1>
           <div className='menu-buttons'>
             <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>
@@ -815,47 +815,45 @@ const DepartmentMenuDashboard = ({ department, students }) => {
           </div>
         </div>
       </div>
-      <div className='profile-chart-container'>
-        <div className='overall-department-performance-chart-container'>
-          <div className='inside-container'>
-            <div className='sub-charts-container'>
-              <canvas id="department-chart-overlay"></canvas>
+      { !selectedYear &&
+        <div>
+          <div className='profile-chart-container'>
+            <div className='overall-department-performance-chart-container'>
+              <div className='inside-container'>
+                <div className='sub-charts-container'>
+                  <canvas id="department-chart-overlay"></canvas>
+                </div>
+              </div>
+              <p className='chart-heads'>Overall Performance</p>
+            </div>
+            <div className='overall-department-performance-chart-container'>
+              <div className='inside-container'>
+                <div className='sub-charts-container'>
+                  <canvas id="department-chart-test"></canvas>
+                </div>
+              </div>
+              <p className='chart-heads'>Overall Activities</p>
             </div>
           </div>
-          <p className='chart-heads'>Overall Performance</p>
-        </div>
-
-
-        <div className='overall-department-performance-chart-container'>
-          <div className='inside-container'>
-            <div className='sub-charts-container'>
-              <canvas id="department-chart-test"></canvas>
+          <div className='profile-chart-container'>
+            <div className='overall-department-performance-chart-container'>
+              <div className='inside-container'>
+                <div className='sub-charts-container'>
+                  <canvas id="year-chart-test"></canvas>
+                  <p className='chart-heads'>Year Wise Test Performance</p>
+                </div>
+              </div>
+            </div>
+            <div className='overall-department-performance-chart-container'>
+              <div className='inside-container'>
+                <div className='sub-charts-container'>
+                  <canvas id="iat-performance-chart-department"></canvas>
+                  <p className='chart-heads'>Gender Wise IAT Performance</p>
+                </div>
+              </div>
             </div>
           </div>
-          <p className='chart-heads'>Overall Activities</p>
-        </div>
-      </div>
-
-      <div className='profile-chart-container'>
-
-        <div className='overall-department-performance-chart-container'>
-          <div className='inside-container'>
-            <div className='sub-charts-container'>
-              <canvas id="year-chart-test"></canvas>
-              <p className='chart-heads'>Year Wise Test Performance</p>
-            </div>
-          </div>
-        </div>
-        <div className='overall-department-performance-chart-container'>
-
-          <div className='inside-container'>
-            <div className='sub-charts-container'>
-              <canvas id="iat-performance-chart-department"></canvas>
-              <p className='chart-heads'>Gender Wise IAT Performance</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        </div>}
       {selectedYear &&
         <div id='class-wise-page' className='class-wise-analytics-page'>
           <DepartmentClassWise students={students} department={department} year={selectedYear} />
