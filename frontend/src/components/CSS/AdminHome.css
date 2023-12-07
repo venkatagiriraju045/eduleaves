@@ -308,7 +308,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(99, 254, 241, 0.5);
     z-index: 999999;
 }
 
@@ -322,6 +322,7 @@
 }
 
 .loading-text {
+    padding-left: 10px;
     margin-top: 10px;
     color: rgb(33, 21, 21);
     font-size: 16px;

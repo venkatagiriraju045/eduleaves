@@ -195,7 +195,7 @@ const Home = () => {
                     </div>
                     <footer id="home-page-footer">
                             &copy; The Students Gate. All rights reserved.
-                            MD Mr.Venkatagiriraju U, B.E.CSE.,
+                            Venkatagiriraju Udayakumar, B.E.CSE.,
                         </footer>
 
                 </div>
