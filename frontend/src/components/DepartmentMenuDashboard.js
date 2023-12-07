@@ -633,12 +633,11 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       createGenderDepartmentLineChart();
     }
   }, [department, students, selectedYear]);
-  
+
   function calculateStudentTestAverage(student) {
     const subjectScores = student.subjects.map((subject) => {
       const { scores } = subject;
       if (!scores || typeof scores !== "object") {
-        // If scores are missing or not an object, return NaN for this subject
         return {
           subject_name: subject.subject_name,
           scores: "NaN",
