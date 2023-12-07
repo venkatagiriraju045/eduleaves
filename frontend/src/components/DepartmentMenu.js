@@ -145,15 +145,7 @@ const DepartmentMenu = () => {
       element.style.display = 'block';
     });
   };
-  const handleDownloadImage = () => {
-    html2canvas(document.body).then((canvas) => {
-      const dataURL = canvas.toDataURL('image/png');
-      const downloadLink = document.createElement('a');
-      downloadLink.href = dataURL;
-      downloadLink.download = 'admin_home.png';
-      downloadLink.click();
-    });
-  };
+
   const handleShowNav = () => {
     setShowNavBar((prevShowNavBar) => !prevShowNavBar);
   };
@@ -219,8 +211,6 @@ const DepartmentMenu = () => {
           <footer className="profile-footer">
             &copy; The Students Gate-2023.
           </footer>
-          <button className="download-button" onClick={handleDownloadImage}>download</button>
-
         </nav>
       }
 

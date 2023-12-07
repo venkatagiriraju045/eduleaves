@@ -565,7 +565,10 @@ const calculateAverageByGender = (iatIndex, gender) => {
 const handleTodayClick=()=>{
     setShowAttendanceOverlay(true);
 }
+
   const handleMenuClick = (year) => {
+
+
     setSelectedYear(year);
   };
   const handleCopyClassAttendance = () => {
@@ -662,6 +665,7 @@ const handleTodayClick=()=>{
                 </div>
             </div>
             )}
+            
       <div className='menu'>
             <div className='department-header-container'>
       <h1 className='department-wise-chart-heading'>{department} Department</h1>
@@ -674,6 +678,8 @@ const handleTodayClick=()=>{
       </div>
       </div>
       </div>
+      { !selectedYear &&
+      <div>
       <div className='profile-chart-container'>
           <div className='overall-department-performance-chart-container'>
               <div className='inside-container'>
@@ -712,6 +718,8 @@ const handleTodayClick=()=>{
               </div>
             </div>
           </div>
+          </div>
+          }
         {selectedYear &&
         <div id='class-wise-page' className='class-wise-analytics-page'>
         <ClassWiseAnalytics students={students} department={department} year={selectedYear}/>
