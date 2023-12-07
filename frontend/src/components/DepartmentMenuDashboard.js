@@ -205,6 +205,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
   );
   const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
 
+  useEffect(() => {
     const createChart = () => {
       Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
       const canvas = document.getElementById('department-chart-overlay');
@@ -621,19 +622,21 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       return averageScore;
     };
 
-  useEffect(() => {
     if (students) {
       createChart();
       createYearWiseTestChart();
       createOverallDepartmentPerformanceChart();
       createGenderDepartmentLineChart();
     }
-  }, [department, students, selectedYear]);
+
+  }, [department, students]);
+
 
   function calculateStudentTestAverage(student) {
     const subjectScores = student.subjects.map((subject) => {
       const { scores } = subject;
       if (!scores || typeof scores !== "object") {
+        // If scores are missing or not an object, return NaN for this subject
         return {
           subject_name: subject.subject_name,
           scores: "NaN",
