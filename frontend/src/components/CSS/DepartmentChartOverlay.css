@@ -39,6 +39,7 @@ margin-right: 1vw;
 }
 .class-wise-analytics-page {
     margin-top:40px;
+    transition: ease-in 3s;
 }
 .admin-year-choosing-menu {
     display: flex;

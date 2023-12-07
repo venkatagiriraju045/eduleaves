@@ -664,7 +664,7 @@ const handleTodayClick=()=>{
             )}
       <div className='menu'>
             <div className='department-header-container'>
-      <h2 className='department-wise-chart-heading'>{department} Department</h2>
+      <h1 className='department-wise-chart-heading'>{department} Department</h1>
       <div className='menu-buttons'>
         <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
         <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>

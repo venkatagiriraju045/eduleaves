@@ -546,15 +546,6 @@ const AdminHome = () => {
             String(student.registerNumber).toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
-    const handleDownloadImage = () => {
-        html2canvas(document.body).then((canvas) => {
-            const dataURL = canvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            downloadLink.href = dataURL;
-            downloadLink.download = 'admin_home.png';
-            downloadLink.click();
-        });
-    };
     const handleCloseOverlay = () => {
         setSelectedDepartment(null);
         setShowOverlay(false);
@@ -722,11 +713,6 @@ const AdminHome = () => {
                 </main>
                 <footer className="main-admin-footer">
                     &copy; The Students Gate-2023.
-                    <div className="download-button-container">
-                        <button className="download-button" onClick={handleDownloadImage}>
-                            Download
-                        </button>
-                    </div>
                 </footer>
             </div>
         </div>
