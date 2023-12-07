@@ -534,8 +534,9 @@ const DepartmentClassWise = ({ students, department, year }) => {
         <div>
             <div className='department-header-container'>
                 <div className='class-wise-header'>
-                    <h2 className='department-wise-chart-heading'>Class-Wise Analytics</h2>
+                    <h2 className='department-wise-chart-heading'>{selectedYear} Analytics</h2>
                 </div>
+                
                 <a href="#class-wise-page"><button href="#" className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             </div>
             {showAttendanceOverlay && (
@@ -585,6 +586,7 @@ const DepartmentClassWise = ({ students, department, year }) => {
                     </div>
                 </div>
             )}
+
             <div className='class-wise-overlay-chart-container'>
                 <div className='overall-department-performance-chart-container-class-wise'>
                     <div className='inside-container'>

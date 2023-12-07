@@ -742,7 +742,9 @@ const DepartmentMenuDashboard = ({ department, students }) => {
   const yearWiseAttendance = calculateYearWiseAttendance(students, department);
   const { firstYear, secondYear, thirdYear, finalYear } = yearWiseAttendance;
 
-
+  const handleCloseClassWiseAnalytics = () =>{
+    setSelectedYear("");
+  }
 
   return (
     <div>
@@ -856,6 +858,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
         </div>}
       {selectedYear &&
         <div id='class-wise-page' className='class-wise-analytics-page'>
+          <button className="class-wise-analytics-close-button" onClick={handleCloseClassWiseAnalytics}>close</button>
           <DepartmentClassWise students={students} department={department} year={selectedYear} />
         </div>
       }
