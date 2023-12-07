@@ -629,7 +629,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       createGenderDepartmentLineChart();
     }
 
-  }, [department, students]);
+  }, [department, students, selectedYear]);
 
 
   function calculateStudentTestAverage(student) {
@@ -803,7 +803,6 @@ const DepartmentMenuDashboard = ({ department, students }) => {
           </div>
         </div>
       )}
-
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
