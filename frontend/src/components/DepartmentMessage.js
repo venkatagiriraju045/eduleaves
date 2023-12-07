@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './CSS/UpdateAccom.css';
 import './CSS/Message.css';
@@ -15,12 +15,10 @@ const DepartmentMessage = ({ students }) => {
     const [searchedStudent, setSearchedStudent] = useState(null);
     const [studentNotFound, setStudentNotFound] = useState(false);
     const [welcomeMessage, setWelcomeMessage] = useState(true);
-
     const handleAccomplishmentsChange = (e) => {
         setMessage(e.target.value);
         handlePreviewUpdate(e);
     };
-
     const handlePreviewUpdate = (e) => {
         const messageText = e.target.value;
         const sentences = messageText.split('.').filter((sentence) => sentence.trim() !== '');
