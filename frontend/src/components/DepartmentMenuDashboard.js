@@ -205,7 +205,6 @@ const DepartmentMenuDashboard = ({ department, students }) => {
   );
   const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
 
-  useEffect(() => {
     const createChart = () => {
       Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
       const canvas = document.getElementById('department-chart-overlay');
@@ -621,9 +620,6 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       const averageScore = totalScore / studentsWithScores.length;
       return averageScore;
     };
-
-
-  }, [department, students]);
 
   useEffect(() => {
     if (students) {
