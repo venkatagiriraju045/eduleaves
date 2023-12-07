@@ -622,16 +622,18 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       return averageScore;
     };
 
+
+  }, [department, students]);
+
+  useEffect(() => {
     if (students) {
       createChart();
       createYearWiseTestChart();
       createOverallDepartmentPerformanceChart();
       createGenderDepartmentLineChart();
     }
-
   }, [department, students, selectedYear]);
-
-
+  
   function calculateStudentTestAverage(student) {
     const subjectScores = student.subjects.map((subject) => {
       const { scores } = subject;
