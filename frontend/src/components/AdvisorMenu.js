@@ -4,26 +4,25 @@ import html2canvas from 'html2canvas';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './CSS/AdminHome.css';
 import DepartmentMessage from './DepartmentMessage.js'
-import AdminAttendance from './AdminAttendance.js';
-import UpdateAccom from './UpdateAccom';
+import UpdateAccom from './UpdateAccom.js';
 import './CSS/DepartmentMenu.css';
 import './CSS/Profile_model.css';
+import AdvisorAttendance from './AdvisorAttendance.js';
+import AdvisorDashboard from './AdvisorDashboard.js';
 
-import DepartmentMenuDashboard from './DepartmentMenuDashboard';
 
-const DepartmentMenu = () => {
+const AdvisorMenu = () => {
   const location = useLocation();
-  const { instituteName, departmentShortName} = location.state || {};
+  const { instituteName, departmentName, year, section } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showAttendanceForm, setShowAttendanceForm] = useState(false);  
+  const [showAttendanceForm, setShowAttendanceForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
   const [showNavBar, setShowNavBar] = useState(true);
   const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
-  const [departmentName, setDepartmentName] = useState(null);
   const [students, setStudents] = useState([]);
   const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
@@ -52,16 +51,16 @@ const DepartmentMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/students_data', {
+        const response = await axios.get('http://localhost:3000/api/advisor_students_data', {
           params: {
             role: 'student', // Filter by role
-            department: getDepartmentFullName(departmentShortName), // Filter by department
-            instituteName: instituteName, // Filter by institute_name
+            department: departmentName, // Filter by department
+            instituteName: instituteName,
+            year: year,
+            section: section // Filter by institute_name
           }
         });
-        setDepartmentName(getDepartmentFullName(departmentShortName));
         setInstitute(instituteName);
-        console.log(departmentName, getInstituteFullName(instituteName));
         const studentData = response.data;
         setStudents(studentData); // Set the students state variable
         setLoading(false);
@@ -96,17 +95,17 @@ const DepartmentMenu = () => {
     setShowMessageForm(true);
     setShowUpdateAccom(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container' ).classList.add('loading');
+    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
     messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
-    document.querySelector('.profile-content-container' ).appendChild(messageElement);
+    document.querySelector('.profile-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-content-container' ).classList.remove('loading');
+      document.querySelector('.profile-content-container').classList.remove('loading');
       messageElement.remove();
       setShowMessageForm(true);
       setShowAttendanceForm(false);
@@ -120,17 +119,17 @@ const DepartmentMenu = () => {
     setShowMessageForm(false);
     setShowUpdateAccom(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container' ).classList.add('loading');
+    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
     messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
-    document.querySelector('.profile-right-content-container' ).appendChild(messageElement);
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-right-content-container' ).classList.remove('loading');
+      document.querySelector('.profile-right-content-container').classList.remove('loading');
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowMessageForm(false);
@@ -257,11 +256,11 @@ const DepartmentMenu = () => {
             showMessageForm ? (
               <DepartmentMessage students={students} />
             ) : showAttendanceForm ? (
-              <AdminAttendance students={students} department={departmentName} instituteName={institute} />
+              <AdvisorAttendance students={students} />
             ) : (
               <div className='home-contents'>
                 <div>
-                  <DepartmentMenuDashboard department={departmentName} students={students} />
+                  <AdvisorDashboard students={students} />
                 </div>
               </div>)}
         </main>
@@ -269,4 +268,4 @@ const DepartmentMenu = () => {
     </div>
   );
 };
-export default DepartmentMenu;
+export default AdvisorMenu;

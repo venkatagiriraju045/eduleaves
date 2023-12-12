@@ -5,13 +5,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './CSS/AdminHome.css';
 import DepartmentMessage from './DepartmentMessage.js'
 import AdminAttendance from './AdminAttendance.js';
-import UpdateAccom from './UpdateAccom';
+import UpdateAccom from './UpdateAccom.js';
 import './CSS/DepartmentMenu.css';
 import './CSS/Profile_model.css';
 
-import DepartmentMenuDashboard from './DepartmentMenuDashboard';
+import DepartmentMenuDashboard from './DepartmentMenuDashboard.js';
 
-const DepartmentMenu = () => {
+const MentorMenu = () => {
   const location = useLocation();
   const { instituteName, departmentShortName} = location.state || {};
   const [loading, setLoading] = useState(true);
@@ -269,4 +269,4 @@ const DepartmentMenu = () => {
     </div>
   );
 };
-export default DepartmentMenu;
+export default MentorMenu;

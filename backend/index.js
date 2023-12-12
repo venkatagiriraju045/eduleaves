@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: ["https://the-students-gate.vercel.app"],
+    origin: ["http://localhost:3001"],
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -80,7 +80,7 @@ app.post('/api/admin-login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const admin = await User.findOne({ email, role: 'admin', admin_password: password });
+        const admin = await User.findOne({ email, admin_password: password });
         if (!admin) {
             return res.status(401).json({ message: 'Authentication failed' });
         }
@@ -118,6 +118,28 @@ app.get('/api/students_data', async (req, res) => {
             role: role, // Filter by role
             department: department, // Filter by department
             institute_name: instituteName, // Filter by institute_name
+        };
+        // Use the filter to find students
+        const students = await User.find(filter);
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+app.get('/api/advisor_students_data', async (req, res) => {
+    try {
+        // Extract the filtering parameters from the query string
+        const { role, department, instituteName, year, section} = req.query;
+
+        // Create a filter object to match the specified fields
+        const filter = {
+            role: role, // Filter by role
+            department: department, // Filter by department
+            institute_name: instituteName, 
+            class : year,
+            section: section,// Filter by institute_name
         };
         // Use the filter to find students
         const students = await User.find(filter);

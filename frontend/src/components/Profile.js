@@ -24,7 +24,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loggedInEmail}`);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${loggedInEmail}`);
                 const studentData = response.data;
                 setStudent(studentData);
                 setLoading(false);

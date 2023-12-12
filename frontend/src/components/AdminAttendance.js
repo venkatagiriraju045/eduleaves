@@ -193,7 +193,7 @@ const filteredStudents = students.filter(
         for (const student of selectedDepartmentStudents) {
             const presentValue = allStudentsAttendance[student.email] || false;
 
-            await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
+            await axios.post('http://localhost:3000/api/attendance', {
                 date,
                 present: presentValue,
                 email: student.email,
@@ -293,7 +293,7 @@ const renderTableRows = (students) => {
   
 return (
     <div>
-        <h2 className='department-wise-chart-heading'>Attendance for {selectedDepartment}</h2>
+        <h1 className='department-wise-chart-heading'>Attendance for {selectedDepartment}</h1>
     <div className='attendance-content-container'>
 
         <div className="department-selection">

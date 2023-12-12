@@ -8,9 +8,12 @@ const Home = () => {
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginError, setLoginError] = useState('');
-    const [admin, setAdmin] = useState(null);
+    const [hod, setHod] = useState(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [mentorLogin, setMentorLogin] = useState(null); // Add mentor login state
+    const [staff, setStaff] = useState(null);
+
 
     const serverURL = `https://eduleaves-api.vercel.app`;
 
@@ -24,21 +27,18 @@ const Home = () => {
         setLoginPassword(e.target.value);
     };
 
-    const toggleLoginAs = () => {
-        setLoginAs(loginAs === 'student' ? 'admin' : 'student');
-    };
+
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`https://eduleaves-api.vercel.app/api/login`, {
+            const response = await axios.post(`http://localhost:3000/api/login`, {
                 email: loginEmail,
                 password: loginPassword,
             });
-
             localStorage.setItem('loggedInEmail', loginEmail);
-
             setLoginSuccess(true);
             navigate('/Profile');
         } catch (error) {
@@ -48,35 +48,27 @@ const Home = () => {
             }, 5000);
         }
     };
+
+
+    // Define a function to fetch admin data
     useEffect(() => {
-        // Define a function to fetch admin data
-        const fetchAdminData = async () => {
+        const fetchStaffData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loginEmail}`);
-                const adminData = response.data;
-                setAdmin(adminData);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${loginEmail}`);
+                const staffData = response.data;
+                setStaff(staffData);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching admin data:', error);
                 setLoading(false);
             }
-        };
-        // Use setTimeout to delay the execution by 3 seconds
-        const delay = 3000; // 3 seconds
-        const timer = setTimeout(() => {
-            fetchAdminData(); // Execute the fetch operation after the delay
-        }, delay);
-
-        // Clear the timer when the component unmounts or when loginEmail changes
-        return () => clearTimeout(timer);
-    }, [loginEmail]);
-
+        }
+        fetchStaffData();
+    });
     useEffect(() => {
         if (loginEmail) {
             // Extract the part of the email before "@" symbol
             const emailPrefix = loginEmail.split('@')[0];
-
-
             // Define a mapping of email prefixes to department names
             const departmentMap = {
                 'cse': 'Computer Science and Engineering',
@@ -97,31 +89,50 @@ const Home = () => {
     }, [loginEmail]);
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         setLoading(true); // Set loading to true when the submit button is clicked
 
         try {
-            if (admin) {
-                const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
-                    email: loginEmail,
-                    password: loginPassword,
-                });
-                if (response.data.success) {
+            console.log(loginEmail);
+            console.log(loginPassword);
+            console.log(staff);
+            const response = await axios.post(`http://localhost:3000/api/admin-login`, {
+                email: loginEmail,
+                password: loginPassword,
+            });
+            if (response.data.success) {
+                if (staff) {
                     if ((loginEmail !== 'admin@kiot') && (loginEmail !== 'admin@psg') && (loginEmail !== 'admin@mhs')) {
-                        navigate('/DepartmentMenu', { state: { instituteName: admin.institute_name, departmentShortName: admin.department } });
+                        if (staff.role === 'hod') {
+                            navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentShortName: staff.department } });
+                        } else if (staff.role === 'advisor') {
+                            console.log(staff.institute_name);
+                            console.log(staff.department);
+
+                            console.log(staff.year);
+                            console.log(staff.section);
+
+                            navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section:staff.section} });
+                        } else if (staff.role === 'mentor') {
+                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentShortName: staff.department } });
+                        }
                     } else {
-                        navigate('/admin-home', { state: { email: loginEmail, instituteName: admin.institute_name } });
+                        navigate('/admin-home', { state: { email: loginEmail, instituteName: staff.institute_name } });
                     }
-                } else {
-                    setLoginError('Invalid email or password');
-                    setTimeout(() => {
-                        setLoginError('');
-                    }, 5000);
                 }
+            } else {
+                setLoginError('Invalid email or password');
+                setTimeout(() => {
+                    setLoginError('');
+                }, 5000);
             }
+
         } catch (error) {
-            console.error('Error authenticating admin:', error);
-            setLoginError('An error occurred while authenticating admin');
+            setLoginError('Invalid email or password');
+                setTimeout(() => {
+                    setLoginError('');
+                }, 5000);
         } finally {
             setLoading(false);
         }
@@ -147,7 +158,9 @@ const Home = () => {
                         <div className='login-page-logo-container'>
                             <img src="./uploads/login-page-logo.png" alt="menu image" id="login-page-logo" />
                         </div>
-                        <h2 id="login-person">{loginAs === 'student' ? 'Student Gate' : 'Admin Gate'}</h2>
+                        <h2 id="login-person">
+                            {loginAs === 'student' ? 'Student Gate' : loginAs === 'admin' ? 'Admin Gate' : loginAs === 'hod' ? 'HOD Gate' : 'Mentor Gate'}
+                        </h2>
                         {loginError && <p className="login-error">{loginError}</p>}
                         {loginSuccess && <p className="login-success">Login successful!</p>}
                         <form onSubmit={loginAs === 'student' ? handleLogin : handleSubmit}>
@@ -186,21 +199,31 @@ const Home = () => {
                             <div className="form-group">
                                 <br></br>
                                 <br></br>
-                                <p id="login-as" onClick={toggleLoginAs}>Enter as {loginAs === 'student' ? 'admin' : 'student'}</p>
+                                <p id="login-as">
+                                    Enter as
+                                    {loginAs !== 'student' && <span onClick={() => setLoginAs('student')}> Student /</span>}
+                                    {loginAs !== 'hod' && <span onClick={() => setLoginAs('hod')}> HOD /</span>}
+                                    {loginAs !== 'admin' && loginAs !== 'mentor' && <span onClick={() => setLoginAs('admin')}> Advisor /</span>}
+                                    {loginAs === 'mentor' && <span onClick={() => setLoginAs('admin')}> Advisor </span>}
+                                    {loginAs !== 'mentor' && <span onClick={() => setLoginAs('mentor')}> Mentor </span>}
+                                </p>
+
+
+
                             </div>
 
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
-                        
+
                     </div>
                     <footer id="home-page-footer">
-                            &copy; The Students Gate. All rights reserved.
-                            Venkatagiriraju Udayakumar, B.E.CSE.,
-                        </footer>
+                        &copy; The Students Gate. All rights reserved.
+                        Venkatagiriraju Udayakumar, B.E.CSE.,
+                    </footer>
 
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 };
 

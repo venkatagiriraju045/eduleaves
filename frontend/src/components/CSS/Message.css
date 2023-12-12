@@ -4,7 +4,7 @@
     padding:7px;
     border-radius: 8px;
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
-    margin-top: 10px;
+    margin-top: 40px;
     min-height: 600px;
     min-width: 840px;
 
@@ -13,7 +13,7 @@
     text-align: center;
     color: rgb(37, 26, 26);
     font-size: 20px;
-    margin-top: 5px;
+    margin-top: 15px;
 }
 .send-button {
     background: none;

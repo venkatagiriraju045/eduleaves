@@ -565,7 +565,7 @@ body {
     position: fixed;
     left: 0;
     bottom: 0;
-    font-size: calc(0.5rem + 0.3vw);
+    font-size: calc(0.7rem + 0.3vw);
 }
 
 .nav-button-menu {

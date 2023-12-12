@@ -6,6 +6,8 @@ import AdminLogin from './components/AdminLogin';
 import AdminAttendance from './components/AdminAttendance';
 import AdminHome from './components/AdminHome';
 import DepartmentMenu from './components/DepartmentMenu';
+import AdvisorMenu from './components/AdvisorMenu';
+import MentorMenu from './components/MentorMenu';
 
 const AppRouter = () => {
 return (
@@ -15,7 +17,10 @@ return (
     <Route path="/admin-login" element={<AdminLogin />} />
     <Route path="/admin-home" element={<AdminHome/>}/>
     <Route path="/DepartmentMenu" element={<DepartmentMenu/>}/>
+    <Route path="/AdvisorMenu" element={<AdvisorMenu />} />
+    <Route path="/MentorMenu" element={<MentorMenu/>} />
     <Route path="/admin-attendance" element={<AdminAttendance />} />
+
     </Routes>
 );
 };
