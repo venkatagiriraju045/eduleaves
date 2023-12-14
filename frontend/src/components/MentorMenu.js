@@ -1,48 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import html2canvas from 'html2canvas';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './CSS/AdminHome.css';
-import DepartmentMessage from './DepartmentMessage.js'
-import AdminAttendance from './AdminAttendance.js';
 import UpdateAccom from './UpdateAccom.js';
 import './CSS/DepartmentMenu.css';
 import './CSS/Profile_model.css';
+import MentorTest from './MentorTest.js';
+import MentorClassWise from './MentorClassWise.js';
+import MentorAttendance from './MentorAttendance.js';
+import MentorMessage from './MentorMessage.js';
 
-import DepartmentMenuDashboard from './DepartmentMenuDashboard.js';
 
 const MentorMenu = () => {
   const location = useLocation();
-  const { instituteName, departmentShortName} = location.state || {};
+  const { instituteName, departmentName, mentor_name } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showAttendanceForm, setShowAttendanceForm] = useState(false);  
+  const [showAttendanceForm, setShowAttendanceForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
+  
+  const [showTestPerformanceForm, setShowTestPerformanceForm] = useState(false);
+
   const [showNavBar, setShowNavBar] = useState(true);
   const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
-  const [departmentName, setDepartmentName] = useState(null);
   const [students, setStudents] = useState([]);
   const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
 
 
-  function getDepartmentFullName(departmentName) {
-    const departmentNameMap = {
-      'CSE': 'Computer Science and Engineering',
-      'IT': 'Information Technology',
-      'EEE': 'Electrical and Electronics Engineering',
-      'AIDS': 'Artificial Intelligence and Data Science',
-      'MECH': 'Mechanical Engineering',
-      'CSBS': 'Computer Science and Business Systems',
-      'ECE': 'Electrical and Communication Engineering',
-      'CIVIL': 'Civil Engineering',
-      // Add more mappings as needed
-    };
-    return departmentNameMap[departmentName] || departmentName;
-  }
   useEffect(() => {
     // Detect device type and set the state
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -52,16 +40,15 @@ const MentorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/students_data', {
+        const response = await axios.get('http://localhost:3000/api/mentor_students_data', {
           params: {
             role: 'student', // Filter by role
-            department: getDepartmentFullName(departmentShortName), // Filter by department
-            instituteName: instituteName, // Filter by institute_name
+            department: departmentName, // Filter by department
+            instituteName: instituteName,
+            mentor_name: mentor_name// Filter by institute_name
           }
         });
-        setDepartmentName(getDepartmentFullName(departmentShortName));
         setInstitute(instituteName);
-        console.log(departmentName, getInstituteFullName(instituteName));
         const studentData = response.data;
         setStudents(studentData); // Set the students state variable
         setLoading(false);
@@ -95,20 +82,23 @@ const MentorMenu = () => {
   const handleMessageButtonClick = () => {
     setShowMessageForm(true);
     setShowUpdateAccom(false);
+    setShowTestPerformanceForm(false);
+    setShowAttendanceForm(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container' ).classList.add('loading');
+    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
     messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
-    document.querySelector('.profile-content-container' ).appendChild(messageElement);
+    document.querySelector('.profile-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-content-container' ).classList.remove('loading');
+      document.querySelector('.profile-content-container').classList.remove('loading');
       messageElement.remove();
       setShowMessageForm(true);
+      setShowTestPerformanceForm(false);
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setIsHomeButtonClicked(false);
@@ -118,29 +108,59 @@ const MentorMenu = () => {
   const handleAttendanceButtonClick = () => {
     setShowAttendanceForm(true);
     setShowMessageForm(false);
+    setShowTestPerformanceForm(false);
     setShowUpdateAccom(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container' ).classList.add('loading');
+    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
     messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
-    document.querySelector('.profile-right-content-container' ).appendChild(messageElement);
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-right-content-container' ).classList.remove('loading');
+      document.querySelector('.profile-right-content-container').classList.remove('loading');
       messageElement.remove();
       setShowAttendanceForm(true);
+      setShowMessageForm(false);
+      setShowTestPerformanceForm(false);
+
+      setIsHomeButtonClicked(false);
+    }, 1000);
+  };
+  const handleTestPerformanceButtonClick = () => {
+    setShowTestPerformanceForm(true);
+    setShowAttendanceForm(false);
+    setShowMessageForm(false);
+    setShowUpdateAccom(false);
+    setIsLoading(true);
+    document.querySelector('.profile-content-container').classList.add('loading');
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('loading-message');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      document.querySelector('.profile-right-content-container').classList.remove('loading');
+      messageElement.remove();
+      setShowTestPerformanceForm(true);
+      setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
     }, 1000);
   };
+
   const handleHomeButtonClick = () => {
     setShowMessageForm(false);
     setShowAttendanceForm(false);
     setShowUpdateAccom(false);
+    setShowTestPerformanceForm(false);
+
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
     });
@@ -167,6 +187,7 @@ const MentorMenu = () => {
       </div>
     );
   }
+  const imageUrl = `./uploads/dashboard-brand-logo.JPG`;
 
   return (
     <div className="dep-admin-page-container">
@@ -176,10 +197,13 @@ const MentorMenu = () => {
           <ul>
             <li>
               <div className="student-details-card">
+              <div className="image-container">
+                  <img src={imageUrl} alt="brand-logo" />
+                </div>
                 <p>
-                  ADMIN
+                  MENTOR
                   <br />
-                  {institute}
+                {institute}
                   <br />
                 </p>
               </div>
@@ -196,6 +220,13 @@ const MentorMenu = () => {
             <li>
               <a href="#" className="test-score-button" onClick={handleAttendanceButtonClick} title="View Attendance">
                 Attendance
+              </a>
+            </li>
+            <br />
+            <br />
+            <li>
+              <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
+                Test Performance
               </a>
             </li>
             <br />
@@ -255,13 +286,15 @@ const MentorMenu = () => {
             <UpdateAccom students={students} />
           ) :
             showMessageForm ? (
-              <DepartmentMessage students={students} />
+              <MentorMessage students={students} />
             ) : showAttendanceForm ? (
-              <AdminAttendance students={students} department={departmentName} instituteName={institute} />
-            ) : (
+              <MentorAttendance students={students} />
+            ) : showTestPerformanceForm ? (
+              <MentorTest students={students} />
+            ) :(
               <div className='home-contents'>
                 <div>
-                  <DepartmentMenuDashboard department={departmentName} students={students} />
+                  <MentorClassWise students={students} />
                 </div>
               </div>)}
         </main>

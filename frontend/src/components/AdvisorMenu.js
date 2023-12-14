@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import html2canvas from 'html2canvas';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './CSS/AdminHome.css';
-import DepartmentMessage from './DepartmentMessage.js'
 import UpdateAccom from './UpdateAccom.js';
 import './CSS/DepartmentMenu.css';
 import './CSS/Profile_model.css';
 import AdvisorAttendance from './AdvisorAttendance.js';
 import AdvisorDashboard from './AdvisorDashboard.js';
+import AdvisorMessage from './AdvisorMessage.js';
 
 
 const AdvisorMenu = () => {
@@ -28,20 +27,6 @@ const AdvisorMenu = () => {
   const [deviceType, setDeviceType] = useState(null);
 
 
-  function getDepartmentFullName(departmentName) {
-    const departmentNameMap = {
-      'CSE': 'Computer Science and Engineering',
-      'IT': 'Information Technology',
-      'EEE': 'Electrical and Electronics Engineering',
-      'AIDS': 'Artificial Intelligence and Data Science',
-      'MECH': 'Mechanical Engineering',
-      'CSBS': 'Computer Science and Business Systems',
-      'ECE': 'Electrical and Communication Engineering',
-      'CIVIL': 'Civil Engineering',
-      // Add more mappings as needed
-    };
-    return departmentNameMap[departmentName] || departmentName;
-  }
   useEffect(() => {
     // Detect device type and set the state
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -136,6 +121,7 @@ const AdvisorMenu = () => {
       setIsHomeButtonClicked(false);
     }, 1000);
   };
+
   const handleHomeButtonClick = () => {
     setShowMessageForm(false);
     setShowAttendanceForm(false);
@@ -166,6 +152,7 @@ const AdvisorMenu = () => {
       </div>
     );
   }
+  const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
 
   return (
     <div className="dep-admin-page-container">
@@ -175,10 +162,13 @@ const AdvisorMenu = () => {
           <ul>
             <li>
               <div className="student-details-card">
+              <div className="image-container">
+                                    <img src={logoImageUrl} alt="brand Logo" />
+                                </div>
                 <p>
-                  ADMIN
+                {institute}
                   <br />
-                  {institute}
+                  LOGIN
                   <br />
                 </p>
               </div>
@@ -254,13 +244,13 @@ const AdvisorMenu = () => {
             <UpdateAccom students={students} />
           ) :
             showMessageForm ? (
-              <DepartmentMessage students={students} />
+              <AdvisorMessage students={students} />
             ) : showAttendanceForm ? (
               <AdvisorAttendance students={students} />
             ) : (
               <div className='home-contents'>
                 <div>
-                  <AdvisorDashboard students={students} />
+                  <AdvisorDashboard students={students}/>
                 </div>
               </div>)}
         </main>

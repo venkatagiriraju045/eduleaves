@@ -13,6 +13,8 @@ const Home = () => {
     const [loading, setLoading] = useState(false);
     const [mentorLogin, setMentorLogin] = useState(null); // Add mentor login state
     const [staff, setStaff] = useState(null);
+    const [handleSubmitPressed, setHandleSubmitPressed] = useState(false);
+
 
 
     const serverURL = `https://eduleaves-api.vercel.app`;
@@ -52,6 +54,7 @@ const Home = () => {
 
     // Define a function to fetch admin data
     useEffect(() => {
+
         const fetchStaffData = async () => {
             try {
                 const response = await axios.get(`http://localhost:3000/api/students?email=${loginEmail}`);
@@ -59,12 +62,15 @@ const Home = () => {
                 setStaff(staffData);
                 setLoading(false);
             } catch (error) {
+                if(handleSubmitPressed){
                 console.error('Error fetching admin data:', error);
-                setLoading(false);
+                setLoading(false);}
             }
         }
+        if(loginEmail){
         fetchStaffData();
-    });
+        }
+    }, [loginEmail, handleSubmitPressed]);
     useEffect(() => {
         if (loginEmail) {
             // Extract the part of the email before "@" symbol
@@ -89,7 +95,7 @@ const Home = () => {
     }, [loginEmail]);
 
     const handleSubmit = async (e) => {
-
+        setHandleSubmitPressed(true);
         e.preventDefault();
         setLoading(true); // Set loading to true when the submit button is clicked
 
@@ -105,17 +111,13 @@ const Home = () => {
                 if (staff) {
                     if ((loginEmail !== 'admin@kiot') && (loginEmail !== 'admin@psg') && (loginEmail !== 'admin@mhs')) {
                         if (staff.role === 'hod') {
-                            navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentShortName: staff.department } });
+                            navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
                         } else if (staff.role === 'advisor') {
-                            console.log(staff.institute_name);
-                            console.log(staff.department);
-
-                            console.log(staff.year);
-                            console.log(staff.section);
+                            
 
                             navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section:staff.section} });
                         } else if (staff.role === 'mentor') {
-                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentShortName: staff.department } });
+                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name:staff.name} });
                         }
                     } else {
                         navigate('/admin-home', { state: { email: loginEmail, instituteName: staff.institute_name } });
@@ -159,7 +161,7 @@ const Home = () => {
                             <img src="./uploads/login-page-logo.png" alt="menu image" id="login-page-logo" />
                         </div>
                         <h2 id="login-person">
-                            {loginAs === 'student' ? 'Student Gate' : loginAs === 'admin' ? 'Admin Gate' : loginAs === 'hod' ? 'HOD Gate' : 'Mentor Gate'}
+                            {loginAs === 'student' ? 'Student Gate' : loginAs === 'admin' ? 'Advisor Gate' : loginAs === 'hod' ? 'HOD Gate' : 'Mentor Gate'}
                         </h2>
                         {loginError && <p className="login-error">{loginError}</p>}
                         {loginSuccess && <p className="login-success">Login successful!</p>}
@@ -190,7 +192,7 @@ const Home = () => {
                                 </button>
                                 <button type="submit" className="login-button" disabled={loading}>
                                     {loading ? (
-                                        <div className="loading-symbol"></div> // Display the loading symbol when loading is true
+                                        'loading' // Display the loading symbol when loading is true
                                     ) : (
                                         'Enter'
                                     )}

@@ -6,8 +6,6 @@ import { Chart, LinearScale, CategoryScale, BarController, BarElement, DoughnutC
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './CSS/AdminHome.css';
-import AdminAttendance from './AdminAttendance.js';
-import UpdateAccom from './UpdateAccom';
 import DepartmentChartOverlay from './DepartmentChartOverlay.js';
 
 const calculateAttendancePercentage = (presentCount, absentCount) => {

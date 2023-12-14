@@ -10,8 +10,10 @@
 }
 .students-container{
     margin: 20px;
+    margin-top: 0;
     padding: 20px;
     border-radius: 8px;
+    width:85vw;
     box-shadow: inset 16px 16px 20px #ffffff, 10px 10px 18px rgba(0, 0, 0, 0.16);
 
     
@@ -99,7 +101,14 @@ font-weight: 100;
     top: 0;
     color: #261919;
     backdrop-filter: blur(4px); 
-    background-color: rgba(66, 163, 126, 0.311);
+    background-color: rgb(72, 189, 144);
+}
+.serial-num-header{
+    position: sticky;
+    top: 0;
+    color: #261919;
+    backdrop-filter: blur(4px); 
+    background-color: rgb(72, 189, 144);
 }
 .attendance-table-container::-webkit-scrollbar {
     width: 15px;

@@ -61,27 +61,25 @@ const AttendanceCalendar = ({ student }) => {
     const getDayWithLeadingZeros = (date) => {
         return date.toLocaleDateString(undefined, { day: '2-digit' });
     };
-
     
-
     const getAttendancePercentageByMonth = () => {
         const presentAttendanceByMonth = [];
         for (let month = 0; month < 12; month++) {
-            const daysPresentInMonth = presentDates.filter(
+            const daysPresentInMonth = (presentDates || []).filter(
                 (date) => date.getMonth() === month
             ).length;
-            const daysAbsentInMonth = absentDates.filter(
+            const daysAbsentInMonth = (absentDates || []).filter(
                 (date) => date.getMonth() === month
             ).length;
             const totalDaysAttendedInMonth = daysPresentInMonth + daysAbsentInMonth;
-            const percentagePresentInMonth = ((daysPresentInMonth / totalDaysAttendedInMonth) * 100).toFixed(2);
+            const percentagePresentInMonth = totalDaysAttendedInMonth > 0
+                ? ((daysPresentInMonth / totalDaysAttendedInMonth) * 100).toFixed(2)
+                : 0;
             presentAttendanceByMonth.push(percentagePresentInMonth);
         }
         return presentAttendanceByMonth;
     };
-
-
-
+    
     const currentMonth = currentDate.getMonth();
 
     const generateCalendar = (year, month) => {

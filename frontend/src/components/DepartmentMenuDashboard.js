@@ -67,9 +67,8 @@ const calculateAttendancePercentage = (presentCount, absentCount) => {
   const percentage = ((presentCount / totalDays) * 100).toFixed(2);
   return { percentage, count: presentCount, absentees: [] };
 };
-
-const calculateOverallAttendance = (students, selectedDepartment) => {
-  const studentList = students.filter((student) => student.role === 'student' && student.department === selectedDepartment);
+const calculateOverallAttendance = (students) => {
+  const studentList = students.filter((student) => student.role === 'student');
 
   if (studentList.length === 0) {
     return {
@@ -114,7 +113,7 @@ const calculateOverallAttendance = (students, selectedDepartment) => {
     absentees, // Include the list of absentees in the result
   };
 };
-const calculateYearWiseAttendance = (students, selectedDepartment) => {
+const calculateYearWiseAttendance = (students) => {
   const currentDate = new Date();
 
   // Initialize variables to store attendance counts for each class
@@ -129,7 +128,7 @@ const calculateYearWiseAttendance = (students, selectedDepartment) => {
 
   // Loop through the students and calculate attendance for each class
   students.forEach((student) => {
-    if (student.role === 'student' && student.department === selectedDepartment) {
+    if (student.role === 'student') {
       const year = student.class; // Assuming the student object has the 'class' property indicating the year of study
 
       // Determine if the student is present or absent for the current date
@@ -195,13 +194,10 @@ const calculateYearWiseAttendance = (students, selectedDepartment) => {
   };
 };
 
-
-const DepartmentMenuDashboard = ({ department, students }) => {
-  const selectedDepartment = department;
+const DepartmentMenuDashboard = ({students }) => {
   const [selectedYear, setSelectedYear] = useState('');
   const { presentPercentage, absentPercentage, presentCount, totalCount } = calculateOverallAttendance(
-    students,
-    selectedDepartment
+    students
   );
   const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
 
@@ -216,7 +212,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     }
 
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 570;
+    const chartWidth = 550;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
@@ -224,7 +220,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     canvas.height = chartHeight;
 
     // Get the data for the selected department
-    const departmentStudents = students.filter((student) => student.department === department);
+    const departmentStudents = students;
 
     // Calculate overall average for each student in the selected department
     const tableData = departmentStudents.map((student) => {
@@ -323,7 +319,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     }
 
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 570;
+    const chartWidth = 550;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
@@ -409,14 +405,14 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     }
 
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 570;
+    const chartWidth = 550;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
     canvas.width = chartWidth;
     canvas.height = chartHeight;
 
-    const departmentStudents = students.filter((student) => student.department === department);
+    const departmentStudents = students;
 
     // Calculate overall average for each student in the selected department
     const tableData = departmentStudents.map((student) => {
@@ -518,7 +514,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     }
 
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 570;
+    const chartWidth = 550;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
@@ -595,7 +591,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     });
   };
   function calculateYearlyTestAverage(students, year) {
-    const studentsInYear = students.filter((student) => student.class === year && student.department === department);
+    const studentsInYear = students.filter((student) => student.class === year);
     const totalStudents = studentsInYear.length;
     if (totalStudents === 0) return NaN;
 
@@ -607,7 +603,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     return totalAverage;
   }
   const calculateAverageByGender = (iatIndex, gender) => {
-    const filteredStudents = students.filter((student) => student.gender === gender && student.department === department);
+    const filteredStudents = students.filter((student) => student.gender === gender);
 
     // Filter out students who have scores for the given iatIndex
     const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
@@ -629,7 +625,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
       createOverallDepartmentPerformanceChart();
       createGenderDepartmentLineChart();
     }
-  }, [department, students, selectedYear]);
+  }, [students, selectedYear]);
 
 
 
@@ -695,7 +691,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
 
   }
   const handleCopyClassAttendance = () => {
-    const yearWiseAttendance = calculateYearWiseAttendance(students, selectedDepartment);
+    const yearWiseAttendance = calculateYearWiseAttendance(students);
     const { firstYear, secondYear, thirdYear, finalYear } = yearWiseAttendance;
 
     const classAttendanceText = `
@@ -746,7 +742,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
     alert('Class-wise attendance details copied to the clipboard!');
   };
 
-  const yearWiseAttendance = calculateYearWiseAttendance(students, department);
+  const yearWiseAttendance = calculateYearWiseAttendance(students);
   const { firstYear, secondYear, thirdYear, finalYear } = yearWiseAttendance;
 
 
@@ -811,7 +807,7 @@ const DepartmentMenuDashboard = ({ department, students }) => {
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
-          <h1 className='department-wise-chart-heading'>{department} Department</h1>
+          <h1 className='department-wise-chart-heading'>{students[0].department} Department</h1>
           <div className='menu-buttons'>
             <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>
@@ -860,10 +856,10 @@ const DepartmentMenuDashboard = ({ department, students }) => {
               </div>
             </div>
           </div>
-        </div>}
+        </div>} 
       {selectedYear &&
         <div id='class-wise-page' className='class-wise-analytics-page'>
-          <DepartmentClassWise students={students} department={department} year={selectedYear} />
+          <DepartmentClassWise students={students} year={selectedYear} />
         </div>
       }
 

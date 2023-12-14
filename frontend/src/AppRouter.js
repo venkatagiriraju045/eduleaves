@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Profile from './components/Profile';
 import Home from './components/Home';
 import AdminLogin from './components/AdminLogin';
-import AdminAttendance from './components/AdminAttendance';
+import DepartmentAttendance from './components/DepartmentAttendance';
 import AdminHome from './components/AdminHome';
 import DepartmentMenu from './components/DepartmentMenu';
 import AdvisorMenu from './components/AdvisorMenu';
@@ -19,7 +19,7 @@ return (
     <Route path="/DepartmentMenu" element={<DepartmentMenu/>}/>
     <Route path="/AdvisorMenu" element={<AdvisorMenu />} />
     <Route path="/MentorMenu" element={<MentorMenu/>} />
-    <Route path="/admin-attendance" element={<AdminAttendance />} />
+    <Route path="/DepartmentAttendance" element={<DepartmentAttendance />} />
 
     </Routes>
 );

@@ -5,7 +5,7 @@ import './CSS/AdminAttendance.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AdvisorAttendance = ({students}) => {
+const AdvisorAttendance = ({ students }) => {
 
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,29 +19,12 @@ const AdvisorAttendance = ({students}) => {
   const [isDateChosen, setIsDateChosen] = useState(false);
 
 
-  const handleLabelMove = (department) => {
-    setMovingLabel(departmentShortNames[department] || department);
-  };
 
   useEffect(() => {
     setDateError(false);
   }, [date]);
 
-  useEffect(() => {
-    const updateLabelWidth = () => {
-      const label = document.querySelector('.toggle-label');
-      if (label) {
-        setLabelWidth(label.offsetWidth);
-      }
-    };
 
-    updateLabelWidth();
-
-    window.addEventListener('resize', updateLabelWidth);
-    return () => {
-      window.removeEventListener('resize', updateLabelWidth);
-    };
-  });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,19 +34,7 @@ const AdvisorAttendance = ({students}) => {
     return () => clearTimeout(timer);
   });
 
-  useEffect(() => {
-    const tableContainer = document.querySelector('.attendance-table-container');
 
-    if (tableContainer) {
-      tableContainer.addEventListener('scroll', handleTableScroll);
-    }
-
-    return () => {
-      if (tableContainer) {
-        tableContainer.removeEventListener('scroll', handleTableScroll);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     const defaultPresentData = {};
@@ -73,29 +44,6 @@ const AdvisorAttendance = ({students}) => {
     setAllStudentsAttendance(defaultPresentData);
   }, [students]);
 
-
-  function handleTableScroll(event) {
-    const tableContainer = event.currentTarget;
-    const distanceScrolled = tableContainer.scrollTop;
-    const tableHeader = tableContainer.querySelector('th');
-
-    if (distanceScrolled >= 40) {
-      const blurIntensity = Math.min(4, (distanceScrolled - 40) / 10);
-      const transparency = Math.min(0.8, (distanceScrolled - 40) / 400);
-
-      tableHeader.style.backdropFilter = `blur(${blurIntensity}px)`;
-      tableHeader.style.backgroundColor = `rgba(41, 50, 65, ${transparency})`;
-
-      tableContainer.style.paddingLeft = '5px';
-      tableContainer.style.paddingRight = '5px';
-    } else {
-      tableHeader.style.backdropFilter = 'blur(0)';
-      tableHeader.style.backgroundColor = 'rgba(41, 50, 65, 0.8)';
-
-      tableContainer.style.paddingLeft = '0';
-      tableContainer.style.paddingRight = '0';
-    }
-  }
 
   const sortStudentsByName = (students) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
@@ -112,20 +60,7 @@ const AdvisorAttendance = ({students}) => {
   };
 
 
-  const groupStudentsByYear = (students) => {
-    const groupedStudents = {
-      "First year": [],
-      "Second year": [],
-      "Third year": [],
-      "Final year": [],
-    };
 
-    students.forEach((student) => {
-      groupedStudents[student.class].push(student);
-    });
-
-    return groupedStudents;
-  };
 
 
   const handleSearch = () => {
@@ -163,12 +98,12 @@ const AdvisorAttendance = ({students}) => {
 
   const filteredStudents = students.filter(
     (student) =>
-      (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        String(student.registerNumber)
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()))
+    (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      String(student.registerNumber)
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()))
   );
 
   const handleUpdateAttendance = async () => {
@@ -181,7 +116,7 @@ const AdvisorAttendance = ({students}) => {
     setLoading(true);
 
     try {
-      
+
 
       // Update attendance for each student one by one
       for (const student of students) {
@@ -216,20 +151,20 @@ const AdvisorAttendance = ({students}) => {
   };
 
   const renderTableHeader = () => {
-    
-      return (
-        <thead>
-          <tr>
-            <th>Sl.no</th>
-            <th>Register No</th>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Year</th>
-            <th>Attendance</th>
-          </tr>
-        </thead>
-      );
-    
+
+    return (
+      <thead>
+        <tr>
+          <th className='serial-num-header'>Sl.no</th>
+          <th>Register No</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Year</th>
+          <th>Attendance</th>
+        </tr>
+      </thead>
+    );
+
   };
 
   const departmentShortNames = {
@@ -252,50 +187,50 @@ const AdvisorAttendance = ({students}) => {
         <td>{student.registerNumber}</td>
         <td>{student.name}</td>
         <td>{departmentShortNames[student.department] || student.department}</td>
-        <td>{student.class}</td>
-        
-          <td>
-            <input
-              type="checkbox"
-              checked={allStudentsAttendance[student.email] || false}
-              onChange={(e) => {
-                const { checked } = e.target;
-                setAllStudentsAttendance((prevAttendance) => ({
-                  ...prevAttendance,
-                  [student.email]: checked,
-                }));
-              }}
-            />
-          </td>
-        
+        <td>{student.year}</td>
+
+        <td>
+          <input
+            type="checkbox"
+            checked={allStudentsAttendance[student.email] || false}
+            onChange={(e) => {
+              const { checked } = e.target;
+              setAllStudentsAttendance((prevAttendance) => ({
+                ...prevAttendance,
+                [student.email]: checked,
+              }));
+            }}
+          />
+        </td>
+
       </tr>
     ));
   };
 
   return (
     <div>
-      <h1 className='department-wise-chart-heading'>Attendance for {students[0].department}</h1>
+      <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
       <div className='attendance-content-container'>
         <div className="students-container">
           <div className="bars">
-              <div>
-                <div className="update-all-container">
-                  <div className="date-container">
-                    <input
-                      className={`date-box ${dateError ? 'error' : ''}`}
-                      type="date"
-                      value={date}
-                      onChange={(e) => {
-                        setDate(e.target.value);
-                        setIsDateChosen(true);
-                        setDateError(false);
-                      }}
-                      required
-                    />
-                  </div>
+            <div>
+              <div className="update-all-container">
+                <div className="date-container">
+                  <input
+                    className={`date-box ${dateError ? 'error' : ''}`}
+                    type="date"
+                    value={date}
+                    onChange={(e) => {
+                      setDate(e.target.value);
+                      setIsDateChosen(true);
+                      setDateError(false);
+                    }}
+                    required
+                  />
                 </div>
               </div>
-            
+            </div>
+
 
             <div className="attendance-search-bar-container">
               <div className='search-bar'>
@@ -315,16 +250,16 @@ const AdvisorAttendance = ({students}) => {
                 </button>
               </div>
             </div>
-              <div>
-                <button
-                  className="update-all-button"
-                  onClick={handleUpdateAttendance}
-                >
-                  {loading ? 'Loading...' : 'Update'}
-                </button>
-                {dateError && <p className='success-message'>please select date!</p>}
-              </div>
-            
+            <div>
+              <button
+                className="update-all-button"
+                onClick={handleUpdateAttendance}
+              >
+                {loading ? 'Loading...' : 'Update'}
+              </button>
+              {dateError && <p className='success-message'>please select date!</p>}
+            </div>
+
           </div>
           {filteredStudents.length > 0 ? (
             <div className="attendance-table-container" style={{ height: `${Math.min(500, Math.max(150, filteredStudents.length * 50))}px`, overflow: 'auto' }}>

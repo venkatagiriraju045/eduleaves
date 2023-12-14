@@ -201,7 +201,7 @@ body {
 }
 
 .navigation1 ul li {
-    margin-bottom: 4vh;
+    margin-bottom: 2vh;
 }
 
 .navigation1 ul li a {
@@ -304,7 +304,7 @@ body {
 
 .profile-chart-label {
     color: #1f1313;
-    margin-top: 2vw;
+    margin-top: 1.5vw;
     font-size: calc(1rem + 0.4vw);
 
 }
@@ -565,7 +565,7 @@ body {
     position: fixed;
     left: 0;
     bottom: 0;
-    font-size: calc(0.7rem + 0.3vw);
+    font-size: calc(0.6rem + 0.3vw);
 }
 
 .nav-button-menu {

@@ -49,7 +49,7 @@ const calculateOverallAttendance = (students) => {
         absentees,
     };
 };
-const AdvisorClassWise = ({ students }) => {
+const MentorClassWise = ({ students }) => {
     const classStudents = students;
     const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
     const { presentPercentage, absentPercentage, presentCount, totalCount, absentees } = calculateOverallAttendance(
@@ -108,7 +108,7 @@ const AdvisorClassWise = ({ students }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -180,7 +180,7 @@ const AdvisorClassWise = ({ students }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -284,7 +284,7 @@ const AdvisorClassWise = ({ students }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -417,7 +417,7 @@ const AdvisorClassWise = ({ students }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -532,7 +532,7 @@ const AdvisorClassWise = ({ students }) => {
         <div>
             <div className='department-header-container'>
                 <div className='class-wise-header'>
-                    <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
+                    <h1 className='department-wise-chart-heading'>Mentor Dashboard</h1>
                 </div>
 
                 <a href="#class-wise-page"><button href="#" className="today-button" onClick={handleTodayClick}>Attendance</button></a>
@@ -627,4 +627,4 @@ const AdvisorClassWise = ({ students }) => {
         </div>
     );
 };
-export default AdvisorClassWise;
+export default MentorClassWise;

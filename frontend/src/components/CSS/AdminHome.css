@@ -218,6 +218,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 20vw;
+    margin-left: 10px;
 }
 
 .search-bar {

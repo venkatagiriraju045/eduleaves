@@ -9,8 +9,8 @@ const calculateAttendancePercentage = (presentCount, absentCount) => {
     const percentage = ((presentCount / totalDays) * 100).toFixed(2);
     return { percentage, count: presentCount, absentees: [] };
 };
-const calculateOverallAttendance = (students, selectedDepartment, selectedYear) => {
-    const studentList = students.filter((student) => student.role === 'student' && student.department === selectedDepartment && student.class === selectedYear);
+const calculateOverallAttendance = (classStudents) => {
+    const studentList = classStudents;
     if (studentList.length === 0) {
         return {
             presentPercentage: 0,
@@ -49,14 +49,11 @@ const calculateOverallAttendance = (students, selectedDepartment, selectedYear) 
         absentees,
     };
 };
-const DepartmentClassWise = ({ students, department, year }) => {
-    const classStudents = students.filter((student) => student.class === year && student.department === department);
+const DepartmentClassWise = ({ students, year }) => {
+    const classStudents = students.filter((student) => student.role === 'student' && student.year === year);
     const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
-    const selectedDepartment = department;
-    const selectedYear = year;
     const { presentPercentage, absentPercentage, presentCount, totalCount, absentees } = calculateOverallAttendance(
-        students,
-        selectedDepartment, selectedYear
+        classStudents
     );
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement);
     useEffect(() => {
@@ -65,7 +62,8 @@ const DepartmentClassWise = ({ students, department, year }) => {
         createClassTable();
         createGenderLineChart();
         createHostelerChart();
-    }, [students, department, year]);
+
+    }, [classStudents]);
     function calculateStudentTestAverage(student) {
         const maxScore = 100;
         const subjectScores = student.subjects.map((subject) => {
@@ -110,13 +108,12 @@ const DepartmentClassWise = ({ students, department, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 400;
-        const chartHeight = 230;
+        const chartWidth = 370;
+        const chartHeight = 210;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
         const testScoreColor = 'rgb(14, 129, 116)';
         const attendanceColor = 'rgb(185, 242, 161)';
-        const classStudents = students.filter((student) => student.class === year && student.department === department);
         const tableData = classStudents.map((student) => {
             const studentName = student.name; const studentAverage = calculateStudentTestAverage(student);
             return { studentName, studentAverage };
@@ -182,11 +179,10 @@ const DepartmentClassWise = ({ students, department, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 400;
-        const chartHeight = 230;
+        const chartWidth = 370;
+        const chartHeight = 210;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
-        const classStudents = students.filter((student) => student.class === year && student.department === department);
         const tableData = classStudents.map((student) => {
             const studentName = student.name;
             const studentAverage = calculateStudentAverage(student);
@@ -269,7 +265,7 @@ const DepartmentClassWise = ({ students, department, year }) => {
         });
     };
     const calculateAverageByGender = (iatIndex, gender) => {
-        const filteredStudents = students.filter((student) => student.gender === gender && student.department === department && student.class === year);
+        const filteredStudents = classStudents.filter((student) => student.gender === gender);
         const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
         const totalScore = studentsWithScores.reduce((total, student) => {
             const iatScore = parseInt(student.subjects.find((subject) => subject.scores[`iat_${iatIndex}`])?.scores[`iat_${iatIndex}`]);
@@ -286,8 +282,8 @@ const DepartmentClassWise = ({ students, department, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 400;
-        const chartHeight = 230;
+        const chartWidth = 370;
+        const chartHeight = 210;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
         const maleAverages = [1, 2, 3].map((iatIndex) => calculateAverageByGender(iatIndex, 'male'));
@@ -403,7 +399,7 @@ const DepartmentClassWise = ({ students, department, year }) => {
         return overall_score;
     }
     const calculateAverageByType = (iatIndex, type) => {
-        const filteredStudents = students.filter((student) => student.type === type && student.class === year && student.department === department);
+        const filteredStudents = classStudents.filter((student) => student.type === type);
         const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
         const totalScore = studentsWithScores.reduce((total, student) => {
             const iatScore = parseInt(student.subjects.find((subject) => subject.scores[`iat_${iatIndex}`])?.scores[`iat_${iatIndex}`]);
@@ -419,8 +415,8 @@ const DepartmentClassWise = ({ students, department, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 400;
-        const chartHeight = 230;
+        const chartWidth = 370;
+        const chartHeight = 210;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
         const hostelAverages = [1, 2, 3].map((iatIndex) => calculateAverageByType(iatIndex, 'hostel'));
@@ -485,7 +481,6 @@ const DepartmentClassWise = ({ students, department, year }) => {
         });
     };
     const createClassTable = () => {
-        const classStudents = students.filter((student) => student.class === year && student.department === department);
         const tableElement = document.getElementById('class-students-table');
         if (tableElement) {
             tableElement.innerHTML = '';
@@ -534,9 +529,9 @@ const DepartmentClassWise = ({ students, department, year }) => {
         <div>
             <div className='department-header-container'>
                 <div className='class-wise-header'>
-                    <h2 className='department-wise-chart-heading'>{selectedYear} Analytics</h2>
+                    <h1 className='department-wise-chart-heading'>{classStudents[0].year} {classStudents[0].department} Dashboard</h1>
                 </div>
-                
+
                 <a href="#class-wise-page"><button href="#" className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             </div>
             {showAttendanceOverlay && (
@@ -567,6 +562,7 @@ const DepartmentClassWise = ({ students, department, year }) => {
                                                 <th>Sl.No</th>
                                                 <th>Register number</th>
                                                 <th>Name</th>
+                                                <th>Year</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -575,6 +571,7 @@ const DepartmentClassWise = ({ students, department, year }) => {
                                                     <td>{index + 1}</td>
                                                     <td>{student.registerNumber}</td>
                                                     <td>{student.name}</td>
+                                                    <td>{student.year}</td>
                                                 </tr>
                                             ))}
                                         </tbody>

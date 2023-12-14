@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
             },
         },
     ],
-    class: { type: String },
+    year: { type: String },
     department: { type: String },
     total_attendance: { type: Number },
     total_days: { type: Number },
@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema({
     accomplishments: { type: String },
     institute_name: { type: String },
     role: { type: String },
+    mentor_name: {type: String}
 
 }, { versionKey: false });
 
@@ -138,8 +139,29 @@ app.get('/api/advisor_students_data', async (req, res) => {
             role: role, // Filter by role
             department: department, // Filter by department
             institute_name: instituteName, 
-            class : year,
+            year : year,
             section: section,// Filter by institute_name
+        };
+        // Use the filter to find students
+        const students = await User.find(filter);
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+app.get('/api/mentor_students_data', async (req, res) => {
+    try {
+        // Extract the filtering parameters from the query string
+        const { role, department, instituteName, mentor_name} = req.query;
+
+        // Create a filter object to match the specified fields
+        const filter = {
+            role: role, // Filter by role
+            department: department, // Filter by department
+            institute_name: instituteName, 
+            mentor_name:mentor_name// Filter by institute_name
         };
         // Use the filter to find students
         const students = await User.find(filter);
@@ -257,7 +279,7 @@ app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 
     try {
-        const students = await User.find({ department: selectedDepartment, class: selectedYear, institute_name: instituteName });
+        const students = await User.find({ department: selectedDepartment, year: selectedYear, institute_name: instituteName });
 
         // Update attendance for each student one by one
         for (const student of students) {

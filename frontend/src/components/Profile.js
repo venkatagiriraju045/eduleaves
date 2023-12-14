@@ -46,6 +46,9 @@ const Profile = () => {
     
             const canvas = document.getElementById("scoreChart");
             const ctx = canvas.getContext("2d");
+            if (typeof canvas.chart !== 'undefined') {
+                canvas.chart.destroy();
+            }   
     
             const subjectScores = student.subjects.map((subject) => {
                 const { scores } = subject;
@@ -87,7 +90,7 @@ const Profile = () => {
                 subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
                 subjectAverages.length;
     
-            new Chart(ctx, {
+            canvas.chart = new Chart(ctx, {
                 type: "doughnut",
                 data: {
                     labels: ["Scored", "Missed"],
@@ -150,14 +153,16 @@ const Profile = () => {
             const ctx = canvas.getContext('2d');
     
             // Set the desired fixed dimensions for the chart
-    
+            if (typeof canvas.chart !== 'undefined') {
+                canvas.chart.destroy();
+            }
     
             const totalAttendance = student.total_attendance;
             const totalDays = student.total_days;
             const absentDays = totalDays - totalAttendance;
             const presentPercentage = ((totalAttendance / totalDays) * 100).toFixed(2);
     
-            new Chart(ctx, {
+            canvas.chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Present', 'Absent'],
@@ -538,6 +543,8 @@ const Profile = () => {
         subjectAverages.length;
 
     const imageUrl = `./uploads/${student.email}.jpg`;
+    const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
+
 
     function getInstituteFullName(instituteName) {
         const instituteNameMap = {
@@ -548,7 +555,16 @@ const Profile = () => {
         return instituteNameMap[instituteName] || instituteName;
     }
 
-
+    const departmentShortNames = {
+        "Information Technology": "IT",
+        "Computer Science and Engineering": "CSE",
+        "Electrical and Electronics Engineering": "EEE",
+        "Artificial Intelligence and Data Science": "AI&DS",
+        "Mechanical Engineering": "MECH",
+        "Computer Science and Business Systems": "CSBS",
+        "Electrical and Communication Engineering": "ECE",
+        "Civil Engineering": "CIVIL",
+    };
     return (
 
         <div className="page-container">
@@ -558,15 +574,18 @@ const Profile = () => {
                     <ul>
                         <li>
                             <div className="student-details-card">
+                            <div className="image-container">
+                                    <img src={logoImageUrl} alt="brand Logo" />
+                                </div>
                                 <div className="image-container">
                                     <img src={imageUrl} alt="Profile Picture" />
                                 </div>
                                 <p className="student-details">
                                     {student.name}
                                     <br />
-                                    {student.class}
+                                    {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
                                     <br />
-                                    {student.department}
+                                    Mentor ID : {student.mentor_name}
                                     <br />
                                 </p>
                             </div>
