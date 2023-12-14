@@ -51,7 +51,7 @@ const DepartmentMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/students_data', {
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department

@@ -12,7 +12,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/api/admin-login', {
+      const response = await axios.post('https://eduleaves-api.vercel.app/api/admin-login', {
         email,
         password,
       });

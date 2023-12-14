@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: ["http://localhost:3001"],
+    origin: ["https://the-students-gate.vercel.app/"],
     methods: ["POST", "GET"],
     credentials: true
 }));
