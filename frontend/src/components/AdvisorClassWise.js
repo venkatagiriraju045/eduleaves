@@ -49,7 +49,7 @@ const calculateOverallAttendance = (students) => {
         absentees,
     };
 };
-const AdvisorClassWise = ({ students, year, section, department}) => {
+const AdvisorClassWise = ({ students, year, section, department }) => {
     const classStudents = students;
     const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
     const { presentPercentage, absentPercentage, presentCount, totalCount, absentees } = calculateOverallAttendance(
@@ -532,9 +532,7 @@ const AdvisorClassWise = ({ students, year, section, department}) => {
         <div>
             <div className='department-header-container'>
                 <div className='class-wise-header'>
-                    {students &&
-                        <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Dashboard</h1>
-                    }
+                    <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Dashboard</h1>
                 </div>
 
                 <a href="#class-wise-page"><button href="#" className="today-button" onClick={handleTodayClick}>Attendance</button></a>
