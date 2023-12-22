@@ -36,12 +36,12 @@ const Home = () => {
                 document.querySelector('.loading-overlay').style.opacity = '0';
                 document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
-            }, 3000);
+            }, 2000);
 
             // After 6 seconds, hide the overlay
             const hideOverlayTimer = setTimeout(() => {
                 setLoading(false);
-            }, 6000);
+            }, 3000);
 
             return () => {
                 clearTimeout(hideOverlayTimer);
