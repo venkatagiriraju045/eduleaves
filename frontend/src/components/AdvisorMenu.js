@@ -246,7 +246,7 @@ const AdvisorMenu = () => {
             ) : (
               <div className='home-contents'>
                 <div>
-                  <AdvisorDashboard students={students}/>
+                  <AdvisorDashboard students={students} year={year} section={section} department={departmentName}/>
                 </div>
               </div>)}
         </main>
