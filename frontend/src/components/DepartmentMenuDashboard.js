@@ -200,7 +200,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
     students
   );
   const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
-
+  const departmentName = department;
 
   const createChart = () => {
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
@@ -807,7 +807,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
-            <h1 className='department-wise-chart-heading'>{department} Department</h1>
+            <h1 className='department-wise-chart-heading'>{departmentName} Department</h1>
           <div className='menu-buttons'>
             <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>
