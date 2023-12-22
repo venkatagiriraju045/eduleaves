@@ -91,7 +91,6 @@ const DepartmentMenu = () => {
   const handleMessageButtonClick = () => {
     setShowMessageForm(true);
     setShowUpdateAccom(false);
-    setIsLoading(true);
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
       element.style.display = 'none';
     });

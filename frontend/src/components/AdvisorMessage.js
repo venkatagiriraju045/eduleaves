@@ -7,7 +7,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AdvisorMessage = ({ students }) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [appMessage, setAppMessage] = useState('');
     const [message, setMessage] = useState('');
     const [messagePreview, setMessagePreview] = useState('');
