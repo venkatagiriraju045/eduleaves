@@ -1,0 +1,8 @@
+{
+  "appId": "com.thestudentsgate.app",
+  "appName": "The Students Gate",
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https"
+  }
+}

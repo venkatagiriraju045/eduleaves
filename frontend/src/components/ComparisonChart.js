@@ -26,58 +26,58 @@ const ComparisonChart = ({ testScores, students }) => {
     const createChartIfYourScoresAvailable = (iatType) => {
         console.log("Checking availability for iatType:", iatType);
 
-        if(iatType === 'iat_1'){
-        if (iat1Scores.some((score) => score !== 0)) {
-            
-            console.log("Creating chart for iatType:", iatType);
+        if (iatType === 'iat_1') {
+            if (iat1Scores.some((score) => score !== 0)) {
 
-            console.log("Creating chart for avail:"+ iat1Available);
-
-            createChart('iat_1');
-            console.log("Scores on iat1:", iat1Scores);
-
-        } else {
-            setIatAvailability('iat_1', false);
-            console.log("Creating chart for avail:"+ iat1Available);
-
-
-        }
-    }
-
-        // Similar checks for iat_2 and iat_3
-        if(iatType === 'iat_2'){
-            if (iat2Scores.some((score) => score !== 0)) {
-                
                 console.log("Creating chart for iatType:", iatType);
-    
-                console.log("Creating chart for avail:"+ iat2Available);
-    
-                createChart('iat_2');
-                console.log("Scores on iat1:", iat2Scores);
-    
+
+                console.log("Creating chart for avail:" + iat1Available);
+
+                createChart('iat_1');
+                console.log("Scores on iat1:", iat1Scores);
+
             } else {
-                setIatAvailability('iat_2', false);
-                console.log("Creating chart for avail:"+ iat2Available);
-    
-    
+                setIatAvailability('iat_1', false);
+                console.log("Creating chart for avail:" + iat1Available);
+
+
             }
         }
 
-        if(iatType === 'iat_3'){
-            if (iat3Scores.some((score) => score !== 0)) {
-                
+        // Similar checks for iat_2 and iat_3
+        if (iatType === 'iat_2') {
+            if (iat2Scores.some((score) => score !== 0)) {
+
                 console.log("Creating chart for iatType:", iatType);
-    
-                console.log("Creating chart for avail:"+ iat3Available);
-    
+
+                console.log("Creating chart for avail:" + iat2Available);
+
+                createChart('iat_2');
+                console.log("Scores on iat1:", iat2Scores);
+
+            } else {
+                setIatAvailability('iat_2', false);
+                console.log("Creating chart for avail:" + iat2Available);
+
+
+            }
+        }
+
+        if (iatType === 'iat_3') {
+            if (iat3Scores.some((score) => score !== 0)) {
+
+                console.log("Creating chart for iatType:", iatType);
+
+                console.log("Creating chart for avail:" + iat3Available);
+
                 createChart('iat_3');
                 console.log("Scores on iat1:", iat3Scores);
-    
+
             } else {
                 setIatAvailability('iat_3', false);
-                console.log("Creating chart for avail:"+ iat3Available);
-    
-    
+                console.log("Creating chart for avail:" + iat3Available);
+
+
             }
         }
 

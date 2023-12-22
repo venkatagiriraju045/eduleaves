@@ -8,6 +8,8 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -18,7 +20,7 @@ const AdminLogin = () => {
       });
       if (response.data.success) {
         if (email !== 'a@k') {
-            navigate('/DepartmentMenu', { state: { email } });
+          navigate('/DepartmentMenu', { state: { email } });
         } else {
           navigate('/admin-home', { state: { email } });
         }
@@ -31,13 +33,21 @@ const AdminLogin = () => {
     }
     setLoading(false);
   };
-  
+
   const handleGoBack = () => {
-    navigate('/'); 
+    navigate('/');
   };
 
   return (
     <div>
+      <div>
+        {loading && <div className={overlayClass}>
+          <div className="spinner">
+            <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+          </div>
+          <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+        </div>}
+      </div>
       <div className='login-page-container'>
         <div className="login-container">
           <h2>Admin Login</h2>

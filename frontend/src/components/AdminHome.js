@@ -585,6 +585,8 @@ const AdminHome = () => {
             </div>
         );
     }
+    const overlayClass = `loading-overlay${isLoading ? ' visible' : ''}`;
+
     return (
         <div>
             <div className="main-admin-page-container">
@@ -611,12 +613,14 @@ const AdminHome = () => {
                     </header>
                 </div>
                 <main className="principal-content-container" >
-                    {isLoading && (
-                        <div className="loading-overlay">
-                            <div className="loading-spinner"></div>
-                            <p className="loading-text">   Loading please wait...</p>
-                        </div>
-                    )}
+                {isLoading && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+
+                    
+                </div>}
                     {showAttendanceOverlay && (
                         <div className="overlay">
                             <div className="overlay-content">

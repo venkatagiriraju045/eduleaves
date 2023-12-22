@@ -25,6 +25,7 @@ const AdvisorMenu = () => {
   const [students, setStudents] = useState([]);
   const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
+  const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
 
 
   useEffect(() => {
@@ -234,12 +235,14 @@ const AdvisorMenu = () => {
         <main
           className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
             }`}>
-          {isLoading && (
-            <div className="loading-overlay">
-              <div className="loading-spinner"></div>
-              <p className="loading-text">   Loading please wait...</p>
+          <div>
+                {(loading || isLoading) && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
             </div>
-          )}
           {showUpdateAccom ? (
             <UpdateAccom students={students} />
           ) :

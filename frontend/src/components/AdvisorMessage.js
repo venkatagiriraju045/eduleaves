@@ -14,6 +14,8 @@ const AdvisorMessage = ({ students }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchedStudent, setSearchedStudent] = useState(null);
     const [studentNotFound, setStudentNotFound] = useState(false);
+    const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+
     const [welcomeMessage, setWelcomeMessage] = useState(true);
     const handleAccomplishmentsChange = (e) => {
         setMessage(e.target.value);
@@ -96,6 +98,14 @@ const AdvisorMessage = ({ students }) => {
 
     return (
         <div>
+            <div>
+                {loading && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
+            </div>
             <div className='class-wise-header'>
                 <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
             </div>

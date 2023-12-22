@@ -301,6 +301,41 @@ html {
         font-size: calc(1rem + 0.5vw);
     }
 
+    .spinner {
+        position: relative;
+        width: 24vw;
+        /* Adjust the size of the spinner */
+        height: 24vw;
+        /* Adjust the size of the spinner */
+        animation: spin 1s linear infinite;
+    }
+
+    #loading-brand-title {
+        width: 40vw;
+        height: 15vw;
+        margin-top: 2vh;
+    }
+
+    #loading-brand-logo {
+        position: absolute;
+        width: 24vw;
+        height: 24vw;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+
 }
 
 @media (max-width:700px) {
@@ -315,5 +350,95 @@ html {
         width: 100%;
         min-height: 60vh;
 
+    }
+
+    .spinner {
+        position: relative;
+        width: 24vw;
+        /* Adjust the size of the spinner */
+        height: 24vw;
+        /* Adjust the size of the spinner */
+        animation: spin 1s linear infinite;
+    }
+
+    #loading-brand-title {
+        width: 40vw;
+        height: 15vw;
+        margin-top: 2vh;
+    }
+
+    #loading-brand-logo {
+        position: absolute;
+        width: 24vw;
+        height: 24vw;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+}
+
+/* LoadingOverlay.css */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-overlay.visible {
+    opacity: 1;
+    /* Opacity when visible */
+}
+
+.spinner {
+    position: relative;
+    width: 12vw;
+    /* Adjust the size of the spinner */
+    height: 12vw;
+    /* Adjust the size of the spinner */
+    animation: spin 1s linear infinite;
+}
+
+#loading-brand-title {
+    width: 20vw;
+    height: 7vw;
+    margin-top: 2vh;
+}
+
+#loading-brand-logo {
+    position: absolute;
+    width: 12vw;
+    height: 12vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }

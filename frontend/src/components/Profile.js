@@ -16,6 +16,7 @@ const Profile = () => {
     const [showAttendance, setShowAttendance] = useState(false);
     const [showNavBar, setShowNavBar] = useState(true);
     const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
+    const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
 
 
     const loggedInEmail = localStorage.getItem('loggedInEmail');
@@ -492,11 +493,13 @@ const Profile = () => {
 
     if (loading) {
         return <div>
-            <div className="loading-overlay">
-                <div className="loading-spinner"></div>
-                <p className="loading-text">   Loading please wait...</p>
+        {loading && <div className={overlayClass}>
+            <div className="spinner">
+                <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
             </div>
-        </div>;
+            <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+        </div>}
+    </div>;
     }
 
     if (!student) {
@@ -638,12 +641,14 @@ const Profile = () => {
                 <main
                     className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
                         }`}>
-                    {isLoading && (
-                        <div className="loading-overlay">
-                            <div className="loading-spinner"></div>
-                            <p className="loading-text">   Loading...Please wait!</p>
-                        </div>
-                    )}
+                    <div>
+                {(isLoading || loading) && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
+            </div>
                     {showAttendance ? (
                         <div className='attendance-page-container'>
                             <button className="close-button" onClick={handleCloseAttendance}>

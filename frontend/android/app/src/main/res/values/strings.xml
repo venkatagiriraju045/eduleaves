@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">the students gate</string>
+    <string name="title_activity_main">the students gate</string>
+    <string name="package_name">com.studentsgate.app</string>
+    <string name="custom_url_scheme">com.studentsgate.app</string>
+</resources>

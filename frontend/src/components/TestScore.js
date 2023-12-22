@@ -41,6 +41,8 @@ const TestScore = ({ email, department, year, instituteName }) => {
     const [iat1Available, setIat1Available] = useState(true);
     const [iat2Available, setIat2Available] = useState(true);
     const [iat3Available, setIat3Available] = useState(true);
+    const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+
 
     useEffect(() => {
         const fetchStudentData = async () => {
@@ -106,7 +108,7 @@ const TestScore = ({ email, department, year, instituteName }) => {
             } else {
                 setIatAvailability('iat_3', false);
             }
-            
+
             const createChart = () => {
                 Chart.register(LinearScale, CategoryScale, Title, Tooltip, LineController, LineElement);
                 const canvas = document.getElementById('iat-performance-student-chart');
@@ -375,7 +377,7 @@ const TestScore = ({ email, department, year, instituteName }) => {
             case 'iat_3':
                 setIat3Available(value);
                 break;
-            default :
+            default:
                 break;
         }
     };
@@ -448,7 +450,14 @@ const TestScore = ({ email, department, year, instituteName }) => {
     };
 
     if (loading) {
-        return <p>Loading test scores...</p>;
+        return <div>
+            {loading && <div className={overlayClass}>
+                <div className="spinner">
+                    <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                </div>
+                <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+            </div>}
+        </div>;
     }
 
     if (isClosed) {

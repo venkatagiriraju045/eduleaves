@@ -32,13 +32,21 @@ useEffect(() => {
     setLoading(false);
     }
 }, [email]);
+const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 
 return (
     <div >
     <h2 className="test-score-heading">Accomplishments</h2>
     
     {loading ? (
-        <p>Loading...</p>
+                        <div className={overlayClass}>
+                        <div className="spinner">
+                            <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                        </div>
+                        <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+    
+                        
+                    </div>
     ) : accomplishments.length === 0 ? (
         <p className='accomplishment-error-message'>No accomplishments found.</p>
     ) : (

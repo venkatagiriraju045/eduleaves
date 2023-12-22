@@ -10,17 +10,13 @@ const Home = () => {
     const [loginError, setLoginError] = useState('');
     const [hod, setHod] = useState(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [mentorLogin, setMentorLogin] = useState(null); // Add mentor login state
     const [staff, setStaff] = useState(null);
     const [handleSubmitPressed, setHandleSubmitPressed] = useState(false);
-
-
-
     const serverURL = `https://eduleaves-api.vercel.app`;
-
     const navigate = useNavigate();
-
+    const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
     const handleLoginEmailChange = (e) => {
         setLoginEmail(e.target.value);
     };
@@ -29,8 +25,31 @@ const Home = () => {
         setLoginPassword(e.target.value);
     };
 
+    useEffect(() => {
+        // Set opacity to 0 initially
+        if(loading){
+        document.querySelector('.loading-overlay').style.opacity = '1';
 
+        // After 3 seconds, update opacity to 1 without transition
+        
+        const initialOpacityTimer = setTimeout(() => {
+            document.querySelector('.loading-overlay').style.opacity = '0';
+            document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
+        }, 3000);
+
+        // After 6 seconds, hide the overlay
+        const hideOverlayTimer = setTimeout(() => {
+            setLoading(false);
+        }, 6000);
+
+        return () => {
+            clearTimeout(hideOverlayTimer);
+
+            clearTimeout(initialOpacityTimer);
+        };
+    }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -49,12 +68,14 @@ const Home = () => {
                 setLoginError('');
             }, 5000);
         }
+        finally {
+            setLoading(false); // Set loading to false when API call is completed
+        }
     };
 
 
     // Define a function to fetch admin data
     useEffect(() => {
-
         const fetchStaffData = async () => {
             try {
                 const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loginEmail}`);
@@ -62,13 +83,14 @@ const Home = () => {
                 setStaff(staffData);
                 setLoading(false);
             } catch (error) {
-                if(handleSubmitPressed){
-                console.error('Error fetching admin data:', error);
-                setLoading(false);}
+                if (handleSubmitPressed) {
+                    console.error('Error fetching admin data:', error);
+                    setLoading(false);
+                }
             }
         }
-        if(loginEmail){
-        fetchStaffData();
+        if (loginEmail) {
+            fetchStaffData();
         }
     }, [loginEmail, handleSubmitPressed]);
     useEffect(() => {
@@ -113,11 +135,11 @@ const Home = () => {
                         if (staff.role === 'hod') {
                             navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
                         } else if (staff.role === 'advisor') {
-                            
 
-                            navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section:staff.section} });
+
+                            navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section: staff.section } });
                         } else if (staff.role === 'mentor') {
-                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name:staff.name} });
+                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
                         }
                     } else {
                         navigate('/admin-home', { state: { email: loginEmail, instituteName: staff.institute_name } });
@@ -132,9 +154,9 @@ const Home = () => {
 
         } catch (error) {
             setLoginError('Invalid email or password');
-                setTimeout(() => {
-                    setLoginError('');
-                }, 5000);
+            setTimeout(() => {
+                setLoginError('');
+            }, 5000);
         } finally {
             setLoading(false);
         }
@@ -142,6 +164,15 @@ const Home = () => {
 
     return (
         <div>
+            <div>
+                {loading && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
+            </div>
+
             <div className="home-container">
                 <div className="home-page-left-container">
                     <div className="home-page-main-logo-container">
@@ -209,20 +240,14 @@ const Home = () => {
                                     {loginAs === 'mentor' && <span onClick={() => setLoginAs('admin')}> Advisor </span>}
                                     {loginAs !== 'mentor' && <span onClick={() => setLoginAs('mentor')}> Mentor </span>}
                                 </p>
-
-
-
                             </div>
-
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
-
                     </div>
                     <footer id="home-page-footer">
                         &copy; The Students Gate. All rights reserved.
                         Venkatagiriraju Udayakumar, B.E.CSE.,
                     </footer>
-
                 </div >
             </div >
         </div >

@@ -17,6 +17,7 @@ const AdvisorAttendance = ({ students }) => {
   const [labelWidth, setLabelWidth] = useState(0);
   const [dateError, setDateError] = useState(false);
   const [isDateChosen, setIsDateChosen] = useState(false);
+  const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 
 
 
@@ -209,7 +210,15 @@ const AdvisorAttendance = ({ students }) => {
 
   return (
     <div>
-      <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
+      <div>
+        {loading && <div className={overlayClass}>
+          <div className="spinner">
+            <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+          </div>
+          <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+        </div>}
+      </div>
+      <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Attendance</h1>
       <div className='attendance-content-container'>
         <div className="students-container">
           <div className="bars">

@@ -12,6 +12,8 @@ const [message, setMessage] = useState('');
 const [messagePreview, setMessagePreview] = useState('');
 const [searchQuery, setSearchQuery] = useState('');
 const [searchedStudent, setSearchedStudent] = useState(null);
+const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+
 
 useEffect(() => {
     const fetchStudentData = async () => {
@@ -95,6 +97,14 @@ const updateStudentAccomplishments = async () => {
 
 return (
     <div>
+        <div>
+                {loading && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
+            </div>
     <div className="attendance-content-container">
         <div className="search-bar-container">
         <div className='search-bar'>

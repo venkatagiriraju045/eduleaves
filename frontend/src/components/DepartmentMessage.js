@@ -15,6 +15,8 @@ const DepartmentMessage = ({ students }) => {
     const [searchedStudent, setSearchedStudent] = useState(null);
     const [studentNotFound, setStudentNotFound] = useState(false);
     const [welcomeMessage, setWelcomeMessage] = useState(true);
+    const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+
     const handleAccomplishmentsChange = (e) => {
         setMessage(e.target.value);
         handlePreviewUpdate(e);
@@ -96,6 +98,14 @@ const DepartmentMessage = ({ students }) => {
 
     return (
         <div>
+            <div>
+                {loading && <div className={overlayClass}>
+                    <div className="spinner">
+                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                    </div>
+                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                </div>}
+            </div>
             <div className="attendance-content-container">
                 <div className="search-bar-container">
                     <div className="search-bar">
