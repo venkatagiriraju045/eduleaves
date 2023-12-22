@@ -26,12 +26,16 @@ const AdvisorMenu = () => {
   const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
+  const [mobile, setMobile] = useState(false);
 
 
   useEffect(() => {
     // Detect device type and set the state
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     setDeviceType(isMobile ? 'mobile' : 'desktop');
+    if (deviceType === 'mobile') {
+      setMobile(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -150,11 +154,11 @@ const AdvisorMenu = () => {
           <ul>
             <li>
               <div className="student-details-card">
-              <div className="image-container">
-                                    <img src={logoImageUrl} alt="brand Logo" />
-                                </div>
+                <div className="image-container">
+                  <img src={logoImageUrl} alt="brand Logo" />
+                </div>
                 <p>
-                {institute}
+                  {institute}
                   <br />
                   LOGIN
                   <br />
@@ -194,6 +198,7 @@ const AdvisorMenu = () => {
       <div
         className={`profile-right-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
           }`}>
+        
         <header
           className="admin-header">
           <div className='nav-bar-hider'>
@@ -219,6 +224,7 @@ const AdvisorMenu = () => {
             </div>
           )}
         </header>
+        {!mobile && 
         <main
           className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
             }`}>
@@ -244,6 +250,7 @@ const AdvisorMenu = () => {
                 </div>
               </div>)}
         </main>
+        }
       </div>
     </div>
   );

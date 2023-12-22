@@ -27,6 +27,7 @@ const DepartmentMenu = () => {
   const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
+  const [mobile, setMobile] = useState(false);
 
 
 
@@ -48,6 +49,9 @@ const DepartmentMenu = () => {
     // Detect device type and set the state
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     setDeviceType(isMobile ? 'mobile' : 'desktop');
+    if (deviceType === 'mobile') {
+      setMobile(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -157,7 +161,6 @@ const DepartmentMenu = () => {
 
   return (
     <div className="dep-admin-page-container">
-
       {showNavBar &&
         <nav className="navigation1">
           <ul>
@@ -253,7 +256,9 @@ const DepartmentMenu = () => {
             ) : (
               <div className='home-contents'>
                 <div>
+                { !mobile &&
                   <DepartmentMenuDashboard students={students} />
+                }
                 </div>
               </div>)}
         </main>
