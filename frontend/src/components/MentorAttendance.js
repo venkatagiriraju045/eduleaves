@@ -41,7 +41,7 @@ const MentorAttendance = ({ students }) => {
             clearTimeout(initialOpacityTimer);
         };
     }
-    }, []);
+    }, [loading]);
 
 
     useEffect(() => {
