@@ -257,7 +257,7 @@ const DepartmentMenu = () => {
               <div className='home-contents'>
                 <div>
                 { !mobile &&
-                  <DepartmentMenuDashboard students={students} />
+                  <DepartmentMenuDashboard students={students} department={departmentName} />
                 }
                 </div>
               </div>)}
