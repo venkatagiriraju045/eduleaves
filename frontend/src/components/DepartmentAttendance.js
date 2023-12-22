@@ -44,7 +44,7 @@ const DepartmentAttendance = ({ students }) => {
             clearTimeout(initialOpacityTimer);
         };
     }
-    }, []);
+    }, [loading]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
