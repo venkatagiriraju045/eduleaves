@@ -101,9 +101,9 @@ const MentorMessage = ({ students }) => {
             <div>
                 {loading && <div className={overlayClass}>
                     <div className="spinner">
-                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                        <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
                     </div>
-                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                    <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
             <div className='class-wise-header'>

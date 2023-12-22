@@ -65,14 +65,7 @@ const AdvisorMenu = () => {
     setShowConfirmationPrompt(false);
     navigate('/');
   };
-  if (loading) {
-    return <div>
-      <div className="loading-overlay">
-        <div className="loading-spinner"></div>
-        <p className="loading-text">   Loading... Please wait!</p>
-      </div>
-    </div>;
-  }
+
   if (error) {
     return <p>Error fetching student data: {error.message}</p>;
   }
@@ -81,17 +74,14 @@ const AdvisorMenu = () => {
     setShowMessageForm(true);
     setShowUpdateAccom(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
-    messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
     document.querySelector('.profile-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-content-container').classList.remove('loading');
       messageElement.remove();
       setShowMessageForm(true);
       setShowAttendanceForm(false);
@@ -105,17 +95,14 @@ const AdvisorMenu = () => {
     setShowMessageForm(false);
     setShowUpdateAccom(false);
     setIsLoading(true);
-    document.querySelector('.profile-content-container').classList.add('loading');
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
     });
     const messageElement = document.createElement('div');
-    messageElement.classList.add('loading-message');
     messageElement.style.color = 'black';
     document.querySelector('.profile-right-content-container').appendChild(messageElement);
     setTimeout(() => {
       setIsLoading(false);
-      document.querySelector('.profile-right-content-container').classList.remove('loading');
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowMessageForm(false);
@@ -238,9 +225,9 @@ const AdvisorMenu = () => {
           <div>
                 {(loading || isLoading) && <div className={overlayClass}>
                     <div className="spinner">
-                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                        <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
                     </div>
-                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                    <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
           {showUpdateAccom ? (

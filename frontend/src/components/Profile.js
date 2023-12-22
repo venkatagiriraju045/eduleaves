@@ -270,8 +270,6 @@ const Profile = () => {
         setIsLoading(true);
 
         // Add loading class to content-container to blur the background
-        document.querySelector('.profile-content-container').classList.add('loading');
-
         // Hide the chart elements
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
             element.style.display = 'none';
@@ -279,14 +277,12 @@ const Profile = () => {
 
         // Create a new message element and append it to the content-container
         const messageElement = document.createElement('div');
-        messageElement.classList.add('loading-message');
         messageElement.style.color = 'white'; // Set the color to white
         document.querySelector('.profile-content-container').appendChild(messageElement);
 
         // After a short delay, remove the loading class and the message element to show the loading overlay
         setTimeout(() => {
             setIsLoading(false);
-            document.querySelector('.profile-content-container').classList.remove('loading');
             messageElement.remove();
             setShowTestScore(true);
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
@@ -306,7 +302,6 @@ const Profile = () => {
         setIsLoading(true);
 
         // Add loading class to content-container to blur the background
-        document.querySelector('.profile-content-container').classList.add('loading');
 
         // Hide the chart elements
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
@@ -315,14 +310,12 @@ const Profile = () => {
 
         // Create a new message element and append it to the content-container
         const messageElement = document.createElement('div');
-        messageElement.classList.add('loading-message');
         messageElement.style.color = 'white'; // Set the color to white
         document.querySelector('.profile-content-container').appendChild(messageElement);
 
         // After a short delay, remove the loading class and the message element to show the loading overlay
         setTimeout(() => {
             setIsLoading(false);
-            document.querySelector('.profile-content-container').classList.remove('loading');
             messageElement.remove();
             setShowTestScore(false);
             setShowAttendance(true);
@@ -488,19 +481,7 @@ const Profile = () => {
 
     const handleShowNav = () => {
         setShowNavBar((prevShowNavBar) => !prevShowNavBar);
-    };
-
-
-    if (loading) {
-        return <div>
-            {loading && <div className={overlayClass}>
-                <div className="spinner">
-                    <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
-                </div>
-                <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
-            </div>}
-        </div>;
-    }
+    };  
 
     if (!student) {
         return <p>No student data found.</p>;
@@ -644,9 +625,9 @@ const Profile = () => {
                     <div>
                         {(isLoading || loading) && <div className={overlayClass}>
                             <div className="spinner">
-                                <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                                <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
                             </div>
-                            <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                            <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                         </div>}
                     </div>
                     {showAttendance ? (
