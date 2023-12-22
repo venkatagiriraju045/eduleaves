@@ -44,13 +44,13 @@ const Profile = () => {
         const createChart = (student) => {
             // Register the required scales and controllers
             Chart.register(LinearScale, CategoryScale, BarController, BarElement, DoughnutController, ArcElement);
-    
+
             const canvas = document.getElementById("scoreChart");
             const ctx = canvas.getContext("2d");
             if (typeof canvas.chart !== 'undefined') {
                 canvas.chart.destroy();
-            }   
-    
+            }
+
             const subjectScores = student.subjects.map((subject) => {
                 const { scores } = subject;
                 if (!scores || typeof scores !== "object") {
@@ -70,9 +70,9 @@ const Profile = () => {
                     scores: subjectScore,
                 };
             });
-    
+
             const maxScore = 100;
-    
+
             const subjectAverages = subjectScores.map((subject) => {
                 if (subject.scores === "NaN") {
                     return {
@@ -86,11 +86,11 @@ const Profile = () => {
                     average_score: average,
                 };
             });
-    
+
             const overallAverage =
                 subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
                 subjectAverages.length;
-    
+
             canvas.chart = new Chart(ctx, {
                 type: "doughnut",
                 data: {
@@ -135,7 +135,7 @@ const Profile = () => {
                             const width = chart.width;
                             const height = chart.height;
                             const ctx = chart.ctx;
-    
+
                             ctx.save();
                             ctx.fillStyle = "rgb(20,20,20)";
                             ctx.textAlign = "center";
@@ -147,22 +147,22 @@ const Profile = () => {
                     },
                 ],
             });
-    
+
         };
         const createAttendanceChart = () => {
             const canvas = document.getElementById('attendanceChart');
             const ctx = canvas.getContext('2d');
-    
+
             // Set the desired fixed dimensions for the chart
             if (typeof canvas.chart !== 'undefined') {
                 canvas.chart.destroy();
             }
-    
+
             const totalAttendance = student.total_attendance;
             const totalDays = student.total_days;
             const absentDays = totalDays - totalAttendance;
             const presentPercentage = ((totalAttendance / totalDays) * 100).toFixed(2);
-    
+
             canvas.chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -207,7 +207,7 @@ const Profile = () => {
                             const width = chart.width;
                             const height = chart.height;
                             const ctx = chart.ctx;
-    
+
                             ctx.save();
                             ctx.fillStyle = 'rgb(20,20,20)';
                             ctx.textAlign = 'center';
@@ -220,7 +220,7 @@ const Profile = () => {
                 ],
             });
         };
-        
+
         if (student) {
 
             createChart(student);
@@ -493,13 +493,13 @@ const Profile = () => {
 
     if (loading) {
         return <div>
-        {loading && <div className={overlayClass}>
-            <div className="spinner">
-                <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
-            </div>
-            <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
-        </div>}
-    </div>;
+            {loading && <div className={overlayClass}>
+                <div className="spinner">
+                    <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                </div>                      
+                <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+            </div>}
+        </div>;
     }
 
     if (!student) {
@@ -577,7 +577,7 @@ const Profile = () => {
                     <ul>
                         <li>
                             <div className="student-details-card">
-                            <div className="image-container">
+                                <div className="image-container">
                                     <img src={logoImageUrl} alt="brand Logo" />
                                 </div>
                                 <div className="image-container">
@@ -642,13 +642,13 @@ const Profile = () => {
                     className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
                         }`}>
                     <div>
-                {(isLoading || loading) && <div className={overlayClass}>
-                    <div className="spinner">
-                        <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                        {(isLoading || loading) && <div className={overlayClass}>
+                            <div className="spinner">
+                                <img src="./uploads/loading-brand-logo.PNG" alt="loading-brand-logo" id="loading-brand-logo" />
+                            </div>
+                            <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
+                        </div>}
                     </div>
-                    <img src="./uploads/loading-brand-title.PNG" alt="loading-brand-title" id="loading-brand-title" />
-                </div>}
-            </div>
                     {showAttendance ? (
                         <div className='attendance-page-container'>
                             <button className="close-button" onClick={handleCloseAttendance}>

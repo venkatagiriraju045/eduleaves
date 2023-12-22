@@ -27,29 +27,29 @@ const Home = () => {
 
     useEffect(() => {
         // Set opacity to 0 initially
-        if(loading){
-        document.querySelector('.loading-overlay').style.opacity = '1';
+        if (loading) {
+            document.querySelector('.loading-overlay').style.opacity = '1';
 
-        // After 3 seconds, update opacity to 1 without transition
-        
-        const initialOpacityTimer = setTimeout(() => {
-            document.querySelector('.loading-overlay').style.opacity = '0';
-            document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
+            // After 3 seconds, update opacity to 1 without transition
 
-        }, 3000);
+            const initialOpacityTimer = setTimeout(() => {
+                document.querySelector('.loading-overlay').style.opacity = '0';
+                document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
-        // After 6 seconds, hide the overlay
-        const hideOverlayTimer = setTimeout(() => {
-            setLoading(false);
-        }, 6000);
+            }, 3000);
 
-        return () => {
-            clearTimeout(hideOverlayTimer);
+            // After 6 seconds, hide the overlay
+            const hideOverlayTimer = setTimeout(() => {
+                setLoading(false);
+            }, 6000);
 
-            clearTimeout(initialOpacityTimer);
-        };
-    }
-    }, []);
+            return () => {
+                clearTimeout(hideOverlayTimer);
+
+                clearTimeout(initialOpacityTimer);
+            };
+        }
+    }, [loading]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
