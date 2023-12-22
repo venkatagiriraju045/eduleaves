@@ -67,7 +67,6 @@ const MentorMessage = ({ students }) => {
             return;
         }
 
-        setLoading(true);
 
         try {
             // Send the POST request to update accomplishments
