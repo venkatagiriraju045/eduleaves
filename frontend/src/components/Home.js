@@ -135,8 +135,6 @@ const Home = () => {
                         if (staff.role === 'hod') {
                             navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
                         } else if (staff.role === 'advisor') {
-
-
                             navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section: staff.section } });
                         } else if (staff.role === 'mentor') {
                             navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
