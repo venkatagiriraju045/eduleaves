@@ -303,23 +303,23 @@ html {
 
     .spinner {
         position: relative;
-        width: 24vw;
+        width: 40vw;
         /* Adjust the size of the spinner */
-        height: 24vw;
+        height: 40vw;
         /* Adjust the size of the spinner */
         animation: spin 1s linear infinite;
     }
 
     #loading-brand-title {
-        width: 40vw;
-        height: 15vw;
+        width: 60vw;
+        height: 25vw;
         margin-top: 2vh;
     }
 
     #loading-brand-logo {
         position: absolute;
-        width: 24vw;
-        height: 24vw;
+        width: 40vw;
+        height: 40vw;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -354,16 +354,16 @@ html {
 
     .spinner {
         position: relative;
-        width: 24vw;
+        width: 40vw;
         /* Adjust the size of the spinner */
-        height: 24vw;
+        height: 40vw;
         /* Adjust the size of the spinner */
         animation: spin 1s linear infinite;
     }
 
     #loading-brand-title {
-        width: 40vw;
-        height: 15vw;
+        width: 60vw;
+        height: 25vw;
         margin-top: 2vh;
     }
 
