@@ -194,7 +194,7 @@ const calculateYearWiseAttendance = (students) => {
   };
 };
 
-const DepartmentMenuDashboard = ({students }) => {
+const DepartmentMenuDashboard = ({ students }) => {
   const [selectedYear, setSelectedYear] = useState('');
   const { presentPercentage, absentPercentage, presentCount, totalCount } = calculateOverallAttendance(
     students
@@ -807,7 +807,9 @@ const DepartmentMenuDashboard = ({students }) => {
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
-          <h1 className='department-wise-chart-heading'>{students[0].department} Department</h1>
+          {students &&
+            <h1 className='department-wise-chart-heading'>{students[0].department} Department</h1>
+          }
           <div className='menu-buttons'>
             <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>
@@ -856,7 +858,7 @@ const DepartmentMenuDashboard = ({students }) => {
               </div>
             </div>
           </div>
-        </div>} 
+        </div>}
       {selectedYear &&
         <div id='class-wise-page' className='class-wise-analytics-page'>
           <DepartmentClassWise students={students} year={selectedYear} />
