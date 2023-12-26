@@ -44,7 +44,7 @@ const MentorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/mentor_students_data', {
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/mentor_students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department

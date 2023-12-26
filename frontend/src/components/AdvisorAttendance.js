@@ -123,7 +123,7 @@ const AdvisorAttendance = ({ students }) => {
       for (const student of students) {
         const presentValue = allStudentsAttendance[student.email] || false;
 
-        await axios.post('http://localhost:3000/api/attendance', {
+        await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
           date,
           present: presentValue,
           email: student.email,
