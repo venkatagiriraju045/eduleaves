@@ -25,6 +25,8 @@ const DepartmentMenu = () => {
   const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
   const [students, setStudents] = useState([]);
   const [institute, setInstitute] = useState(null);
+  const [department, setDepartment] = useState(null);
+
   const [deviceType, setDeviceType] = useState(null);
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
   const [mobile, setMobile] = useState(false);
@@ -45,6 +47,7 @@ const DepartmentMenu = () => {
     };
     return departmentNameMap[departmentName] || departmentName;
   }
+
   useEffect(() => {
     // Detect device type and set the state
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -57,7 +60,7 @@ const DepartmentMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data', {
+        const response = await axios.get('http://localhost:3000/api/students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department
@@ -65,6 +68,7 @@ const DepartmentMenu = () => {
           }
         });
         setInstitute(instituteName);
+        setDepartment(departmentName);
         const studentData = response.data;
         setStudents(studentData); // Set the students state variable
         setLoading(false);
@@ -130,10 +134,22 @@ const DepartmentMenu = () => {
     setShowMessageForm(false);
     setShowAttendanceForm(false);
     setShowUpdateAccom(false);
+    setIsHomeButtonClicked(true);
+    setIsLoading(true);
+
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
     });
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setShowUpdateAccom(false);
+      setIsHomeButtonClicked(true);
+
+    }, 1000);
   };
+
 
   const handleShowNav = () => {
     setShowNavBar((prevShowNavBar) => !prevShowNavBar);

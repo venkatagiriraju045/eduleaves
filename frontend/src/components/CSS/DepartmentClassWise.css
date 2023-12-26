@@ -1,38 +1,41 @@
-.department-overlay-chart-container{
+.department-overlay-chart-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
-.class-wise-overlay-chart-container{
+
+.class-wise-overlay-chart-container {
     display: flex;
     justify-content: space-between;
-    
+
 }
 
-.overall-department-performance-chart-container-class-wise{
-    padding:10px;
-    margin:0;
-    margin-right:20px;
+.overall-department-performance-chart-container-class-wise {
+    padding: 10px;
+    margin: 0;
+    margin-right: 20px;
     border-radius: 30px;
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
     text-align: center;
-    }
-.sub-charts-container{
+}
+
+.sub-charts-container {
     font-weight: 100;
     text-align: center;
-    color:rgba(71, 71, 71, 0.331);
+    color: rgba(71, 71, 71, 0.331);
 }
 
-.class-wise-header{
+.class-wise-header {
     justify-content: space-between;
 }
-.department-header-container{
+
+.department-header-container {
     display: flex;
-    width:100%;
-    justify-content:space-between ;
+    width: 100%;
+    justify-content: space-between;
 }
 
-.inside-container{
+.inside-container {
     display: flex;
     justify-content: space-between;
 }
@@ -41,31 +44,36 @@
     display: flex;
     gap: 10px;
 }
-.menu-buttons{
-align-items: flex-end;
-margin-right: 20px;
-justify-content: space-between;
+
+.menu-buttons {
+    align-items: flex-end;
+    margin-right: 20px;
+    justify-content: space-between;
 
 }
+
 .menu button {
     margin-right: 20px;
-    background-color:transparent;
+    background-color: transparent;
     color: rgb(37, 26, 26);
     border: none;
     border-radius: 4px;
     cursor: pointer;
     outline: none;
 }
-.department-wise-chart-heading{
-    top:0;
+
+.department-wise-chart-heading {
+    top: 0;
     margin-left: 20px;
     margin-top: 18px;
     color: rgba(57, 57, 57, 0.486);
 }
-.chart-heads{
+
+.chart-heads {
     color: rgba(58, 58, 58, 0.824);
 
 }
+
 .menu button:hover {
     background-color: #7a7a7a30;
 }
@@ -74,7 +82,8 @@ justify-content: space-between;
     outline: none;
     box-shadow: 0 0 15px #177e55cd;
 }
-.menu-buttons .today-button{
+
+.menu-buttons .today-button {
     background-color: rgba(33, 107, 225, 0.482);
     outline: none;
     border: none;
@@ -82,7 +91,8 @@ justify-content: space-between;
     margin-top: 0px;
     align-items: top;
 }
-.today-button{
+
+.today-button {
     background-color: rgba(66, 223, 108, 0.482);
     outline: none;
     border: none;
@@ -92,4 +102,96 @@ justify-content: space-between;
     cursor: pointer;
 
 
+}
+
+.mentor-student-name-card {
+    border-radius: 3vw;
+    padding: 1vw;
+    font-size: calc(0.7rem + 0.5vw);
+    outline: none;
+    border: none;
+    margin-bottom: 2vh;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+    text-align: center;
+    background-color: rgb(246, 249, 246);
+
+}
+
+.mentor-year-wise-container {
+    width: 85vw;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.mentor-dashboard {
+    overflow-y: auto;
+}
+
+.mentees-year-heading {
+    text-align: center;
+    color: rgba(2, 134, 0, 0.55);
+    font-size: calc(0.7rem + 1vw);
+}
+.students-specific-details-container{
+    align-items: center;
+    justify-content: center;
+}
+.students-specific-details-container table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2%;
+    text-align: center;
+    
+}
+.students-specific-details-container th,
+.students-specific-details-container td {
+    padding: 2%;
+    border: 1px solid #00000094;
+    color: #1f1313;
+    font-weight: 100;
+}
+
+.students-specific-details-container tr:nth-child(even) {
+    background-color: #62626221;
+}
+
+
+.students-specific-details-container th {
+    position: sticky;
+    top: 0;
+    color: #1f1313;
+    backdrop-filter: blur(4px);
+    background-color: rgba(69, 230, 168, 0.311)
+}
+
+.specific-details-header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.student-details-heading {
+    flex: 1; /* Take remaining space */
+    text-align: center;
+    align-items: center ;
+
+}
+
+.message-button-specific-student {
+    align-self: flex-end; /* Align to the right */
+    margin-right: 10px; 
+    font-size: calc(0.7rem + 0.5vw);
+    font-weight: bold;
+    cursor: pointer;
+    color:rgb(36, 97, 25);
+    border-radius: 1vw;
+    background-color: rgba(127, 255, 212, 0.47);
+    padding:0.5vw;
+
+    /* Add other styles as needed */
 }

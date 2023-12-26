@@ -20,27 +20,27 @@ const MentorAttendance = ({ students }) => {
 
     useEffect(() => {
         // Set opacity to 0 initially
-        if(loading){
-        document.querySelector('.loading-overlay').style.opacity = '1';
+        if (loading) {
+            document.querySelector('.loading-overlay').style.opacity = '1';
 
-        // After 3 seconds, update opacity to 1 without transition
-        const initialOpacityTimer = setTimeout(() => {
-            document.querySelector('.loading-overlay').style.opacity = '0';
-            document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
+            // After 3 seconds, update opacity to 1 without transition
+            const initialOpacityTimer = setTimeout(() => {
+                document.querySelector('.loading-overlay').style.opacity = '0';
+                document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
-        }, 1000);
+            }, 1000);
 
-        // After 6 seconds, hide the overlay
-        const hideOverlayTimer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
+            // After 6 seconds, hide the overlay
+            const hideOverlayTimer = setTimeout(() => {
+                setLoading(false);
+            }, 2000);
 
-        return () => {
-            clearTimeout(hideOverlayTimer);
+            return () => {
+                clearTimeout(hideOverlayTimer);
 
-            clearTimeout(initialOpacityTimer);
-        };
-    }
+                clearTimeout(initialOpacityTimer);
+            };
+        }
     }, [loading]);
 
 
@@ -79,10 +79,10 @@ const MentorAttendance = ({ students }) => {
             const yearComparison = yearIndexA - yearIndexB;
             if (yearComparison !== 0) return yearComparison;
 
-            return a.name.localeCompare(b.name);
+            // Sort by register number instead of name
+            return a.registerNumber - b.registerNumber;
         });
     };
-
 
 
 

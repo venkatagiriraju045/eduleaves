@@ -18,6 +18,8 @@ const MentorMenu = () => {
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [nameOfMentor, setNameOfMentor] = useState("");
+
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
@@ -42,7 +44,7 @@ const MentorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/mentor_students_data', {
+        const response = await axios.get('http://localhost:3000/api/mentor_students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department
@@ -50,6 +52,10 @@ const MentorMenu = () => {
             mentor_name: mentor_name// Filter by institute_name
           }
         });
+        if (mentor_name) {
+          setNameOfMentor(mentor_name.toUpperCase());
+          // Rest of your code using nameOfMentor
+        } 
         setInstitute(instituteName);
         const studentData = response.data;
         setStudents(studentData); // Set the students state variable
@@ -146,11 +152,22 @@ const MentorMenu = () => {
     setShowAttendanceForm(false);
     setShowUpdateAccom(false);
     setShowTestPerformanceForm(false);
+    setIsHomeButtonClicked(true);
+    setIsLoading(true);
 
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
     });
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(true);
+      setShowTestPerformanceForm(false);
+
+    }, 1000);
   };
+
 
   const handleShowNav = () => {
     setShowNavBar((prevShowNavBar) => !prevShowNavBar);
@@ -174,6 +191,7 @@ const MentorMenu = () => {
     );
   }
   const imageUrl = `./uploads/dashboard-brand-logo.JPG`;
+  // Check if mentor_name is defined before calling toUpperCase()
 
   return (
     <div className="dep-admin-page-container">
@@ -187,7 +205,12 @@ const MentorMenu = () => {
                   <img src={imageUrl} alt="brand-logo" />
                 </div>
                 <p>
+                <br/>
+                  {nameOfMentor}
+                  <br/>
+                  <br/>
                   MENTOR
+                  <br/>
                   <br />
                 {institute}
                   <br />
@@ -198,7 +221,7 @@ const MentorMenu = () => {
             <br />
             <li>
               <a href="#" onClick={handleHomeButtonClick} className="test-score-button" title="Go to Home">
-                Dashboard
+                Mentees Details
               </a>
             </li>
             <br />
@@ -213,13 +236,6 @@ const MentorMenu = () => {
             <li>
               <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
                 Test Performance
-              </a>
-            </li>
-            <br />
-            <br />
-            <li>
-              <a href="#" className="test-score-button" onClick={handleMessageButtonClick} title="Send Messages">
-                Message
               </a>
             </li>
             <br />

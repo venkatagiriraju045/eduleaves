@@ -5,7 +5,7 @@
     border-radius: 8px;
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
     margin-top: 40px;
-    min-height: 600px;
+    min-height: 400px;
     min-width: 57vw;
     margin-right: 15px;
 
@@ -30,9 +30,9 @@
     border-radius: 15px;
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
     text-align: center;
-    height: 210px;
-    min-width: 800px;
-    max-width: 300px;
+    height: 160px;
+    min-width: 300px;
+    max-width: 96%;
     overflow-y: auto;
     margin: 0px;
     margin-left: 15px;
@@ -48,9 +48,9 @@
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
 
     text-align: center;
-    height: 210px;
-    min-width: 800px;
-    max-width: 300px;
+    height: 160px;
+    min-width: 300px;
+    max-width: 96%;
     overflow-y: auto;
     margin-top: 15px;
     margin-left: 15px;

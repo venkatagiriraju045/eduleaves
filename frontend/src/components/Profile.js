@@ -25,7 +25,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loggedInEmail}`);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${loggedInEmail}`);
                 const studentData = response.data;
                 setStudent(studentData);
                 setLoading(false);
@@ -454,25 +454,38 @@ const Profile = () => {
     };
 
     const renderMessage = () => {
-        if (student && student.messages) {
-            const sentences = student.messages.split('.').filter(sentence => sentence.trim() !== ''); // Split and remove empty sentences
-            return (
-                <div className="message">
-                    <p className="message-title">Important Message:</p>
-                    <div className="message-content">
-                        {sentences.map((sentence, index) => (
-                            <div key={index} className="message-point">
-                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                                <p className="sentence-text">{sentence.trim()}</p>
-                            </div>
-                        ))}
+        if (student) {
+            const { hod_message, mentor_message, advisor_message } = student;
+    
+            if (hod_message || mentor_message || advisor_message) {
+                return (
+                    <div className="message">
+                        <p className="message-title">Important Messages:</p>
+                        <div className="message-content">
+                                <div className="message-point">
+                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                    <p className="sender-title sender-hod"> HOD MESSAGE : </p>
+                                    <p className="sentence-text">{hod_message.trim()}   </p>
+                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                    <p className="sender-title sender-mentor"> MENTOR MESSAGE : </p>
+                                    <p className="sentence-text">{mentor_message.trim()}   </p>
+                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                    <p className="sender-title sender-advisor"> ADVISOR MESSAGE : </p>
+                                    <p className="sentence-text">{advisor_message.trim()}   </p>
+                                </div>
+                        </div>
                     </div>
-                </div>
-            );
+                );
+            } else {
+                return <p className="message">No messages available.</p>;
+            }
         } else {
-            return <p className="message">No admin message available.</p>;
+            return <p className="message">No student data available.</p>;
         }
     };
+    
+
+
     const handleLogout = () => {
         setShowConfirmationPrompt(false);
         localStorage.removeItem('loggedInEmail');
@@ -481,7 +494,7 @@ const Profile = () => {
 
     const handleShowNav = () => {
         setShowNavBar((prevShowNavBar) => !prevShowNavBar);
-    };  
+    };
 
     if (!student) {
         return <p>No student data found.</p>;
@@ -646,7 +659,6 @@ const Profile = () => {
                     {showAccomplishments && <Accomplishment location={{ state: { email: student.email } }} onClose={handleTestScoreClose} />}
 
                     <div className="profile-chart-container">
-
                         <div className='attendance-chart-container'>
                             <div className="profile-attendance-chart" onClick={handleShowTestScore}>
                                 <div className='chart-container1'>

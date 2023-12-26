@@ -50,16 +50,16 @@ const AdvisorAttendance = ({ students }) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
 
     return students.sort((a, b) => {
-      const yearIndexA = yearOrder.indexOf(a.class);
-      const yearIndexB = yearOrder.indexOf(b.class);
+        const yearIndexA = yearOrder.indexOf(a.class);
+        const yearIndexB = yearOrder.indexOf(b.class);
 
-      const yearComparison = yearIndexA - yearIndexB;
-      if (yearComparison !== 0) return yearComparison;
+        const yearComparison = yearIndexA - yearIndexB;
+        if (yearComparison !== 0) return yearComparison;
 
-      return a.name.localeCompare(b.name);
+        // Sort by register number instead of name
+        return a.registerNumber - b.registerNumber;
     });
-  };
-
+};
 
 
 
@@ -123,7 +123,7 @@ const AdvisorAttendance = ({ students }) => {
       for (const student of students) {
         const presentValue = allStudentsAttendance[student.email] || false;
 
-        await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
+        await axios.post('http://localhost:3000/api/attendance', {
           date,
           present: presentValue,
           email: student.email,

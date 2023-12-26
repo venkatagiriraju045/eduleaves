@@ -69,6 +69,7 @@
 .attendance-table-container {
     min-width: 1000px;
     margin-top: 10px;
+    min-height:400px;
     
 }
 .attendance-table-container tr:nth-child(even) {
@@ -91,7 +92,6 @@ font-weight: 100;
 .attendance-table-container td {
     padding: 8px;
 text-align: center;
-border-bottom: 1px solid #dddddd94;
 color: #261919;
 font-weight: 100;
 }
@@ -302,4 +302,31 @@ font-weight: 100;
     text-align: center;
     margin-bottom: 0;
     margin-top: 5px;
+}
+.low-mark {
+    background-color: rgba(255, 98, 0, 0.511);
+    border: 1px solid black;
+    margin-bottom: 2px;
+    border-bottom: 1px solid black;
+
+
+}
+.average-mark {
+    background-color: rgba(255, 255, 0, 0.571);
+    border: 1px solid black;
+    margin-bottom: 2px;
+    border-bottom: 1px solid black;
+
+
+}
+.good-mark{
+    background-color: rgba(0, 255, 13, 0.516);
+    border: 1px solid black;
+    margin-bottom: 2px;
+    border-bottom: 1px solid black;
+
+
+}
+.outstanding-mark {
+    background-color: rgba(8, 219, 8, 0.941);
 }

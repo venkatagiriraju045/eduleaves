@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const MentorTest = ({ students }) => {
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); 
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
@@ -17,10 +17,7 @@ const MentorTest = ({ students }) => {
     const [labelWidth, setLabelWidth] = useState(0);
     const [dateError, setDateError] = useState(false);
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
-
     const [isDateChosen, setIsDateChosen] = useState(false);
-
-
 
     useEffect(() => {
         setDateError(false);
@@ -82,10 +79,10 @@ const MentorTest = ({ students }) => {
             const yearComparison = yearIndexA - yearIndexB;
             if (yearComparison !== 0) return yearComparison;
 
-            return a.name.localeCompare(b.name);
+            // Sort by register number instead of name
+            return a.registerNumber - b.registerNumber;
         });
     };
-
 
 
 
@@ -148,7 +145,20 @@ const MentorTest = ({ students }) => {
             </thead>
         );
     };
-
+    const cellClass = (mark) => {
+        if (mark >= 0 && mark <= 40) {
+            return 'low-mark';
+        } else if (mark >= 41 && mark <= 70) {
+            return 'average-mark';
+        } else if (mark >= 71 && mark <= 89) {
+            return 'good-mark';
+        } else if (mark >= 90 && mark <= 100) {
+            return 'outstanding-mark';
+        } else {
+            return ''; // Default class when the mark is outside the specified ranges
+        }
+    };
+    
     const renderTableRows = (students) => {
         const sortedStudents = sortStudentsByName(students);
         let serialNumber = 1;
@@ -172,7 +182,7 @@ const MentorTest = ({ students }) => {
                                 <tr key={i}>
                                     <td>{`IAT-${i + 1}`}</td>
                                     {student.subjects.map((subject) => (
-                                        <td key={subject.subject_code}>{subject.scores[iat]}</td>
+                                        <td key={subject.subject_code} className={cellClass(subject.scores[iat])}>{subject.scores[iat]}</td>
                                     ))}
                                 </tr>
                             ))}

@@ -1,12 +1,14 @@
+
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CSS/AdminAttendance.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const DepartmentAttendance = ({ students }) => {
+const AdvisorAttendancePerformance = ({ students }) => {
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
@@ -16,35 +18,38 @@ const DepartmentAttendance = ({ students }) => {
     const [dateError, setDateError] = useState(false);
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 
+
+    useEffect(() => {
+        // Set opacity to 0 initially
+        if (loading) {
+            document.querySelector('.loading-overlay').style.opacity = '1';
+
+            // After 3 seconds, update opacity to 1 without transition
+            const initialOpacityTimer = setTimeout(() => {
+                document.querySelector('.loading-overlay').style.opacity = '0';
+                document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
+
+            }, 1000);
+
+            // After 6 seconds, hide the overlay
+            const hideOverlayTimer = setTimeout(() => {
+                setLoading(false);
+            }, 2000);
+
+            return () => {
+                clearTimeout(hideOverlayTimer);
+
+                clearTimeout(initialOpacityTimer);
+            };
+        }
+    }, [loading]);
+
+
     useEffect(() => {
         setDateError(false);
     }, [date]);
 
 
-    useEffect(() => {
-        // Set opacity to 0 initially
-        if(loading){
-        document.querySelector('.loading-overlay').style.opacity = '1';
-
-        // After 3 seconds, update opacity to 1 without transition
-        const initialOpacityTimer = setTimeout(() => {
-            document.querySelector('.loading-overlay').style.opacity = '0';
-            document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
-
-        }, 1000);
-
-        // After 6 seconds, hide the overlay
-        const hideOverlayTimer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-
-        return () => {
-            clearTimeout(hideOverlayTimer);
-
-            clearTimeout(initialOpacityTimer);
-        };
-    }
-    }, [loading]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -180,7 +185,7 @@ const DepartmentAttendance = ({ students }) => {
                     <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
-            <h1 className='department-wise-chart-heading'>{students[0].department} Attendance Details</h1>
+            <h1 className='department-wise-chart-heading'>Class Attendance Record</h1>
             <div className='attendance-content-container'>
                 <div className="students-container">
                     <div className="bars">
@@ -221,4 +226,4 @@ const DepartmentAttendance = ({ students }) => {
     );
 };
 
-export default DepartmentAttendance;
+export default AdvisorAttendancePerformance;

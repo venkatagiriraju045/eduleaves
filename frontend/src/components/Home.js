@@ -14,7 +14,6 @@ const Home = () => {
     const [mentorLogin, setMentorLogin] = useState(null); // Add mentor login state
     const [staff, setStaff] = useState(null);
     const [handleSubmitPressed, setHandleSubmitPressed] = useState(false);
-    const serverURL = `https://eduleaves-api.vercel.app`;
     const navigate = useNavigate();
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
     const handleLoginEmailChange = (e) => {
@@ -36,12 +35,12 @@ const Home = () => {
                 document.querySelector('.loading-overlay').style.opacity = '0';
                 document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
-            }, 2000);
+            }, 1000);
 
             // After 6 seconds, hide the overlay
             const hideOverlayTimer = setTimeout(() => {
                 setLoading(false);
-            }, 3000);
+            }, 1000);
 
             return () => {
                 clearTimeout(hideOverlayTimer);
@@ -55,7 +54,7 @@ const Home = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`https://eduleaves-api.vercel.app/api/login`, {
+            const response = await axios.post(`http://localhost:3000/api/login`, {
                 email: loginEmail,
                 password: loginPassword,
             });
@@ -78,7 +77,7 @@ const Home = () => {
     useEffect(() => {
         const fetchStaffData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loginEmail}`);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${loginEmail}`);
                 const staffData = response.data;
                 setStaff(staffData);
                 setLoading(false);
@@ -125,18 +124,18 @@ const Home = () => {
             console.log(loginEmail);
             console.log(loginPassword);
             console.log(staff);
-            const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
+            const response = await axios.post(`http://localhost:3000/api/admin-login`, {
                 email: loginEmail,
                 password: loginPassword,
             });
             if (response.data.success) {
                 if (staff) {
                     if ((loginEmail !== 'admin@kiot') && (loginEmail !== 'admin@psg') && (loginEmail !== 'admin@mhs')) {
-                        if (staff.role === 'hod') {
+                        if ( loginAs === 'hod' && staff.role === 'hod' && loginAs !== 'student') {
                             navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
-                        } else if (staff.role === 'advisor') {
+                        } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student' ) {
                             navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section: staff.section } });
-                        } else if (staff.role === 'mentor') {
+                        } else if (loginAs === 'mentor' && staff.role === 'mentor' && (staff.name === 'rk@cse.kiot' || staff.name === 'rsp@cse.kiot' || staff.name === 'rsg@cse.kiot' || staff.name === 'mj@cse.kiot') && loginAs !== 'student') {
                             navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
                         }
                     } else {
@@ -190,7 +189,7 @@ const Home = () => {
                             <img src="./uploads/login-page-logo.png" alt="menu image" id="login-page-logo" />
                         </div>
                         <h2 id="login-person">
-                            {loginAs === 'student' ? 'Student Gate' : loginAs === 'admin' ? 'Advisor Gate' : loginAs === 'hod' ? 'HOD Gate' : 'Mentor Gate'}
+                            {loginAs === 'student' ? 'Student Gate' : loginAs === 'advisor' ? 'Advisor Gate' : loginAs === 'hod' ? 'HOD Gate' : 'Mentor Gate'}
                         </h2>
                         {loginError && <p className="login-error">{loginError}</p>}
                         {loginSuccess && <p className="login-success">Login successful!</p>}
@@ -234,8 +233,8 @@ const Home = () => {
                                     Enter as
                                     {loginAs !== 'student' && <span onClick={() => setLoginAs('student')}> Student /</span>}
                                     {loginAs !== 'hod' && <span onClick={() => setLoginAs('hod')}> HOD /</span>}
-                                    {loginAs !== 'admin' && loginAs !== 'mentor' && <span onClick={() => setLoginAs('admin')}> Advisor /</span>}
-                                    {loginAs === 'mentor' && <span onClick={() => setLoginAs('admin')}> Advisor </span>}
+                                    {loginAs !== 'advisor' && loginAs !== 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor /</span>}
+                                    {loginAs === 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor </span>}
                                     {loginAs !== 'mentor' && <span onClick={() => setLoginAs('mentor')}> Mentor </span>}
                                 </p>
                             </div>

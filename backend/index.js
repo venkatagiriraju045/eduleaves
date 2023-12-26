@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: ["https://the-students-gate.vercel.app"],
+    origin: ["http://localhost:3001"],
     methods: ["POST", "GET"],
     credentials: true
 }));
@@ -47,7 +47,9 @@ const userSchema = new mongoose.Schema({
     training_score: { type: Number },
     present_array: [{ type: Date }],
     leave_array: [{ type: Date }],
-    messages: { type: String },
+    mentor_message: { type: String },
+    advisor_message: { type: String },
+    hod_message: { type: String },
     accomplishments: { type: String },
     institute_name: { type: String },
     role: { type: String },
@@ -359,7 +361,7 @@ app.post('/api/update_accomplishments', async (req, res) => {
     }
 });
 app.post('/api/update_messages', async (req, res) => {
-    const { email, messages } = req.body;
+    const { email, messages, sender } = req.body;
 
     try {
         // Find the student by email
@@ -368,8 +370,14 @@ app.post('/api/update_messages', async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        // Replace the existing message with the new message for the student
-        student.messages = messages;
+        // Update the message based on the sender
+        if (sender === "mentor") {
+            student.mentor_message = messages;
+        } else if (sender === "hod") {
+            student.hod_message = messages;
+        } else if (sender === "advisor") {
+            student.advisor_message = messages;
+        }
 
         // Save the updated student document
         await student.save();
@@ -380,6 +388,7 @@ app.post('/api/update_messages', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

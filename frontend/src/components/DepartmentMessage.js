@@ -23,18 +23,17 @@ const DepartmentMessage = ({ students }) => {
     };
     const handlePreviewUpdate = (e) => {
         const messageText = e.target.value;
-        const sentences = messageText.split('.').filter((sentence) => sentence.trim() !== '');
+        const sentences = messageText;
         setMessagePreview(
-            sentences.map((sentence, index) => (
-                <div key={index} className="message">
-                    <div className="message-content">
+                <div className="message">
+                    <div clas sName="message-content">
                         <div className="message-point">
                             <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                            <p className="sentence-text">{sentence.trim()}</p>
+                            <p className="sentence-text">{sentences.trim()}</p>
                         </div>
                     </div>
                 </div>
-            ))
+            
         );
         setMessage(messageText);
     };
@@ -61,24 +60,28 @@ const DepartmentMessage = ({ students }) => {
             setAppMessage('Student not found. Please retry with a valid student id!');
             return;
         }
-
+    
         if (!message.trim()) {
             setAppMessage('Please enter a valid message!');
             return;
         }
-
+    
         setLoading(true);
-
+    
         try {
-            // Send the POST request to update accomplishments
-            const accomplishmentsToUpdate = message.trim();
+            const sender = "hod";
+            const dateAndTime = new Date().toLocaleString();
+            const accomplishmentsToUpdate = `[${dateAndTime}] ${message.trim()}`;
             console.log(accomplishmentsToUpdate);
-
-            await axios.post('https://eduleaves-api.vercel.app/api/update_messages', {
+    
+            // Send the POST request to update accomplishments
+            await axios.post('http://localhost:3000/api/update_messages', {
                 email: searchedStudent.email,
                 messages: accomplishmentsToUpdate,
+                sender,
+                dateAndTime,
             });
-
+    
             setAppMessage('Messages updated successfully!');
             setTimeout(() => {
                 setAppMessage('');
@@ -90,6 +93,7 @@ const DepartmentMessage = ({ students }) => {
             setLoading(false);
         }
     };
+    
 
     const handleWelcomeMessage = () => {
         findStudent(); // Trigger the search
@@ -106,7 +110,10 @@ const DepartmentMessage = ({ students }) => {
                     <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
+            <h1 className='department-wise-chart-heading'>{students[0].department} Message Center</h1>
+
             <div className="attendance-content-container">
+                
                 <div className="search-bar-container">
                     <div className="search-bar">
                         <input
@@ -118,7 +125,7 @@ const DepartmentMessage = ({ students }) => {
                                     handleWelcomeMessage();
                                 }
                             }}
-                            placeholder="Search by name, register number, email, or department"
+                            placeholder="Search by register number"
                         />
                         <button onClick={handleWelcomeMessage}>
                             <FontAwesomeIcon icon={faSearch} />
@@ -142,17 +149,18 @@ const DepartmentMessage = ({ students }) => {
                         <div className="message-form">
                             <p className="message-title-message">{searchedStudent.name}'s Existing message</p>
                             <div className="existing-message-container">
-                                <div className="message">
-                                    <div className="message-content">
-                                        {searchedStudent.messages &&
-                                            searchedStudent.messages.split('. ').map((sentence, index) => (
-                                                <div key={index} className="message-point">
-                                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                                                    <p className="sentence-text">{sentence.trim()}</p>
-                                                </div>
-                                            ))}
+                                {searchedStudent && searchedStudent.hod_message &&
+                                    // Split and remove empty sentences
+                                    // Inside your renderMessage function
+                                    <div className="message">
+                                        <div className="message-content">
+                                            <div className="message-point">
+                                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                                <p className="sentence-text">{searchedStudent.hod_message.trim()}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             </div>
                             <div className="input-field-container">
                                 <div className="input-field">

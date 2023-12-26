@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CSS/AdminAttendance.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const DepartmentAttendance = ({ students }) => {
+const AdvisorTest = ({ students }) => {
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true); 
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
     const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
     const [movingLabel, setMovingLabel] = useState('');
+    const [labelWidth, setLabelWidth] = useState(0);
     const [dateError, setDateError] = useState(false);
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
+    const [isDateChosen, setIsDateChosen] = useState(false);
 
     useEffect(() => {
         setDateError(false);
     }, [date]);
-
 
     useEffect(() => {
         // Set opacity to 0 initially
@@ -31,12 +33,12 @@ const DepartmentAttendance = ({ students }) => {
             document.querySelector('.loading-overlay').style.opacity = '0';
             document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
 
-        }, 1000);
+        }, 500);
 
         // After 6 seconds, hide the overlay
         const hideOverlayTimer = setTimeout(() => {
             setLoading(false);
-        }, 2000);
+        }, 800);
 
         return () => {
             clearTimeout(hideOverlayTimer);
@@ -44,7 +46,9 @@ const DepartmentAttendance = ({ students }) => {
             clearTimeout(initialOpacityTimer);
         };
     }
-    }, [loading]);
+    }, []);
+
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -79,7 +83,6 @@ const DepartmentAttendance = ({ students }) => {
             return a.registerNumber - b.registerNumber;
         });
     };
-
 
 
 
@@ -126,6 +129,8 @@ const DepartmentAttendance = ({ students }) => {
                 .includes(searchQuery.toLowerCase()))
     );
 
+
+
     const renderTableHeader = () => {
         return (
             <thead>
@@ -134,40 +139,58 @@ const DepartmentAttendance = ({ students }) => {
                     <th>Register No</th>
                     <th>Name</th>
                     <th>Year</th>
-                    <th>Present Days</th>
-                    <th>Total Days</th>
-                    <th>Present Percentage</th>
+                    <th>IAT</th>
                 </tr>
             </thead>
         );
     };
-
+    const cellClass = (mark) => {
+        if (mark >= 0 && mark <= 40) {
+            return 'low-mark';
+        } else if (mark >= 41 && mark <= 70) {
+            return 'average-mark';
+        } else if (mark >= 71 && mark <= 89) {
+            return 'good-mark';
+        } else if (mark >= 90 && mark <= 100) {
+            return 'outstanding-mark';
+        } else {
+            return ''; // Default class when the mark is outside the specified ranges
+        }
+    };
+    
     const renderTableRows = (students) => {
         const sortedStudents = sortStudentsByName(students);
         let serialNumber = 1;
 
-        return sortedStudents.map((student) => {
-            const presentDays = student.present_array.length;
-            const totalDays = student.total_days;
-            const attendancePercentage = ((presentDays / totalDays) * 100).toFixed(2);
-            const isLowAttendance = attendancePercentage <= 80;
-
-            return (
-                <tr key={student._id}>
-                    <td>{serialNumber++}</td>
-                    <td>{student.registerNumber}</td>
-                    <td>{student.name}</td>
-                    <td>{student.year}</td>
-                    <td>{presentDays}</td>
-                    <td>{totalDays}</td>
-                    <td style={{ backgroundColor: isLowAttendance ? 'yellow' : 'inherit' }}>
-                        {attendancePercentage}%
-                    </td>
-                </tr>
-            );
-        });
+        return sortedStudents.map((student) => (
+            <tr key={student._id}>
+                <td>{serialNumber++}</td>
+                <td>{student.registerNumber}</td>
+                <td>{student.name}</td>
+                <td>{student.year}</td>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                {student.subjects.map((subject) => (
+                                    <td key={subject.subject_code}>{subject.subject_code}</td>
+                                ))}
+                            </tr>
+                            {Object.keys(student.subjects[0].scores).map((iat, i) => (
+                                <tr key={i}>
+                                    <td>{`IAT-${i + 1}`}</td>
+                                    {student.subjects.map((subject) => (
+                                        <td key={subject.subject_code} className={cellClass(subject.scores[iat])}>{subject.scores[iat]}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        ));
     };
-
 
 
     return (
@@ -180,7 +203,7 @@ const DepartmentAttendance = ({ students }) => {
                     <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
-            <h1 className='department-wise-chart-heading'>{students[0].department} Attendance Details</h1>
+            <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Test Performance</h1>
             <div className='attendance-content-container'>
                 <div className="students-container">
                     <div className="bars">
@@ -221,4 +244,4 @@ const DepartmentAttendance = ({ students }) => {
     );
 };
 
-export default DepartmentAttendance;
+export default AdvisorTest;

@@ -8,25 +8,37 @@ import './CSS/Profile_model.css';
 import AdvisorAttendance from './AdvisorAttendance.js';
 import AdvisorDashboard from './AdvisorDashboard.js';
 import AdvisorMessage from './AdvisorMessage.js';
+import AdvisorTest from './AdvisorTest.js';
+import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 
 
 const AdvisorMenu = () => {
   const location = useLocation();
   const { instituteName, departmentName, year, section } = location.state || {};
+  const [department, setDepartment] = useState(null);
+  const [studentYear, setStudentYear] = useState(null);
+  const [studentSection, setStudentSection] = useState(null);
+  const [institute, setInstitute] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
+  const [showDashboard, setShowDashboard] = useState(true);
+
+  const [showAdvisorAttendancePerformace, setShowAdvisorAttendancePerformace] = useState(false);
+
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
   const [showNavBar, setShowNavBar] = useState(true);
   const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
   const [students, setStudents] = useState([]);
-  const [institute, setInstitute] = useState(null);
   const [deviceType, setDeviceType] = useState(null);
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
   const [mobile, setMobile] = useState(false);
+  const [showTestPerformanceForm, setShowTestPerformanceForm] = useState(false);
+
 
 
   useEffect(() => {
@@ -41,7 +53,7 @@ const AdvisorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
+        const response = await axios.get('http://localhost:3000/api/advisor_students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department
@@ -51,6 +63,7 @@ const AdvisorMenu = () => {
           }
         });
         setInstitute(instituteName);
+
         const studentData = response.data;
         setStudents(studentData); // Set the students state variable
         setLoading(false);
@@ -73,9 +86,36 @@ const AdvisorMenu = () => {
   if (error) {
     return <p>Error fetching student data: {error.message}</p>;
   }
-
+  const handleTestPerformanceButtonClick = () => {
+    setShowTestPerformanceForm(true);
+    setShowAttendanceForm(false);
+    setShowMessageForm(false);
+    setShowAdvisorAttendancePerformace(false);
+    setShowDashboard(false);
+    setShowUpdateAccom(false);
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
+      setShowTestPerformanceForm(true);
+      setShowAttendanceForm(false);
+      setShowAdvisorAttendancePerformace(false);
+      setShowDashboard(false);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(false);
+    }, 1000);
+  };
   const handleMessageButtonClick = () => {
+    setShowTestPerformanceForm(false);
     setShowMessageForm(true);
+    setShowAdvisorAttendancePerformace(false);
+    setShowDashboard(false);
     setShowUpdateAccom(false);
     setIsLoading(true);
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
@@ -90,14 +130,22 @@ const AdvisorMenu = () => {
       setShowMessageForm(true);
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
+      setShowDashboard(false);
       setIsHomeButtonClicked(false);
+      setShowAdvisorAttendancePerformace(false);
+      setShowTestPerformanceForm(false);
+
     }, 1000);
   };
 
   const handleAttendanceButtonClick = () => {
     setShowAttendanceForm(true);
     setShowMessageForm(false);
+    setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
+    setShowDashboard(false);
+    setShowTestPerformanceForm(false);
+
     setIsLoading(true);
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
@@ -111,16 +159,63 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(true);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
+      setShowAdvisorAttendancePerformace(false);
+      setShowDashboard(false);
+      setShowTestPerformanceForm(false);
+
     }, 1000);
   };
 
+  const handleAdvisorAttendancePerformaceButtonClick = () => {
+    setShowAdvisorAttendancePerformace(true);
+    setShowAttendanceForm(false);
+    setShowMessageForm(false);
+    setShowUpdateAccom(false);
+    setShowDashboard(false);
+    setShowTestPerformanceForm(false);
+
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
+      setShowAdvisorAttendancePerformace(true);
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(false);
+      setShowDashboard(false);
+      setShowTestPerformanceForm(false);
+
+    }, 1000);
+  };
   const handleHomeButtonClick = () => {
     setShowMessageForm(false);
     setShowAttendanceForm(false);
+    setShowDashboard(true);
+    setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
+    setShowTestPerformanceForm(false);
+    setIsHomeButtonClicked(true);
+    setIsLoading(true);
+
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
     });
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(true);
+      setShowAdvisorAttendancePerformace(false);
+      setShowDashboard(true);
+      setShowTestPerformanceForm(false);
+
+    }, 1000);
   };
 
   const handleShowNav = () => {
@@ -144,6 +239,7 @@ const AdvisorMenu = () => {
       </div>
     );
   }
+
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
 
   return (
@@ -158,9 +254,10 @@ const AdvisorMenu = () => {
                   <img src={logoImageUrl} alt="brand Logo" />
                 </div>
                 <p>
-                  {institute}
                   <br />
-                  LOGIN
+                  ADVISOR
+                  <br />
+                  {institute}
                   <br />
                 </p>
               </div>
@@ -182,6 +279,20 @@ const AdvisorMenu = () => {
             <br />
             <br />
             <li>
+              <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
+                Test Performance
+              </a>
+            </li>
+            <br />
+            <br />
+            <li>
+              <a href="#" className="test-score-button" onClick={handleAdvisorAttendancePerformaceButtonClick} title="View Attendance">
+                Attendance Details
+              </a>
+            </li>
+            <br />
+            <br />
+            <li>
               <a href="#" className="test-score-button" onClick={handleMessageButtonClick} title="Send Messages">
                 Message
               </a>
@@ -198,7 +309,7 @@ const AdvisorMenu = () => {
       <div
         className={`profile-right-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
           }`}>
-        
+
         <header
           className="admin-header">
           <div className='nav-bar-hider'>
@@ -224,32 +335,36 @@ const AdvisorMenu = () => {
             </div>
           )}
         </header>
-        {!mobile && 
-        <main
-          className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
-            }`}>
-          <div>
-                {(loading || isLoading) && <div className={overlayClass}>
-                    <div className="spinner">
-                        <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
-                    </div>
-                    <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
-                </div>}
-            </div>
-          {showUpdateAccom ? (
-            <UpdateAccom students={students} />
-          ) :
-            showMessageForm ? (
-              <AdvisorMessage students={students} />
-            ) : showAttendanceForm ? (
-              <AdvisorAttendance students={students} />
-            ) : (
-              <div className='home-contents'>
-                <div>
-                  <AdvisorDashboard students={students} year={year} section={section} department={departmentName}/>
+        {!mobile &&
+          <main
+            className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
+              }`}>
+            <div>
+              {(loading || isLoading) && <div className={overlayClass}>
+                <div className="spinner">
+                  <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
                 </div>
-              </div>)}
-        </main>
+                <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
+              </div>}
+            </div>
+            {showUpdateAccom ? (
+              <UpdateAccom students={students} />
+            ) :
+              showMessageForm ? (
+                <AdvisorMessage students={students} />
+              ) : showAttendanceForm ? (
+                <AdvisorAttendance students={students} />
+              ) : showTestPerformanceForm ? (
+                <AdvisorTest students={students} />
+              ) : showAdvisorAttendancePerformace ? (
+                <AdvisorAttendancePerformance students={students} />
+              ) : (showDashboard &&
+                <div className='home-contents'>
+                  <div>
+                    <AdvisorDashboard students={students} year={year} section={section} department={departmentName} />
+                  </div>
+                </div>)}
+          </main>
         }
       </div>
     </div>

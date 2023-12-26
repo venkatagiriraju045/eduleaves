@@ -1,66 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Chart, LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement } from 'chart.js/auto';
 import DepartmentClassWise from './DepartmentClassWise.js';
+import ClassAttendance from './ClassAttendance.js'
 
 
-function calculateStudentAverage(student) {
-  const totalAttendance = student.total_attendance;
-  const totalDays = student.total_days;
-  const presentPercentage = ((totalAttendance / totalDays) * 100).toFixed(2);
-
-  const maxScore = 100;
-  const subjectScores = student.subjects.map((subject) => {
-    const { scores } = subject;
-    if (!scores || typeof scores !== "object") {
-      // If scores are missing or not an object, return NaN for this subject
-      return {
-        subject_name: subject.subject_name,
-        scores: "NaN",
-      };
-    }
-    const validScores = Object.values(scores).filter((score) => !isNaN(parseInt(score)));
-    const subjectScore =
-      validScores.length > 0
-        ? validScores.reduce((total, score) => total + parseInt(score), 0) / validScores.length
-        : "NaN";
-    return {
-      subject_name: subject.subject_name,
-      scores: subjectScore,
-    };
-  });
-
-  const subjectAverages = subjectScores.map((subject) => {
-    if (subject.scores === "NaN") {
-      return {
-        subject_name: subject.subject_name,
-        average_score: "NaN",
-      };
-    }
-    const average = (subject.scores / maxScore) * 100; // Scale the average score based on the maximum score
-    return {
-      subject_name: subject.subject_name,
-      average_score: average,
-    };
-  });
-
-  const overallAverage =
-    subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
-    subjectAverages.length;
-
-  const hasTestScore = !isNaN(overallAverage);
-
-  let overall_score;
-
-  if (hasTestScore) {
-    // Calculate overall score with test score
-    overall_score = ((parseFloat(presentPercentage) + parseFloat(overallAverage)) / 2).toFixed(2);
-  } else {
-    // Calculate overall score only with attendance, without test 
-    overall_score = parseFloat(presentPercentage).toFixed(2);
-  }
-
-  return overall_score;
-}
 const calculateAttendancePercentage = (presentCount, absentCount) => {
   const totalDays = presentCount + absentCount;
   if (totalDays === 0) return { percentage: 0, count: 0, absentees: [] };
@@ -113,143 +56,100 @@ const calculateOverallAttendance = (students) => {
     absentees, // Include the list of absentees in the result
   };
 };
-const calculateYearWiseAttendance = (students) => {
-  const currentDate = new Date();
 
-  // Initialize variables to store attendance counts for each class
-  let firstYearPresentCount = 0;
-  let firstYearAbsentCount = 0;
-  let secondYearPresentCount = 0;
-  let secondYearAbsentCount = 0;
-  let thirdYearPresentCount = 0;
-  let thirdYearAbsentCount = 0;
-  let finalYearPresentCount = 0;
-  let finalYearAbsentCount = 0;
-
-  // Loop through the students and calculate attendance for each class
-  students.forEach((student) => {
-    if (student.role === 'student') {
-      const year = student.class; // Assuming the student object has the 'class' property indicating the year of study
-
-      // Determine if the student is present or absent for the current date
-      const isPresent = student.present_array.some((dateStr) => new Date(dateStr).toDateString() === currentDate.toDateString());
-      const isAbsent = student.leave_array.some((dateStr) => new Date(dateStr).toDateString() === currentDate.toDateString());
-
-      // Update the attendance counts based on the student's class and attendance status
-      if (year === 'First year') {
-        if (isPresent) {
-          firstYearPresentCount++;
-        } else if (isAbsent) {
-          firstYearAbsentCount++;
-        }
-      } else if (year === 'Second year') {
-        if (isPresent) {
-          secondYearPresentCount++;
-        } else if (isAbsent) {
-          secondYearAbsentCount++;
-        }
-      } else if (year === 'Third year') {
-        if (isPresent) {
-          thirdYearPresentCount++;
-        } else if (isAbsent) {
-          thirdYearAbsentCount++;
-        }
-      } else if (year === 'Final year') {
-        if (isPresent) {
-          finalYearPresentCount++;
-        } else if (isAbsent) {
-          finalYearAbsentCount++;
-        }
-      }
-    }
-  });
-
-  // Calculate percentages for each class using the existing calculateAttendancePercentage function
-  const firstYearAttendance = calculateAttendancePercentage(firstYearPresentCount, firstYearAbsentCount);
-  const secondYearAttendance = calculateAttendancePercentage(secondYearPresentCount, secondYearAbsentCount);
-  const thirdYearAttendance = calculateAttendancePercentage(thirdYearPresentCount, thirdYearAbsentCount);
-  const finalYearAttendance = calculateAttendancePercentage(finalYearPresentCount, finalYearAbsentCount);
-
-  return {
-    firstYear: {
-      presentPercentage: firstYearAttendance.percentage,
-      presentCount: firstYearAttendance.count,
-      totalCount: firstYearPresentCount + firstYearAbsentCount,
-    },
-    secondYear: {
-      presentPercentage: secondYearAttendance.percentage,
-      presentCount: secondYearAttendance.count,
-      totalCount: secondYearPresentCount + secondYearAbsentCount,
-    },
-    thirdYear: {
-      presentPercentage: thirdYearAttendance.percentage,
-      presentCount: thirdYearAttendance.count,
-      totalCount: thirdYearPresentCount + thirdYearAbsentCount,
-    },
-    finalYear: {
-      presentPercentage: finalYearAttendance.percentage,
-      presentCount: finalYearAttendance.count,
-      totalCount: finalYearPresentCount + finalYearAbsentCount,
-    },
-  };
-};
 
 const DepartmentMenuDashboard = ({ students, department }) => {
   const [selectedYear, setSelectedYear] = useState('');
-  let departmentName;
+  const [departmentName, setDepartmentName] = useState("");
+  const [showDepartment, setShowDepartment] = useState(false);
   const { presentPercentage, absentPercentage, presentCount, totalCount } = calculateOverallAttendance(
     students
   );
   const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
+  useEffect(() => {
+    if (!selectedYear) {
+      createPassFailChart();
+      createHostelerChart();
+      
+      createGenderDepartmentLineChart();
+      setDepartmentName(department);
 
-  const createChart = () => {
+    }
+  }, [students, selectedYear]);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDepartment(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []); // This effect runs once on component mount
+
+
+  const calculatePassFailRatio = (students) => {
+    let passCount = 0;
+    let failCount = 0;
+    let totalSubjects = 0;
+
+    students.forEach((student) => {
+      student.subjects.forEach((subject) => {
+        for (let i = 1; i <= 3; i++) {
+          const iatScore = parseFloat(subject.scores[`iat_${i}`]);
+          if (!isNaN(iatScore)) {
+            totalSubjects++;
+            if (iatScore >= 50) {
+              passCount++;
+            } else {
+              failCount++;
+            }
+          }
+        }
+      });
+    });
+
+    const passPercentage = (passCount / totalSubjects) * 100;
+    const failPercentage = (failCount / totalSubjects) * 100;
+
+    return {
+      passCount,
+      failCount,
+      passPercentage,
+      failPercentage,
+    };
+  };
+  const createPassFailChart = () => {
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
-    const canvas = document.getElementById('department-chart-overlay');
+    const canvas = document.getElementById('pass-fail-chart');
     const ctx = canvas.getContext('2d');
-
     if (typeof canvas.chart !== 'undefined') {
       canvas.chart.destroy();
     }
-
-    // Set the desired fixed dimensions for the chart
-    const chartWidth = 550;
-    const chartHeight = 225;
-
-    // Set the canvas width and height to match the chart dimensions
+    const chartWidth = 370;
+    const chartHeight = 250;
     canvas.width = chartWidth;
     canvas.height = chartHeight;
+    const passColor = 'rgb(14, 129, 116)';
+    const failColor = 'rgb(255, 99, 71)';
 
-    // Get the data for the selected department
-    const departmentStudents = students;
-
-    // Calculate overall average for each student in the selected department
-    const tableData = departmentStudents.map((student) => {
-      const studentName = student.name; // Assuming the student object has a 'name' property
-      const studentTestAverage = calculateStudentTestAverage(student);
-
-      return { studentName, studentTestAverage };
-    });
-
-    // Calculate overall average for the selected department
-    const overallTestAverage = tableData.reduce((total, data) => total + parseFloat(data.studentTestAverage), 0) / departmentStudents.length;
-    const attendanceAverage = departmentStudents.reduce((total, student) => total + parseFloat(student.total_attendance / student.total_days * 100), 0) / departmentStudents.length;
-
-    // Separate the colors for each field
-    const testScoreColor = 'rgb(0, 79, 152)';
-    const attendanceColor = 'rgb( 8, 37, 103)';
+    // Calculate pass/fail statistics for all subjects
+    const passFailStats = calculatePassFailRatio(students);
 
     canvas.chart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Test Score', 'Attendance'],
+        labels: ['Pass', 'Fail'],
         datasets: [
           {
             data: [
-              isNaN(overallTestAverage) ? 0 : parseFloat(overallTestAverage), // Test Score
-              isNaN(attendanceAverage) ? 0 : parseFloat(attendanceAverage),  // Attendance
+              passFailStats.passCount,
+              passFailStats.failCount
             ],
-            backgroundColor: [testScoreColor, attendanceColor],
-            borderColor: ['rgb(0, 79, 152)', 'rgb( 8, 37, 103)'],
+            backgroundColor: [passColor, failColor],
+            borderColor: [
+              'rgb(14, 129, 116)',
+              'rgb(255, 99, 71)',
+            ],
             borderWidth: 1,
           },
         ],
@@ -260,251 +160,30 @@ const DepartmentMenuDashboard = ({ students, department }) => {
         plugins: {
           legend: {
             display: true,
-            position: 'right', // Display the legend on the left side
+            position: 'right',
             labels: {
-              color: 'black', // Set the font color for the labels
+              color: 'black',
             },
           },
           annotation: {
             annotations: {
               value: {
                 type: 'text',
-                color: 'black', // Change the annotation font color to black
+                color: 'black',
                 fontSize: 24,
                 fontStyle: 'bold',
                 textAlign: 'center',
-                value: `${isNaN(overallTestAverage) ? 'NaN' : Math.round(overallTestAverage)}%`,
+                value: `${passFailStats.passPercentage.toFixed(2)}% Pass`,
                 x: '50%',
                 y: '50%',
               },
             },
           },
         },
-
-      },
-    });
-    const tableElement = document.getElementById('department-students-table');
-    if (tableElement) {
-      tableElement.innerHTML = '';
-      const table = document.createElement('table');
-
-      // Create table header
-      const headerRow = table.insertRow();
-      const nameHeader = headerRow.insertCell();
-      const averageHeader = headerRow.insertCell();
-      nameHeader.textContent = 'Student Name';
-      averageHeader.textContent = 'Overall Average (%)';
-
-      // Create table rows
-      tableData.forEach((data) => {
-        const row = table.insertRow();
-        const nameCell = row.insertCell();
-        const averageCell = row.insertCell();
-        nameCell.textContent = data.studentName;
-        averageCell.textContent = isNaN(data.studentAverage) ? 'NaN' : `${Math.round(data.studentAverage)}%`;
-      });
-
-      tableElement.appendChild(table);
-    }
-    //
-
-  }
-  const createYearWiseTestChart = () => {
-    Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
-    const canvas = document.getElementById('year-chart-test');
-    const ctx = canvas.getContext('2d');
-
-    if (typeof canvas.chart !== 'undefined') {
-      canvas.chart.destroy();
-    }
-
-    // Set the desired fixed dimensions for the chart
-    const chartWidth = 550;
-    const chartHeight = 225;
-
-    // Set the canvas width and height to match the chart dimensions
-    canvas.width = chartWidth;
-    canvas.height = chartHeight;
-
-    const firstYearAverage = calculateYearlyTestAverage(students, 'First year');
-    const secondYearAverage = calculateYearlyTestAverage(students, 'Second year');
-    const thirdYearAverage = calculateYearlyTestAverage(students, 'Third year');
-    const finalYearAverage = calculateYearlyTestAverage(students, 'Final year');
-
-    const yearLabels = ['First year', 'Second year', 'Third year', 'Final year'];
-
-    canvas.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: yearLabels,
-        datasets: [
-          {
-            label: 'Yearly Average',
-            data: [firstYearAverage, secondYearAverage, thirdYearAverage, finalYearAverage],
-            borderColor: 'rgb(0, 123, 255)',
-            borderWidth: 2,
-            pointBackgroundColor: 'rgb(0, 123, 255)',
-            pointRadius: 5,
-            pointHoverRadius: 7,
-            fill: false,
-          },
-        ],
-      },
-      options: {
-        responsive: false, // Set responsive to false to prevent resizing based on container size
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            display: true,
-            title: {
-              display: false, // Hide the x-axis title
-            },
-            ticks: {
-              color: 'black',
-            },
-            grid: {
-              display: false, // Hide the x-axis grid lines
-            },
-          },
-          y: {
-            display: true,
-            title: {
-              display: false, // Hide the y-axis title
-            },
-            ticks: {
-              color: 'black',
-              beginAtZero: true,
-              stepSize: 20,
-              max: 100,
-            },
-            grid: {
-              color: 'rgba(0, 0, 0, 0.2)',
-              drawBorder: false,
-              borderDash: [5, 5],
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            display: false,
-          },
-          datalabels: {
-            display: false,
-          },
-        },
       },
     });
   };
-  const createOverallDepartmentPerformanceChart = () => {
-    Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
-    const canvas = document.getElementById('department-chart-test');
-    const ctx = canvas.getContext('2d');
 
-    if (typeof canvas.chart !== 'undefined') {
-      canvas.chart.destroy();
-    }
-
-    // Set the desired fixed dimensions for the chart
-    const chartWidth = 550;
-    const chartHeight = 225;
-
-    // Set the canvas width and height to match the chart dimensions
-    canvas.width = chartWidth;
-    canvas.height = chartHeight;
-
-    const departmentStudents = students;
-
-    // Calculate overall average for each student in the selected department
-    const tableData = departmentStudents.map((student) => {
-      const studentName = student.name; // Assuming the student object has a 'name' property
-      const studentAverage = calculateStudentAverage(student);
-
-      return { studentName, studentAverage };
-    });
-
-    // Remove the highest bin value (100) from the bins array
-    const bins = [90, 80, 70, 60, 50, 40, 0];
-    const binLabels = bins.map((bin, index) => (index === 0 ? `${bin}+` : `${bin}-${bins[index - 1]}`));
-
-    // Count how many students fall into each bin/range
-    const testScoreCounts = Array(bins.length).fill(0);
-    tableData.forEach((data) => {
-      if (!isNaN(data.studentAverage)) {
-        const score = parseFloat(data.studentAverage);
-        for (let i = 0; i < bins.length; i++) {
-          if (score >= bins[i]) {
-            testScoreCounts[i]++;
-            break;
-          }
-        }
-      }
-    });
-
-    // Separate colors for each bin/range
-    const testScoreColors = [
-      'rgb(0, 85, 98)',
-      'rgb(14, 129, 116)',
-      'rgb(110, 186, 140)',
-      'rgb(185, 242, 161)',
-      'rgb(147, 193, 160)',
-      'rgb(211, 255, 204)',
-      'rgb(250, 20, 20)',
-    ];
-
-    // Create and render the Test Scores Bar Chart
-    canvas.chart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: binLabels,
-        datasets: [
-          {
-            data: testScoreCounts,
-            backgroundColor: testScoreColors,
-            borderColor: 'transparent',
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false, // Hide the legend since we don't need it for this chart
-          },
-          datalabels: {
-            color: 'black', // Set the font color for the datalabels inside the chart
-            anchor: 'end',
-            align: 'end',
-            font: {
-              weight: 'bold',
-            },
-            formatter: (value) => (value > 0 ? value.toString() : ''), // Show only non-zero values as labels
-          },
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: 'rgba(0, 0, 0, 0.7)', // Set the font color for x-axis labels
-            },
-            grid: {
-              display: true,
-            },
-          },
-          y: {
-            grid: {
-              display: true,
-            },
-            ticks: {
-              color: 'black', // Set the font color for the y-axis ticks
-              stepSize: 1, // Show integer values on the y-axis
-              beginAtZero: true, // Start the y-axis at 0
-            },
-          },
-        },
-      },
-    });
-  };
   const createGenderDepartmentLineChart = () => {
     Chart.register(LinearScale, CategoryScale, LineController, LineElement);
     const canvas = document.getElementById('iat-performance-chart-department');
@@ -590,18 +269,6 @@ const DepartmentMenuDashboard = ({ students, department }) => {
       },
     });
   };
-  function calculateYearlyTestAverage(students, year) {
-    const studentsInYear = students.filter((student) => student.class === year);
-    const totalStudents = studentsInYear.length;
-    if (totalStudents === 0) return NaN;
-
-    const totalAverage =
-      studentsInYear.reduce((total, student) => total + parseFloat(calculateStudentTestAverage(student)), 0) /
-      totalStudents;
-
-
-    return totalAverage;
-  }
   const calculateAverageByGender = (iatIndex, gender) => {
     const filteredStudents = students.filter((student) => student.gender === gender);
 
@@ -617,62 +284,92 @@ const DepartmentMenuDashboard = ({ students, department }) => {
     const averageScore = totalScore / studentsWithScores.length;
     return averageScore;
   };
-
-  useEffect(() => {
-    if (!selectedYear) {
-      departmentName = department;
-      createChart();
-      createYearWiseTestChart();
-      createOverallDepartmentPerformanceChart();
-      createGenderDepartmentLineChart();
+  const createHostelerChart = () => {
+    Chart.register(LinearScale, CategoryScale, LineController, LineElement);
+    const canvas = document.getElementById('iat-performance-hosteler-chart');
+    const ctx = canvas.getContext('2d');
+    if (typeof canvas.chart !== 'undefined') {
+        canvas.chart.destroy();
     }
-  }, [students, selectedYear]);
+    // Set the desired fixed dimensions for the chart
+    const chartWidth = 550;
+    const chartHeight = 225;
 
+    // Set the canvas width and height to match the chart dimensions
+    canvas.width = chartWidth;
+    canvas.height = chartHeight;
 
-
-  function calculateStudentTestAverage(student) {
-    const subjectScores = student.subjects.map((subject) => {
-      const { scores } = subject;
-      if (!scores || typeof scores !== "object") {
-        // If scores are missing or not an object, return NaN for this subject
-        return {
-          subject_name: subject.subject_name,
-          scores: "NaN",
-        };
-      }
-      const validScores = Object.values(scores).filter((score) => !isNaN(parseInt(score)));
-      const subjectScore =
-        validScores.length > 0
-          ? validScores.reduce((total, score) => total + parseInt(score), 0) / validScores.length
-          : "NaN";
-      return {
-        subject_name: subject.subject_name,
-        scores: subjectScore,
-      };
+    const hostelAverages = [1, 2, 3].map((iatIndex) => calculateAverageByType(iatIndex, 'hostel'));
+    const dayScholarAverages = [1, 2, 3].map((iatIndex) => calculateAverageByType(iatIndex, 'day-scholar'));
+    canvas.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['iat1', 'iat2', 'iat3'],
+            datasets: [
+                {
+                    label: 'Hosteler Average',
+                    data: hostelAverages,
+                    borderColor: 'rgb(255, 79, 0)',
+                    borderWidth: 2,
+                    fill: true,
+                },
+                {
+                    label: 'Day Scholar Average',
+                    data: dayScholarAverages,
+                    borderColor: 'rgb(253, 255, 0)',
+                    borderWidth: 2,
+                    fill: true,
+                },
+            ],
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: false,
+                        text: 'IAT',
+                        color: 'black',
+                    },
+                    ticks: {
+                        color: 'black',
+                    },
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: false,
+                        text: 'Scores',
+                        color: 'black',
+                    },
+                    ticks: {
+                        color: 'black',
+                        beginAtZero: true,
+                        stepSize: 20,
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+            },
+        },
     });
-
-    const maxScore = 100;
-
-    const subjectAverages = subjectScores.map((subject) => {
-      if (subject.scores === "NaN") {
-        return {
-          subject_name: subject.subject_name,
-          average_score: "NaN",
-        };
-      }
-      const average = (subject.scores / maxScore) * 100; // Scale the average score based on the maximum score
-      return {
-        subject_name: subject.subject_name,
-        average_score: average,
-      };
-    });
-
-    const overallAverage =
-      subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
-      subjectAverages.length;
-
-    return overallAverage;
-  }
+};
+const calculateAverageByType = (iatIndex, type) => {
+  const filteredStudents = students.filter((student) => student.type === type);
+  const studentsWithScores = filteredStudents.filter((student) => student.subjects.some((subject) => subject.scores[`iat_${iatIndex}`]));
+  const totalScore = studentsWithScores.reduce((total, student) => {
+      const iatScore = parseInt(student.subjects.find((subject) => subject.scores[`iat_${iatIndex}`])?.scores[`iat_${iatIndex}`]);
+      return total + iatScore;
+  }, 0);
+  const averageScore = totalScore / studentsWithScores.length;
+  return averageScore;
+};
 
   const handleCloseOverlay = () => {
     setShowAttendanceOverlay(false);
@@ -691,6 +388,86 @@ const DepartmentMenuDashboard = ({ students, department }) => {
 
 
   }
+  const calculateYearWiseAttendance = (students) => {
+    const currentDate = new Date();
+  
+    // Initialize variables to store attendance counts for each class
+    let firstYearPresentCount = 0;
+    let firstYearAbsentCount = 0;
+    let secondYearPresentCount = 0;
+    let secondYearAbsentCount = 0;
+    let thirdYearPresentCount = 0;
+    let thirdYearAbsentCount = 0;
+    let finalYearPresentCount = 0;
+    let finalYearAbsentCount = 0;
+  
+    // Loop through the students and calculate attendance for each class
+    students.forEach((student) => {
+      if (student.role === 'student') {
+        const year = student.year; // Assuming the student object has the 'class' property indicating the year of study
+  
+        // Determine if the student is present or absent for the current date
+        const isPresent = student.present_array.some((dateStr) => new Date(dateStr).toDateString() === currentDate.toDateString());
+        const isAbsent = student.leave_array.some((dateStr) => new Date(dateStr).toDateString() === currentDate.toDateString());
+  
+        // Update the attendance counts based on the student's class and attendance status
+        if (year === 'First year') {
+          if (isPresent) {
+            firstYearPresentCount++;
+          } else if (isAbsent) {
+            firstYearAbsentCount++;
+          }
+        } else if (year === 'Second year') {
+          if (isPresent) {
+            secondYearPresentCount++;
+          } else if (isAbsent) {
+            secondYearAbsentCount++;
+          }
+        } else if (year === 'Third year') {
+          if (isPresent) {
+            thirdYearPresentCount++;
+          } else if (isAbsent) {
+            thirdYearAbsentCount++;
+          }
+        } else if (year === 'Final year') {
+          if (isPresent) {
+            finalYearPresentCount++;
+          } else if (isAbsent) {
+            finalYearAbsentCount++;
+          }
+        }
+      }
+    });
+  
+    // Calculate percentages for each class using the existing calculateAttendancePercentage function
+    const firstYearAttendance = calculateAttendancePercentage(firstYearPresentCount, firstYearAbsentCount);
+    const secondYearAttendance = calculateAttendancePercentage(secondYearPresentCount, secondYearAbsentCount);
+    const thirdYearAttendance = calculateAttendancePercentage(thirdYearPresentCount, thirdYearAbsentCount);
+    const finalYearAttendance = calculateAttendancePercentage(finalYearPresentCount, finalYearAbsentCount);
+  
+    return {
+      firstYear: {
+        presentPercentage: firstYearAttendance.percentage,
+        presentCount: firstYearAttendance.count,
+        totalCount: firstYearPresentCount + firstYearAbsentCount,
+      },
+      secondYear: {
+        presentPercentage: secondYearAttendance.percentage,
+        presentCount: secondYearAttendance.count,
+        totalCount: secondYearPresentCount + secondYearAbsentCount,
+      },
+      thirdYear: {
+        presentPercentage: thirdYearAttendance.percentage,
+        presentCount: thirdYearAttendance.count,
+        totalCount: thirdYearPresentCount + thirdYearAbsentCount,
+      },
+      finalYear: {
+        presentPercentage: finalYearAttendance.percentage,
+        presentCount: finalYearAttendance.count,
+        totalCount: finalYearPresentCount + finalYearAbsentCount,
+      },
+    };
+  };
   const handleCopyClassAttendance = () => {
     const yearWiseAttendance = calculateYearWiseAttendance(students);
     const { firstYear, secondYear, thirdYear, finalYear } = yearWiseAttendance;
@@ -745,11 +522,8 @@ const DepartmentMenuDashboard = ({ students, department }) => {
 
   const yearWiseAttendance = calculateYearWiseAttendance(students);
   const { firstYear, secondYear, thirdYear, finalYear } = yearWiseAttendance;
-
-
   return (
     <div>
-
       {showAttendanceOverlay && (
         <div className="dep-admin-overlay">
           <div className="dep-admin-overlay-content">
@@ -759,7 +533,6 @@ const DepartmentMenuDashboard = ({ students, department }) => {
             <div className="attendance-details-container">
               <div className='main-attendance-details'>
                 <p className='present-details-percentage'>Present Percentage: {presentPercentage}%</p>
-                <p className='absent-details-percentage'>Absent Percentage: {absentPercentage}%</p>
                 <p>Students Present Today: {presentCount}</p>
                 <p>Total Students: {totalCount}</p>
                 <button className="copy-button" onClick={handleCopyClassAttendance}>
@@ -808,7 +581,9 @@ const DepartmentMenuDashboard = ({ students, department }) => {
 
       <div className='admin-year-choosing-menu '>
         <div className='department-header-container'>
-            <h1 className='department-wise-chart-heading'>{departmentName} Department</h1>
+          {showDepartment && students && (
+            <h1 className='department-wise-chart-heading'>{students[0].department} Department</h1>
+          )}
           <div className='menu-buttons'>
             <a href="#class-wise-page"><button className="today-button" onClick={handleTodayClick}>Attendance</button></a>
             <a href="#class-wise-page"><button onClick={() => handleMenuClick('First year')}>First year</button></a>
@@ -825,34 +600,30 @@ const DepartmentMenuDashboard = ({ students, department }) => {
             <div className='overall-department-performance-chart-container'>
               <div className='inside-container'>
                 <div className='sub-charts-container'>
-                  <canvas id="department-chart-overlay"></canvas>
+                  <canvas id="pass-fail-chart"></canvas>
                 </div>
               </div>
-              <p className='chart-heads'>Overall Performance</p>
+              <p className='chart-heads'>Department Pass Fail Ratio</p>
             </div>
-            <div className='overall-department-performance-chart-container'>
-              <div className='inside-container'>
-                <div className='sub-charts-container'>
-                  <canvas id="department-chart-test"></canvas>
-                </div>
-              </div>
-              <p className='chart-heads'>Overall Activities</p>
+            <div >
+
+              <ClassAttendance classStudents={students} />
             </div>
           </div>
           <div className='profile-chart-container'>
             <div className='overall-department-performance-chart-container'>
               <div className='inside-container'>
                 <div className='sub-charts-container'>
-                  <canvas id="year-chart-test"></canvas>
-                  <p className='chart-heads'>Year Wise Test Performance</p>
+                <canvas id="iat-performance-chart-department"></canvas>
+                <p className='chart-heads'>Gender Wise IAT Performance</p>
                 </div>
               </div>
             </div>
             <div className='overall-department-performance-chart-container'>
               <div className='inside-container'>
                 <div className='sub-charts-container'>
-                  <canvas id="iat-performance-chart-department"></canvas>
-                  <p className='chart-heads'>Gender Wise IAT Performance</p>
+                  <canvas id="iat-performance-hosteler-chart"></canvas>
+                  <p className='chart-heads'>Hosteler vs Day-Scholar Performance</p>
                 </div>
               </div>
             </div>
