@@ -120,8 +120,8 @@ const DepartmentClassWise = ({ students, year }) => {
                 datasets: [
                     {
                         data: [
-                            passFailStats.passCount,
-                            passFailStats.failCount
+                            passFailStats.passPercentage,
+                            passFailStats.failPercentage
                         ],
                         backgroundColor: [passColor, failColor],
                         borderColor: [

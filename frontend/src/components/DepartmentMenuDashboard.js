@@ -142,8 +142,8 @@ const DepartmentMenuDashboard = ({ students, department }) => {
         datasets: [
           {
             data: [
-              passFailStats.passCount,
-              passFailStats.failCount
+              passFailStats.passPercentage,
+              passFailStats.failPercentage
             ],
             backgroundColor: [passColor, failColor],
             borderColor: [

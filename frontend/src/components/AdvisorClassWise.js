@@ -104,8 +104,8 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
                 datasets: [
                     {
                         data: [
-                            passFailStats.passCount,
-                            passFailStats.failCount
+                            passFailStats.passPercentage,
+                            passFailStats.failPercentage
                         ],
                         backgroundColor: [passColor, failColor],
                         borderColor: [
@@ -418,10 +418,8 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
                 }
             });
         });
-    
         const passPercentage = (passCount / totalSubjects) * 100;
         const failPercentage = (failCount / totalSubjects) * 100;
-    
         return {
             passCount,
             failCount,
