@@ -247,6 +247,15 @@ const Home = () => {
                                     </p>
                                 </div>
                             }
+                            {mobile &&
+                                <div className="form-group">
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    <br></br>
+                                    
+                                </div>
+                            }
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
                     </div>
