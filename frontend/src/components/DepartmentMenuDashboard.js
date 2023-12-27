@@ -603,7 +603,7 @@ const calculateAverageByType = (iatIndex, type) => {
                   <canvas id="pass-fail-chart"></canvas>
                 </div>
               </div>
-              <p className='chart-heads'>Department Pass Fail Ratio</p>
+              <p className='chart-heads'>Department Pass Fail Ratio (in percentage)</p>
             </div>
             <div >
 

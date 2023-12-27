@@ -565,7 +565,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
                     <div className='inside-container'>
                         <div className='sub-charts-container'>
                             <canvas id="pass-fail-chart"></canvas>
-                            <p className='chart-heads'>Class Pass Fail Ratio</p>
+                            <p className='chart-heads'>Class Pass Fail Ratio (in percentage)</p>
                         </div>
                     </div>
                 </div>
