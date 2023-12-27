@@ -513,22 +513,6 @@ const TestScore = ({ email, department, year, instituteName }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                {student.subjects.map((subject) => (
-                                    <td key={subject.subject_code}>{subject.subject_code}</td>
-                                ))}
-                            </tr>
-                            {Object.keys(student.subjects[0].scores).map((iat, i) => (
-                                <tr key={i}>
-                                    <td>{`IAT-${i + 1}`}</td>
-                                    {student.subjects.map((subject) => (
-                                        <td key={subject.subject_code} className={cellClass(subject.scores[iat])}>{subject.scores[iat]}</td>
-                                    ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                        <tbody>
                             {testScores.map((subject, index) => (
                                 <tr key={index}>
                                     <td>{subject?.subject_code || ''}</td>
