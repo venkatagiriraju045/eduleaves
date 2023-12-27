@@ -233,7 +233,7 @@ const Home = () => {
                                     )}
                                 </button>
                             </div>
-                            {mobile &&
+                            {!mobile &&
                                 <div className="form-group">
                                     <br></br>
                                     <br></br>
