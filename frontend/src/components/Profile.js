@@ -17,10 +17,10 @@ const Profile = () => {
     const [showNavBar, setShowNavBar] = useState(true);
     const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
     const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
-
-
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const navigate = useNavigate();
+    
+
 
     useEffect(() => {
         const fetchStudentData = async () => {
@@ -39,6 +39,8 @@ const Profile = () => {
 
         fetchStudentData();
     }, [loggedInEmail]);
+
+
 
     useEffect(() => {
         const createChart = (student) => {
@@ -238,21 +240,21 @@ const Profile = () => {
         setShowTestScore(false);
         setIsLoading(true);
         setShowAttendance(false);
-
+    
         // Add loading class to content-container to blur the background
         document.querySelector('.profile-content-container').classList.add('loading');
-
+    
         // Hide the chart elements
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container,.profile-chart-container, .message-container').forEach((element) => {
             element.style.display = 'none';
         });
-
+    
         // Create a new message element and append it to the content-container
         const messageElement = document.createElement('div');
         messageElement.classList.add('loading-message');
         messageElement.style.color = 'white'; // Set the color to white
         document.querySelector('.profile-content-container').appendChild(messageElement);
-
+    
         // After a short delay, remove the loading class and the message element to show the loading overlay
         setTimeout(() => {
             setIsLoading(false);
@@ -456,23 +458,23 @@ const Profile = () => {
     const renderMessage = () => {
         if (student) {
             const { hod_message, mentor_message, advisor_message } = student;
-    
+
             if (hod_message || mentor_message || advisor_message) {
                 return (
                     <div className="message">
                         <p className="message-title">Important Messages:</p>
                         <div className="message-content">
-                                <div className="message-point">
-                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                                    <p className="sender-title sender-hod"> HOD MESSAGE : </p>
-                                    <p className="sentence-text">{hod_message.trim()}   </p>
-                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                                    <p className="sender-title sender-mentor"> MENTOR MESSAGE : </p>
-                                    <p className="sentence-text">{mentor_message.trim()}   </p>
-                                    <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
-                                    <p className="sender-title sender-advisor"> ADVISOR MESSAGE : </p>
-                                    <p className="sentence-text">{advisor_message.trim()}   </p>
-                                </div>
+                            <div className="message-point">
+                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                <p className="sender-title sender-hod"> HOD MESSAGE : </p>
+                                <p className="sentence-text">{hod_message.trim()}   </p>
+                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                <p className="sender-title sender-mentor"> MENTOR MESSAGE : </p>
+                                <p className="sentence-text">{mentor_message.trim()}   </p>
+                                <img src="./uploads/pin.png" alt="Point Icon" className="point-icon" />
+                                <p className="sender-title sender-advisor"> ADVISOR MESSAGE : </p>
+                                <p className="sentence-text">{advisor_message.trim()}   </p>
+                            </div>
                         </div>
                     </div>
                 );
@@ -483,7 +485,7 @@ const Profile = () => {
             return <p className="message">No student data available.</p>;
         }
     };
-    
+
 
 
     const handleLogout = () => {

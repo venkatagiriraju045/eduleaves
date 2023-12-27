@@ -15,6 +15,8 @@ const Home = () => {
     const [staff, setStaff] = useState(null);
     const [handleSubmitPressed, setHandleSubmitPressed] = useState(false);
     const navigate = useNavigate();
+    const [mobile, setMobile] = useState(false);
+
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
     const handleLoginEmailChange = (e) => {
         setLoginEmail(e.target.value);
@@ -24,6 +26,11 @@ const Home = () => {
         setLoginPassword(e.target.value);
     };
 
+    useEffect(() => {
+        // Detect device type and set the state
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        isMobile ? setMobile(true) : setMobile(false)
+    }, []);
     useEffect(() => {
         // Set opacity to 0 initially
         if (loading) {
@@ -131,9 +138,9 @@ const Home = () => {
             if (response.data.success) {
                 if (staff) {
                     if ((loginEmail !== 'admin@kiot') && (loginEmail !== 'admin@psg') && (loginEmail !== 'admin@mhs')) {
-                        if ( loginAs === 'hod' && staff.role === 'hod' && loginAs !== 'student') {
+                        if (loginAs === 'hod' && staff.role === 'hod' && loginAs !== 'student') {
                             navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
-                        } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student' ) {
+                        } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student') {
                             navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section: staff.section } });
                         } else if (loginAs === 'mentor' && staff.role === 'mentor' && (staff.name === 'rk@cse.kiot' || staff.name === 'rsp@cse.kiot' || staff.name === 'rsg@cse.kiot' || staff.name === 'mj@cse.kiot') && loginAs !== 'student') {
                             navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
@@ -226,18 +233,20 @@ const Home = () => {
                                     )}
                                 </button>
                             </div>
-                            <div className="form-group">
-                                <br></br>
-                                <br></br>
-                                <p id="login-as">
-                                    Enter as
-                                    {loginAs !== 'student' && <span onClick={() => setLoginAs('student')}> Student /</span>}
-                                    {loginAs !== 'hod' && <span onClick={() => setLoginAs('hod')}> HOD /</span>}
-                                    {loginAs !== 'advisor' && loginAs !== 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor /</span>}
-                                    {loginAs === 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor </span>}
-                                    {loginAs !== 'mentor' && <span onClick={() => setLoginAs('mentor')}> Mentor </span>}
-                                </p>
-                            </div>
+                            {mobile &&
+                                <div className="form-group">
+                                    <br></br>
+                                    <br></br>
+                                    <p id="login-as">
+                                        Enter as
+                                        {loginAs !== 'student' && <span onClick={() => setLoginAs('student')}> Student /</span>}
+                                        {loginAs !== 'hod' && <span onClick={() => setLoginAs('hod')}> HOD /</span>}
+                                        {loginAs !== 'advisor' && loginAs !== 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor /</span>}
+                                        {loginAs === 'mentor' && <span onClick={() => setLoginAs('advisor')}> Advisor </span>}
+                                        {loginAs !== 'mentor' && <span onClick={() => setLoginAs('mentor')}> Mentor </span>}
+                                    </p>
+                                </div>
+                            }
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
                     </div>
