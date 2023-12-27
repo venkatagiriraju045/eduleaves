@@ -81,7 +81,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowDepartment(true);
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []); // This effect runs once on component mount
