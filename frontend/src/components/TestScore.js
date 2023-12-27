@@ -431,7 +431,19 @@ const TestScore = ({ email, department, year, instituteName }) => {
 
         return subjectAverages;
     };
-
+    const cellClass = (mark) => {
+        if (mark >= 0 && mark <= 40) {
+            return 'low-mark';
+        } else if (mark >= 41 && mark <= 70) {
+            return 'average-mark';
+        } else if (mark >= 71 && mark <= 89) {
+            return 'good-mark';
+        } else if (mark >= 90 && mark <= 100) {
+            return 'outstanding-mark';
+        } else {
+            return ''; // Default class when the mark is outside the specified ranges
+        }
+    };  
     function findHighLowSubjects(subjectAverages) {
         let highestSubject = null;
         let lowestSubject = null;
@@ -501,13 +513,29 @@ const TestScore = ({ email, department, year, instituteName }) => {
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td></td>
+                                {student.subjects.map((subject) => (
+                                    <td key={subject.subject_code}>{subject.subject_code}</td>
+                                ))}
+                            </tr>
+                            {Object.keys(student.subjects[0].scores).map((iat, i) => (
+                                <tr key={i}>
+                                    <td>{`IAT-${i + 1}`}</td>
+                                    {student.subjects.map((subject) => (
+                                        <td key={subject.subject_code} className={cellClass(subject.scores[iat])}>{subject.scores[iat]}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tbody>
                             {testScores.map((subject, index) => (
                                 <tr key={index}>
                                     <td>{subject?.subject_code || ''}</td>
                                     <td>{subject?.subject_name || ''}</td>
-                                    <td>{subject?.scores?.iat_1 || 'NaN'}</td>
-                                    <td>{subject?.scores?.iat_2 || 'NaN'}</td>
-                                    <td>{subject?.scores?.iat_3 || 'NaN'}</td>
+                                    <td className={cellClass(subject.scores[iat_1])}>{subject?.scores?.iat_1 || 'NaN'}</td>
+                                    <td className={cellClass(subject.scores[iat_2])}>{subject?.scores?.iat_2 || 'NaN'}</td>
+                                    <td className={cellClass(subject.scores[iat_3])}>{subject?.scores?.iat_3 || 'NaN'}</td>
                                 </tr>
                             ))}
                         </tbody>

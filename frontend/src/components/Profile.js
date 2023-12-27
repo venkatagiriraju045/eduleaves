@@ -562,6 +562,9 @@ const Profile = () => {
         "Electrical and Communication Engineering": "ECE",
         "Civil Engineering": "CIVIL",
     };
+
+
+
     return (
 
         <div className="page-container">

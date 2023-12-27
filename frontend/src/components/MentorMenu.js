@@ -66,7 +66,6 @@ const MentorMenu = () => {
         setLoading(false);
       }
     };
-
     fetchStudentData();
   }, []);
 
@@ -79,29 +78,6 @@ const MentorMenu = () => {
   if (error) {
     return <p>Error fetching student data: {error.message}</p>;
   }
-
-  const handleMessageButtonClick = () => {
-    setShowMessageForm(true);
-    setShowUpdateAccom(false);
-    setShowTestPerformanceForm(false);
-    setShowAttendanceForm(false);
-    setIsLoading(true);
-    document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
-      element.style.display = 'none';
-    });
-    const messageElement = document.createElement('div');
-    messageElement.style.color = 'black';
-    document.querySelector('.profile-content-container').appendChild(messageElement);
-    setTimeout(() => {
-      setIsLoading(false);
-      messageElement.remove();
-      setShowMessageForm(true);
-      setShowTestPerformanceForm(false);
-      setShowAttendanceForm(false);
-      setShowUpdateAccom(false);
-      setIsHomeButtonClicked(false);
-    }, 1000);
-  };
 
   const handleAttendanceButtonClick = () => {
     setShowAttendanceForm(true);
