@@ -265,6 +265,8 @@ const Profile = () => {
         setShowTestScore(true);
         setShowAttendance(false);
         setIsLoading(true);
+        setshowSemesterResult(false);
+
 
         // Add loading class to content-container to blur the background
         // Hide the chart elements
@@ -288,6 +290,8 @@ const Profile = () => {
     const handleTestScoreClose = () => {
         setShowTestScore(false);
         setShowAttendance(false);
+        setshowSemesterResult(false);
+
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.chart-details-container1 ,.attendance-chart, .overall-performance-chart, .analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
         });
@@ -326,6 +330,8 @@ const Profile = () => {
         setShowTestScore(false);
         setShowAttendance(true);
         setIsLoading(true);
+        setshowSemesterResult(false);
+
 
         // Add loading class to content-container to blur the background
 
@@ -344,6 +350,7 @@ const Profile = () => {
             setIsLoading(false);
             messageElement.remove();
             setShowTestScore(false);
+            setshowSemesterResult(false);
             setShowAttendance(true);
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
@@ -353,18 +360,15 @@ const Profile = () => {
             element.style.display = 'flex';
         });
     };
-
     const handleHomeButtonClick = () => {
         setShowAccomplishments(false);
         setShowAttendance(false);
-
+        setshowSemesterResult(false);
         setShowTestScore(false);
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1 ,.attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
         });
     };
-
-
     const renderAnalytics = (student) => {
         if (!student) {
             return <p className="analytics">Student data not available.</p>;
@@ -482,7 +486,6 @@ const Profile = () => {
     const renderMessage = () => {
         if (student) {
             const { hod_message, mentor_message, advisor_message } = student;
-
             if (hod_message || mentor_message || advisor_message) {
                 return (
                     <div className="message">
@@ -509,8 +512,6 @@ const Profile = () => {
             return <p className="message">No student data available.</p>;
         }
     };
-
-
 
     const handleLogout = () => {
         setShowConfirmationPrompt(false);
