@@ -5,12 +5,14 @@ import { Chart, LinearScale, CategoryScale, BarController, BarElement, DoughnutC
 import './CSS/Profile_model.css';
 import TestScore from './TestScore';
 import Accomplishment from './Accomplishment';
+import SemesterResult from './SemesterResult';
 import AttendanceCalendar from './AttendanceCalendar';
 
 const Profile = () => {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showTestScore, setShowTestScore] = useState(false);
+    const [showSemesterResult, setshowSemesterResult] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
@@ -19,7 +21,7 @@ const Profile = () => {
     const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const navigate = useNavigate();
-    
+
 
 
     useEffect(() => {
@@ -209,7 +211,6 @@ const Profile = () => {
                             const width = chart.width;
                             const height = chart.height;
                             const ctx = chart.ctx;
-
                             ctx.save();
                             ctx.fillStyle = 'rgb(20,20,20)';
                             ctx.textAlign = 'center';
@@ -224,16 +225,10 @@ const Profile = () => {
         };
 
         if (student) {
-
             createChart(student);
             createAttendanceChart(student);
         }
     }, [student]);
-
-
-
-
-
 
     /*const handleAccomplishments = () => {
         setShowAccomplishments(true);
@@ -296,6 +291,35 @@ const Profile = () => {
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.chart-details-container1 ,.attendance-chart, .overall-performance-chart, .analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
         });
+    };
+
+    const handleShowSemesterResults = () => {
+        setShowAccomplishments(false);
+        setShowTestScore(false);
+        setShowAttendance(false);
+        setshowSemesterResult(true);
+        setIsLoading(true);
+
+        // Add loading class to content-container to blur the background
+
+        // Hide the chart elements
+        document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
+            element.style.display = 'none';
+        });
+
+        // Create a new message element and append it to the content-container
+        const messageElement = document.createElement('div');
+        messageElement.style.color = 'white'; // Set the color to white
+        document.querySelector('.profile-content-container').appendChild(messageElement);
+
+        // After a short delay, remove the loading class and the message element to show the loading overlay
+        setTimeout(() => {
+            setIsLoading(false);
+            messageElement.remove();
+            setShowTestScore(false);
+            setshowSemesterResult(true);
+            setShowAttendance(false);
+        }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
     const handleShowAttendance = () => {
         setShowAccomplishments(false);
@@ -603,6 +627,13 @@ const Profile = () => {
                                 <a href="#" className="test-score-button" onClick={handleShowAttendance}>Attendance</a>
                             </div>
                         </li>
+                        {showSemesterResult &&
+                            <li>
+                                <div>
+                                    <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                     <footer className="profile-footer">
                         &copy; The Students Gate-2023.
@@ -655,9 +686,13 @@ const Profile = () => {
                             </button>
                             <AttendanceCalendar student={student} />
                         </div>
-                    ) : showTestScore && (
+                    ) : showTestScore ? (
                         <div className='attendance-page-container'>
                             <TestScore email={student.email} department={student.department} year={student.class} instituteName={student.institute_name} onClose={handleTestScoreClose} />
+                        </div>
+                    ) : showSemesterResult && (
+                        <div className='attendance-page-container'>
+                            <SemesterResult email={student.email} department={student.department} year={student.class} instituteName={student.institute_name} onClose={handleTestScoreClose} />
                         </div>
                     )
                     }

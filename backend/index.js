@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
             },
         },
     ],
+    semester_results: [
+    {type: Number}
+    ],
+
     year: { type: String },
     department: { type: String },
     total_attendance: { type: Number },
@@ -49,7 +53,7 @@ const userSchema = new mongoose.Schema({
     accomplishments: { type: String },
     institute_name: { type: String },
     role: { type: String },
-    mentor_name: {type: String}
+    mentor_name: { type: String }
 
 }, { versionKey: false });
 
@@ -130,14 +134,14 @@ app.get('/api/students_data', async (req, res) => {
 app.get('/api/advisor_students_data', async (req, res) => {
     try {
         // Extract the filtering parameters from the query string
-        const { role, department, instituteName, year, section} = req.query;
+        const { role, department, instituteName, year, section } = req.query;
 
         // Create a filter object to match the specified fields
         const filter = {
             role: role, // Filter by role
             department: department, // Filter by department
-            institute_name: instituteName, 
-            year : year,
+            institute_name: instituteName,
+            year: year,
             section: section,// Filter by institute_name
         };
         // Use the filter to find students
@@ -152,14 +156,14 @@ app.get('/api/advisor_students_data', async (req, res) => {
 app.get('/api/mentor_students_data', async (req, res) => {
     try {
         // Extract the filtering parameters from the query string
-        const { role, department, instituteName, mentor_name} = req.query;
+        const { role, department, instituteName, mentor_name } = req.query;
 
         // Create a filter object to match the specified fields
         const filter = {
             role: role, // Filter by role
             department: department, // Filter by department
-            institute_name: instituteName, 
-            mentor_name:mentor_name// Filter by institute_name
+            institute_name: instituteName,
+            mentor_name: mentor_name// Filter by institute_name
         };
         // Use the filter to find students
         const students = await User.find(filter);
