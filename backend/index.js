@@ -37,7 +37,13 @@ const userSchema = new mongoose.Schema({
         },
     ],
     semester_results: [
-    {type: Number}
+        {
+            subject_code: { type: String },
+            subject_name: { type: String },
+            score: {
+                type: String
+            },
+        },
     ],
 
     year: { type: String },
