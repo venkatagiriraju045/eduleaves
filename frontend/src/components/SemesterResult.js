@@ -14,7 +14,7 @@ const SemesterResult = ({ email}) => {
                 const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
                 const { semester_results } = response.data;
                 setTestScores(semester_results);
-                setLoading(false);
+                setLoading(false);  
             } catch (error) {
                 console.error('Error fetching test scores:', error);
                 setLoading(false);
