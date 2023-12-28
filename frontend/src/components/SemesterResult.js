@@ -54,14 +54,10 @@ const SemesterResult = ({ email}) => {
         return null; // Don't render the component if it's closed
     }
 
-    if (!testScores || testScores.length === 0) {
-        return <p>No test scores found.</p>;
-    }
-
     return (
         <div className="test-scrollable-container">
             <div className="test-score-chart-container">
-                <h2 id="chart-names">Score table</h2>
+                <h2 id="chart-names">Semester Results</h2>
                 <div className="test-score-table-container">
                     <table>
                         <thead>
