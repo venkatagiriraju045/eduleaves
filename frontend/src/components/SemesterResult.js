@@ -57,7 +57,7 @@ const SemesterResult = ({ email}) => {
     return (
         <div className="test-scrollable-container">
             <div className="test-score-chart-container">
-                <h2 id="chart-names">Semester Results</h2>
+                <h2 id="chart-names">Semester Results(Dummy)</h2>
                 <div className="test-score-table-container">
                     <table>
                         <thead>
