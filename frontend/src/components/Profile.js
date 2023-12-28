@@ -13,6 +13,8 @@ const Profile = () => {
     const [loading, setLoading] = useState(true);
     const [showTestScore, setShowTestScore] = useState(false);
     const [showSemesterResult, setshowSemesterResult] = useState(false);
+    const [enableSemesterResult, setEnableSemesterResult] = useState(true);
+
     const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
@@ -21,6 +23,7 @@ const Profile = () => {
     const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const navigate = useNavigate();
+
 
 
 
@@ -628,7 +631,7 @@ const Profile = () => {
                                 <a href="#" className="test-score-button" onClick={handleShowAttendance}>Attendance</a>
                             </div>
                         </li>
-                        {showSemesterResult &&
+                        {enableSemesterResult && 
                             <li>
                                 <div>
                                     <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
