@@ -12,7 +12,7 @@ const Profile = () => {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [showTestScore, setShowTestScore] = useState(false);
-    const [showSemesterResult, setshowSemesterResult] = useState(true);
+    const [showSemesterResult, setshowSemesterResult] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
