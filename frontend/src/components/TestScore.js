@@ -486,7 +486,6 @@ const TestScore = ({ email, department, year, instituteName }) => {
                     </ul>
                 </div>
             </div>
-
             <div className="test-score-chart-container">
                 <h2 id="chart-names">Score table</h2>
                 <div className="test-score-table-container">
@@ -505,15 +504,22 @@ const TestScore = ({ email, department, year, instituteName }) => {
                                 <tr key={index}>
                                     <td>{subject?.subject_code || ''}</td>
                                     <td>{subject?.subject_name || ''}</td>
-                                    <td>{subject?.scores?.iat_1 || 'NaN'}</td>
-                                    <td>{subject?.scores?.iat_2 || 'NaN'}</td>
-                                    <td>{subject?.scores?.iat_3 || 'NaN'}</td>
+                                    <td style={{ backgroundColor: subject?.scores?.iat_1 < 50 ? 'red' : 'transparent' }}>
+                                        {subject?.scores?.iat_1 || 'NaN'}
+                                    </td>
+                                    <td style={{ backgroundColor: subject?.scores?.iat_2 < 50 ? 'red' : 'transparent' }}>
+                                        {subject?.scores?.iat_2 || 'NaN'}
+                                    </td>
+                                    <td style={{ backgroundColor: subject?.scores?.iat_3 < 50 ? 'red' : 'transparent' }}>
+                                        {subject?.scores?.iat_3 || 'NaN'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
+
             <ComparisonChart email={email} department={department} year={year} testScores={testScores} students={students} />
             <div className="test-score-content-container">
                 <div className="test-score-chart-container">

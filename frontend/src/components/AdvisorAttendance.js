@@ -17,6 +17,8 @@ const AdvisorAttendance = ({ students }) => {
   const [labelWidth, setLabelWidth] = useState(0);
   const [dateError, setDateError] = useState(false);
   const [isDateChosen, setIsDateChosen] = useState(false);
+  const [attendaceUpdationCompleted, setAttendaceUpdationCompleted] = useState(false);
+
   const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 
 
@@ -25,6 +27,11 @@ const AdvisorAttendance = ({ students }) => {
     setDateError(false);
   }, [date]);
 
+  useEffect(() => {
+    if (attendaceUpdationCompleted) {
+      renderTableRows();
+    }
+  }, [attendaceUpdationCompleted]);
 
 
   useEffect(() => {
@@ -50,16 +57,16 @@ const AdvisorAttendance = ({ students }) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
 
     return students.sort((a, b) => {
-        const yearIndexA = yearOrder.indexOf(a.class);
-        const yearIndexB = yearOrder.indexOf(b.class);
+      const yearIndexA = yearOrder.indexOf(a.class);
+      const yearIndexB = yearOrder.indexOf(b.class);
 
-        const yearComparison = yearIndexA - yearIndexB;
-        if (yearComparison !== 0) return yearComparison;
+      const yearComparison = yearIndexA - yearIndexB;
+      if (yearComparison !== 0) return yearComparison;
 
-        // Sort by register number instead of name
-        return a.registerNumber - b.registerNumber;
+      // Sort by register number instead of name
+      return a.registerNumber - b.registerNumber;
     });
-};
+  };
 
 
 
@@ -147,7 +154,7 @@ const AdvisorAttendance = ({ students }) => {
       console.error('Error updating attendance:', error);
       setMessage('An error occurred while updating attendance mod 4');
     }
-
+    setAttendaceUpdationCompleted(true);
     setLoading(false);
   };
 
