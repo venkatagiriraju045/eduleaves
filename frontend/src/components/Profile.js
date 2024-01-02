@@ -15,7 +15,7 @@ const Profile = () => {
     const [showSemesterResult, setshowSemesterResult] = useState(false);
     const [enableSemesterResult, setEnableSemesterResult] = useState(true);
 
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
     const [showNavBar, setShowNavBar] = useState(true);
@@ -25,7 +25,31 @@ const Profile = () => {
     const navigate = useNavigate();
 
 
+    useEffect(() => {
+        // Set opacity to 0 initially
+        if (loading) {
+            document.querySelector('.loading-overlay').style.opacity = '1';
 
+            // After 3 seconds, update opacity to 1 without transition
+
+            const initialOpacityTimer = setTimeout(() => {
+                document.querySelector('.loading-overlay').style.opacity = '0';
+                document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
+
+            }, 2000);
+
+            // After 6 seconds, hide the overlay
+            const hideOverlayTimer = setTimeout(() => {
+                setLoading(false);
+            }, 2000);
+
+            return () => {
+                clearTimeout(hideOverlayTimer);
+
+                clearTimeout(initialOpacityTimer);
+            };
+        }
+    }, [loading]);
 
     useEffect(() => {
         const fetchStudentData = async () => {
@@ -44,8 +68,6 @@ const Profile = () => {
 
         fetchStudentData();
     }, [loggedInEmail]);
-
-
 
     useEffect(() => {
         const createChart = (student) => {
