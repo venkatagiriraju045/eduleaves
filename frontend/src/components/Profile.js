@@ -526,10 +526,6 @@ const Profile = () => {
         setShowNavBar((prevShowNavBar) => !prevShowNavBar);
     };
 
-    if (!student) {
-        return <p>No student data found.</p>;
-    }
-
     const subjectScores = student.subjects.map((subject) => {
         const { scores } = subject;
         if (!scores || typeof scores !== "object") {
@@ -611,13 +607,14 @@ const Profile = () => {
                                     <img src={imageUrl} alt="Profile Picture" />
                                 </div>
                                 <p className="student-details">
-                                    {student.name}
+                                    {student.name.toUpperCase()}
                                     <br />
-                                    {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
+                                    {student.year.toUpperCase()} - {departmentShortNames[student.department] || student.department.toUpperCase()} - {student.section.toUpperCase()}
                                     <br />
-                                    Mentor ID : {student.mentor_name}
+                                    Mentor ID : {student.mentor_name.toUpperCase()}
                                     <br />
                                 </p>
+
                             </div>
                         </li>
                         <li><a href="#" onClick={handleHomeButtonClick}>Home</a></li>
@@ -631,7 +628,7 @@ const Profile = () => {
                                 <a href="#" className="test-score-button" onClick={handleShowAttendance}>Attendance</a>
                             </div>
                         </li>
-                        {enableSemesterResult && 
+                        {enableSemesterResult &&
                             <li>
                                 <div>
                                     <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
