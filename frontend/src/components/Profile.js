@@ -527,6 +527,7 @@ const Profile = () => {
     };
 
     if (!student) {
+    setLoading(true);
         return <p>No student data found.</p>;
     }
 
