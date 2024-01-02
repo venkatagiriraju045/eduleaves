@@ -103,7 +103,7 @@ const DepartmentClassWise = ({ students, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 225;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -200,7 +200,7 @@ const DepartmentClassWise = ({ students, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 225;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -303,7 +303,7 @@ const DepartmentClassWise = ({ students, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 225;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -392,7 +392,7 @@ const DepartmentClassWise = ({ students, year }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 350;
         const chartHeight = 225;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
