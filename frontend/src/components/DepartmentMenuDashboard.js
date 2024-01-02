@@ -125,7 +125,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
     if (typeof canvas.chart !== 'undefined') {
       canvas.chart.destroy();
     }
-    const chartWidth = 350;
+    const chartWidth = 320;
     const chartHeight = 250;
     canvas.width = chartWidth;
     canvas.height = chartHeight;
@@ -193,7 +193,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
     }
 
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 500;
+    const chartWidth = 450;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
@@ -292,7 +292,7 @@ const DepartmentMenuDashboard = ({ students, department }) => {
         canvas.chart.destroy();
     }
     // Set the desired fixed dimensions for the chart
-    const chartWidth = 500;
+    const chartWidth = 450;
     const chartHeight = 225;
 
     // Set the canvas width and height to match the chart dimensions
