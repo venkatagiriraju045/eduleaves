@@ -87,7 +87,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 320;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -152,7 +152,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 320;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -245,7 +245,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 320;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
@@ -317,7 +317,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 370;
+        const chartWidth = 320;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
