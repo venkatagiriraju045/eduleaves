@@ -16,7 +16,7 @@ const AttendanceCalendar = ({ classStudents }) => {
         if (typeof canvas.chart !== 'undefined') {
             canvas.chart.destroy();
         }
-        const chartWidth = 770;
+        const chartWidth = 700;
         const chartHeight = 250;
         canvas.width = chartWidth;
         canvas.height = chartHeight;
