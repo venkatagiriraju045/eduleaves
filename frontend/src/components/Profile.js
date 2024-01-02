@@ -15,7 +15,7 @@ const Profile = () => {
     const [showSemesterResult, setshowSemesterResult] = useState(false);
     const [enableSemesterResult, setEnableSemesterResult] = useState(true);
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
     const [showNavBar, setShowNavBar] = useState(true);
@@ -25,31 +25,7 @@ const Profile = () => {
     const navigate = useNavigate();
 
 
-    useEffect(() => {
-        // Set opacity to 0 initially
-        if (loading) {
-            document.querySelector('.loading-overlay').style.opacity = '1';
 
-            // After 3 seconds, update opacity to 1 without transition
-
-            const initialOpacityTimer = setTimeout(() => {
-                document.querySelector('.loading-overlay').style.opacity = '0';
-                document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
-
-            }, 2000);
-
-            // After 6 seconds, hide the overlay
-            const hideOverlayTimer = setTimeout(() => {
-                setLoading(false);
-            }, 2000);
-
-            return () => {
-                clearTimeout(hideOverlayTimer);
-
-                clearTimeout(initialOpacityTimer);
-            };
-        }
-    }, [loading]);
 
     useEffect(() => {
         const fetchStudentData = async () => {
@@ -68,6 +44,8 @@ const Profile = () => {
 
         fetchStudentData();
     }, [loggedInEmail]);
+
+
 
     useEffect(() => {
         const createChart = (student) => {
@@ -394,15 +372,6 @@ const Profile = () => {
             element.style.display = 'flex';
         });
     };
-
-    if(!student){
-        setLoading(true);
-        if(student){
-            setLoading(false);
-        }
-
-    }
-    
     const renderAnalytics = (student) => {
         if (!student) {
             return <p className="analytics">Student data not available.</p>;
@@ -557,6 +526,10 @@ const Profile = () => {
         setShowNavBar((prevShowNavBar) => !prevShowNavBar);
     };
 
+    if (!student) {
+        return <p>No student data found.</p>;
+    }
+
     const subjectScores = student.subjects.map((subject) => {
         const { scores } = subject;
         if (!scores || typeof scores !== "object") {
@@ -638,14 +611,13 @@ const Profile = () => {
                                     <img src={imageUrl} alt="Profile Picture" />
                                 </div>
                                 <p className="student-details">
-                                    {student.name.toUpperCase()}
+                                    {student.name}
                                     <br />
-                                    {student.year.toUpperCase()} - {departmentShortNames[student.department] || student.department.toUpperCase()} - {student.section.toUpperCase()}
+                                    {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
                                     <br />
-                                    Mentor ID : {student.mentor_name.toUpperCase()}
+                                    Mentor ID : {student.mentor_name}
                                     <br />
                                 </p>
-
                             </div>
                         </li>
                         <li><a href="#" onClick={handleHomeButtonClick}>Home</a></li>
@@ -659,7 +631,7 @@ const Profile = () => {
                                 <a href="#" className="test-score-button" onClick={handleShowAttendance}>Attendance</a>
                             </div>
                         </li>
-                        {enableSemesterResult &&
+                        {enableSemesterResult && 
                             <li>
                                 <div>
                                     <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
