@@ -394,6 +394,15 @@ const Profile = () => {
             element.style.display = 'flex';
         });
     };
+
+    if(!student){
+        setLoading(true);
+        if(student){
+            setLoading(false);
+        }
+
+    }
+    
     const renderAnalytics = (student) => {
         if (!student) {
             return <p className="analytics">Student data not available.</p>;
