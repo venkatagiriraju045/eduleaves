@@ -197,9 +197,6 @@ body {
 }
 
 .navigation1 ul {
-    position: fixed;
-    top: 0;
-    left:1%;
     list-style-type: none;
     padding: 0;
     margin: 0;
