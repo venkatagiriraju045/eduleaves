@@ -194,97 +194,7 @@ const TestScore = ({ email, department, year, instituteName }) => {
                 });
             };
 
-            const createComparisonChart = () => {
-                Chart.register(LinearScale, CategoryScale, BarController, BarElement);
 
-                const canvas = document.getElementById('iat-comparison-chart');
-                const ctx = canvas.getContext('2d');
-                if (typeof canvas.chart !== 'undefined') {
-                    canvas.chart.destroy();
-                }
-
-                const iatAverages = calculateIATAverages(testScores);
-                const classAverages = calculateClassIATAverages(students);
-
-                const lowestIATScores = [100, 100, 100]; // Assuming the maximum score is 100
-                const highestIATScores = [0, 0, 0];
-
-
-                students.forEach(student => {
-                    student.subjects.forEach(subject => {
-                        const iat1 = parseInt(subject.scores.iat_1) || 0;
-                        const iat2 = parseInt(subject.scores.iat_2) || 0;
-                        const iat3 = parseInt(subject.scores.iat_3) || 0;
-
-                        lowestIATScores[0] = Math.min(lowestIATScores[0], iat1);
-                        lowestIATScores[1] = Math.min(lowestIATScores[1], iat2);
-                        lowestIATScores[2] = Math.min(lowestIATScores[2], iat3);
-
-                        highestIATScores[0] = Math.max(highestIATScores[0], iat1);
-                        highestIATScores[1] = Math.max(highestIATScores[1], iat2);
-                        highestIATScores[2] = Math.max(highestIATScores[2], iat3);
-                    });
-                });
-
-                canvas.chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['IAT 1', 'IAT 2', 'IAT 3'],
-                        datasets: [
-                            {
-                                label: 'Lowest Score',
-                                data: lowestIATScores,
-                                backgroundColor: 'rgba(255, 206, 86, 0.5)',
-                                borderWidth: 0,
-                            },
-                            {
-                                label: 'Your Performance',
-                                data: iatAverages,
-                                backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                                borderWidth: 0,
-                            },
-                            {
-                                label: 'Class Average',
-                                data: classAverages,
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                borderWidth: 0,
-                            },
-                            {
-                                label: 'Highest Score',
-                                data: highestIATScores,
-                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                borderWidth: 0,
-                            },
-                        ],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                ticks: {
-                                    color: 'rgba(0,0,0, 0.7)',
-                                },
-                            },
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    color: 'rgba(0,0,0, 0.7)',
-                                },
-                            },
-                        },
-                        plugins: {
-                            legend: {
-                                display: true,
-                                labels: {
-                                    color: 'rgba(0,0,0, 0.7)',
-                                },
-                            },
-                        },
-                    },
-                });
-            };
             const createLineChart = () => {
                 Chart.register(LinearScale, CategoryScale, LineController, LineElement);
 
@@ -359,7 +269,6 @@ const TestScore = ({ email, department, year, instituteName }) => {
 
             if (testScores.length > 0 && isDataFetched) {
                 createChart();
-                createComparisonChart();
                 createLineChart();
             }
         }
@@ -526,10 +435,6 @@ const TestScore = ({ email, department, year, instituteName }) => {
                     <h2 id="chart-names">Subject wise IAT performance</h2>
                     <canvas id="iat-performance-student-chart"></canvas>
                 </div>
-            </div>
-            <div className="test-score-chart-container">
-                <h2 id="chart-names">Your IAT wise comparison</h2>
-                <canvas id="iat-comparison-chart"></canvas>
             </div>
             <div className="test-score-chart-container">
                 <h2 id="chart-names">Overall IAT scores average in each subjests</h2>
