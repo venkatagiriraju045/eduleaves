@@ -15,11 +15,7 @@ import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 const AdvisorMenu = () => {
   const location = useLocation();
   const { instituteName, departmentName, year, section } = location.state || {};
-  const [department, setDepartment] = useState(null);
-  const [studentYear, setStudentYear] = useState(null);
-  const [studentSection, setStudentSection] = useState(null);
   const [institute, setInstitute] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);

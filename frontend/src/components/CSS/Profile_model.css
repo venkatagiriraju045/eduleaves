@@ -402,6 +402,8 @@ body {
     margin: 2vw;
     margin-top: 0;
     margin-bottom: 1.5vw;
+    max-width: 80vw;
+
     height: 20vh;
     padding: 2vw;
     border-radius: 0.8vw;
@@ -422,6 +424,7 @@ body {
     text-align: center;
     height: 22vh;
     min-width: 100px;
+    max-width: 80vw;
     overflow-y: auto;
     margin: 2vw;
     background-color: #ffffff;
