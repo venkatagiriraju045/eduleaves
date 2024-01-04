@@ -71,6 +71,9 @@ const UpdateIAT = () => {
     
     return (
         <div className="update-iat-container">
+            <h1>Update Internal Assessment Scores</h1>
+            <div className='update-iat-specific-container'>
+
             <label className="iat-label">
                 Select IAT Type:
                 <select className="iat-select" value={iatType} onChange={handleIatTypeChange}>
@@ -85,6 +88,7 @@ const UpdateIAT = () => {
             <button className="upload-button" onClick={handleUpload}>
                 Upload
             </button>
+            </div>
         </div>
     );
 };
