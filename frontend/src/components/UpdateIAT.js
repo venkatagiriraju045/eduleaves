@@ -54,7 +54,7 @@ const UpdateIAT = () => {
                     console.log(iatScoresToUpdate);
 
                     // Make a POST request to your server endpoint
-                    const response = await axios.post('http://localhost:3000/api/update_iat', { iatScoresToUpdate });
+                    const response = await axios.post('https://eduleaves-api.vercel.app/api/update_iat', { iatScoresToUpdate });
     
                     console.log(response.data); // Handle the response as needed
                 } catch (error) {

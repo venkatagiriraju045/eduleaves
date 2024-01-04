@@ -101,7 +101,7 @@ const MenteeActivityUpdate = ({ student }) => {
         try {
             setLoading(true);
             // Validate that the necessary fields are filled based on the selected activity type
-            await axios.post(`http://localhost:3000/api/update_activity`, {
+            await axios.post(`https://eduleaves-api.vercel.app/api/update_activity`, {
                 email: student.email,
                 activity_type: activityType,
                 activity_details: getActivityDetails(),

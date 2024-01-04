@@ -61,7 +61,7 @@ const Home = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`http://localhost:3000/api/login`, {
+            const response = await axios.post(`https://eduleaves-api.vercel.app/api/login`, {
                 email: loginEmail,
                 password: loginPassword,
             });
@@ -84,7 +84,7 @@ const Home = () => {
     useEffect(() => {
         const fetchStaffData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/students?email=${loginEmail}`);
+                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loginEmail}`);
                 const staffData = response.data;
                 setStaff(staffData);
                 setLoading(false);
@@ -131,7 +131,7 @@ const Home = () => {
             console.log(loginEmail);
             console.log(loginPassword);
             console.log(staff);
-            const response = await axios.post(`http://localhost:3000/api/admin-login`, {
+            const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
                 email: loginEmail,
                 password: loginPassword,
             });

@@ -18,7 +18,7 @@ const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 useEffect(() => {
     const fetchStudentData = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/api/students_data');
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/students_data');
         const studentData = response.data.filter((data) => data.role === 'student');
         setStudents(studentData);
         setLoading(false);
@@ -77,7 +77,7 @@ const updateStudentAccomplishments = async () => {
         ? `${searchedStudent.accomplishments}. ${message.trim()}`
         : message.trim();
 
-    await axios.post('http://localhost:3000/api/update_accomplishments', {
+    await axios.post('https://eduleaves-api.vercel.app/api/update_accomplishments', {
         email: searchedStudent.email,
         accomplishments: accomplishmentsToUpdate,
     });

@@ -11,7 +11,7 @@ const SemesterResult = ({ email}) => {
     useEffect(() => {
         const fetchTestScores = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/students?email=${email}`);
+                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
                 const { semester_results } = response.data;
                 setTestScores(semester_results);
                 setLoading(false);  

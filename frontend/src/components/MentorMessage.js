@@ -48,7 +48,7 @@ const MentorMessage = ({ student }) => {
             const accomplishmentsToUpdate = `[${dateAndTime}] ${message.trim()}`;
             console.log(accomplishmentsToUpdate);
     
-            await axios.post('http://localhost:3000/api/update_messages', {
+            await axios.post('hhttps://eduleaves-api.vercel.app/api/update_messages', {
                 email: student.email,
                 messages: accomplishmentsToUpdate,
                 sender,
