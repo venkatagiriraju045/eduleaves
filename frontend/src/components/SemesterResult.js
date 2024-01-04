@@ -11,7 +11,7 @@ const SemesterResult = ({ email}) => {
     useEffect(() => {
         const fetchTestScores = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${email}`);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${email}`);
                 const { semester_results } = response.data;
                 setTestScores(semester_results);
                 setLoading(false);  
@@ -57,7 +57,7 @@ const SemesterResult = ({ email}) => {
     return (
         <div className="test-scrollable-container">
             <div className="test-score-chart-container">
-                <h2 id="chart-names">Semester Results(Dummy)</h2>
+                <h2 id="chart-names">Final Year Odd Semester Results(Dummy)</h2>
                 <div className="test-score-table-container">
                     <table>
                         <thead>
@@ -87,3 +87,4 @@ const SemesterResult = ({ email}) => {
     );
 };
 export default SemesterResult;
+

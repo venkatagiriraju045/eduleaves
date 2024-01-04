@@ -21,7 +21,7 @@ body {
     padding: 2vw;
     overflow: hidden;
     transition: all 0.3s ease;
-    min-width: 200px;
+    min-width: 170px;
     max-width: 14vw;
 
 }

@@ -44,7 +44,7 @@ const MentorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/mentor_students_data', {
+        const response = await axios.get('http://localhost:3000/api/mentor_students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department
@@ -98,6 +98,28 @@ const MentorMenu = () => {
       setShowMessageForm(false);
       setShowTestPerformanceForm(false);
 
+      setIsHomeButtonClicked(false);
+    }, 1000);
+  };
+  const handleUpdateButtonClick = () => {
+    setShowAttendanceForm(false);
+    setShowMessageForm(false);
+    setShowTestPerformanceForm(false);
+    setShowUpdateAccom(true);
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setShowTestPerformanceForm(false);
+      setShowUpdateAccom(true);
       setIsHomeButtonClicked(false);
     }, 1000);
   };
@@ -216,10 +238,14 @@ const MentorMenu = () => {
             </li>
             <br />
             <br />
+            <li>
+              <a href="#" className="test-score-button" onClick={handleUpdateButtonClick} title="View Attendance">
+                Activity Update
+              </a>
+            </li>
+            <br />
+            <br />
           </ul>
-          <footer className="profile-footer">
-            &copy; The Students Gate-2023.
-          </footer>
         </nav>
       }
 

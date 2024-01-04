@@ -94,7 +94,7 @@ const AdminHome = () => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get('https://eduleaves-api.vercel.app/api/admin_students_data', {
+                const response = await axios.get('http://localhost:3000/api/admin_students_data', {
                     params: {
                         role: 'student', // Filter by role
                         instituteName: instituteName, // Filter by institute_name
@@ -713,9 +713,6 @@ const AdminHome = () => {
                         </div>
                     </div>
                 </main>
-                <footer className="main-admin-footer">
-                    &copy; The Students Gate-2023.
-                </footer>
             </div>
         </div>
     );

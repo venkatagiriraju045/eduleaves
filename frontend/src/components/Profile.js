@@ -30,7 +30,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loggedInEmail}`);
+                const response = await axios.get(`http://localhost:3000/api/students?email=${loggedInEmail}`);
                 const studentData = response.data;
                 setStudent(studentData);
                 setLoading(false);
@@ -233,36 +233,36 @@ const Profile = () => {
         }
     }, [student]);
 
-    /*const handleAccomplishments = () => {
+    const handleAccomplishments = () => {
         setShowAccomplishments(true);
         setShowTestScore(false);
-        setIsLoading(true);
         setShowAttendance(false);
-    
+        setIsLoading(true);
+        setshowSemesterResult(false);
+
+
         // Add loading class to content-container to blur the background
-        document.querySelector('.profile-content-container').classList.add('loading');
-    
         // Hide the chart elements
-        document.querySelectorAll('.profile-attendance-chart,.chart-container1,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container,.profile-chart-container, .message-container').forEach((element) => {
+        document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1, .attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
             element.style.display = 'none';
         });
-    
+
         // Create a new message element and append it to the content-container
         const messageElement = document.createElement('div');
-        messageElement.classList.add('loading-message');
         messageElement.style.color = 'white'; // Set the color to white
         document.querySelector('.profile-content-container').appendChild(messageElement);
-    
+
         // After a short delay, remove the loading class and the message element to show the loading overlay
         setTimeout(() => {
             setIsLoading(false);
-            document.querySelector('.profile-content-container').classList.remove('loading');
             messageElement.remove();
-            setShowAccomplishments(true);
             setShowTestScore(false);
+            setShowAccomplishments(true);
+            setshowSemesterResult(false);
+            setShowAttendance(false);
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
-    */
+
     const handleShowTestScore = () => {
         setShowAccomplishments(false);
         setShowTestScore(true);
@@ -512,7 +512,7 @@ const Profile = () => {
                 return <p className="message">No messages available.</p>;
             }
         } else {
-            return <p className="message">No student data available.</p>;
+            return <p className="message">Stay tuned...</p>;
         }
     };
 
@@ -621,17 +621,23 @@ const Profile = () => {
                             </div>
                         </li>
                         <li><a href="#" onClick={handleHomeButtonClick}>Home</a></li>
-                        <li>
-                            <div>
-                                <a href="#" className="test-score-button" onClick={handleShowTestScore}>Tests</a>
-                            </div>
-                        </li>
+
                         <li>
                             <div>
                                 <a href="#" className="test-score-button" onClick={handleShowAttendance}>Attendance</a>
                             </div>
                         </li>
-                        {enableSemesterResult && 
+                        <li>
+                            <div>
+                                <a href="#" className="test-score-button" onClick={handleAccomplishments}>Activities</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <a href="#" className="test-score-button" onClick={handleShowTestScore}>Tests</a>
+                            </div>
+                        </li>
+                        {enableSemesterResult &&
                             <li>
                                 <div>
                                     <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
@@ -639,9 +645,6 @@ const Profile = () => {
                             </li>
                         }
                     </ul>
-                    <footer className="profile-footer">
-                        &copy; The Students Gate-2023.
-                    </footer>
                 </nav>}
 
             <div
@@ -694,13 +697,14 @@ const Profile = () => {
                         <div className='attendance-page-container'>
                             <TestScore email={student.email} department={student.department} year={student.class} instituteName={student.institute_name} onClose={handleTestScoreClose} />
                         </div>
-                    ) : showSemesterResult && (
+                    ) : showSemesterResult ? (
                         <div className='attendance-page-container'>
                             <SemesterResult email={student.email} department={student.department} year={student.class} instituteName={student.institute_name} onClose={handleTestScoreClose} />
                         </div>
+                    ) : showAccomplishments && (
+                    <Accomplishment student={student} onClose={handleTestScoreClose}></Accomplishment>
                     )
                     }
-                    {showAccomplishments && <Accomplishment location={{ state: { email: student.email } }} onClose={handleTestScoreClose} />}
 
                     <div className="profile-chart-container">
                         <div className='attendance-chart-container'>

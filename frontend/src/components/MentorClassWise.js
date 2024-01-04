@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Chart, LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement } from 'chart.js/auto';
 import './CSS/DepartmentClassWise.css';
-import ClassAttendance from './ClassAttendance.js';
-import PassGradeChart from './PassGradeChart.js';
 import MentorMessage from './MentorMessage.js';
+import MenteeActivityUpdate from './MenteeActivityUpdate.js';
 
 const calculateAttendancePercentage = (presentCount, absentCount) => {
     const totalDays = presentCount + absentCount;
@@ -56,9 +55,8 @@ const MentorClassWise = ({ students }) => {
     const [selectedStudent, setSelectedStudent] = useState(null); // Track the selected student
     const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
     const [showSpecificStudentDetails, setShowSpecificStudentDetails] = useState(false);
-
     const [showMessageForm, setShowMessageForm] = useState(false);
-
+    const [showUpdateForm, setShowUpdateForm] = useState(false);
     const { presentPercentage, absentPercentage, presentCount, totalCount, absentees } = calculateOverallAttendance(
         students
     );
@@ -68,7 +66,8 @@ const MentorClassWise = ({ students }) => {
     const handleCloseOverlay = () => {
         setShowAttendanceOverlay(false);
         setShowSpecificStudentDetails(false);
-        setShowMessageForm(false)
+        setShowUpdateForm(false);
+        setShowMessageForm(false);
     };
     const handleTodayClick = () => {
         setShowAttendanceOverlay(true);
@@ -115,8 +114,6 @@ const MentorClassWise = ({ students }) => {
         ));
     };
 
-    // ... (existing code)
-
     const getTotalStudentsByGenderAndYear = (gender, year) => {
         return students.filter((student) => student.role === 'student' && student.gender === gender && student.year === year).length;
     };
@@ -153,7 +150,15 @@ const MentorClassWise = ({ students }) => {
         }
     };
     const handleSpecificMessageClick = () => {
+        setShowUpdateForm(false);
         setShowMessageForm(true);
+        setShowSpecificStudentDetails(false);
+        setShowAttendanceOverlay(false);
+    };
+
+    const handleUpdateButtonClick = () => {
+        setShowMessageForm(false);
+        setShowUpdateForm(true);
         setShowSpecificStudentDetails(false);
         setShowAttendanceOverlay(false);
     };
@@ -256,7 +261,9 @@ const MentorClassWise = ({ students }) => {
                                         <div className="student-details-heading">
                                             <p className='mentees-year-heading'>{selectedStudent.name} ({selectedStudent.registerNumber}) {selectedStudent.type}</p>
                                         </div>
-                                        <a className='message-button-specific-student' onClick={handleSpecificMessageClick}>message</a>
+                                        <a className='message-button-specific-student' onClick={handleSpecificMessageClick}>Message</a>
+                                        <a className='message-button-specific-student' onClick={handleUpdateButtonClick}>Update Activity</a>
+
                                     </div >
                                     <h2>Test Performance : </h2>
                                     <table>
@@ -285,12 +292,70 @@ const MentorClassWise = ({ students }) => {
                                             <p>Percentage: {((selectedStudent.total_attendance / selectedStudent.total_days) * 100).toFixed(2)}%</p>
                                         </div>
                                     </div>
+                                    {/* Display Internships */}
+                                    {selectedStudent.internships && selectedStudent.internships.length > 0 && (
+                                        <div>
+                                            <h2>Internships:</h2>
+                                            {selectedStudent.internships.map((internship, index) => (
+                                                <div key={index}>
+                                                    <p>Role Name: {internship.role_name}</p>
+                                                    <p>Organization: {internship.organization_name}</p>
+                                                    <p>Duration: {internship.duration}</p>
+                                                    <p>Start Date: {internship.start_date}</p>
+                                                    <p>End Date: {internship.end_date}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {/* Display Certifications */}
+                                    {selectedStudent.certifications && selectedStudent.certifications.length > 0 && (
+                                        <div>
+                                            <h2>Certifications:</h2>
+                                            {selectedStudent.certifications.map((certification, index) => (
+                                                <div key={index}>
+                                                    <p>Certification Name: {certification.certification_name}</p>
+                                                    <p>Organization: {certification.certification_providing_organization}</p>
+                                                    <p>Date of Completion: {certification.date_of_completion}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Display Courses */}
+                                    {selectedStudent.courses && selectedStudent.courses.length > 0 && (
+                                        <div>
+                                            <h2>Courses:</h2>
+                                            {selectedStudent.courses.map((course, index) => (
+                                                <div key={index}>
+                                                    <p>Course Name: {course.course_name}</p>
+                                                    <p>Duration: {course.course_duration}</p>
+                                                    <p>Date of Completion: {course.date_of_completion}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Display Achievements */}
+                                    {selectedStudent.achievements && selectedStudent.achievements.length > 0 && (
+                                        <div>
+                                            <h2>Achievements:</h2>
+                                            {selectedStudent.achievements.map((achievement, index) => (
+                                                <div key={index}>
+                                                    <p>Achievement Name: {achievement.achievement_name}</p>
+                                                    <p>Held at: {achievement.held_at}</p>
+                                                    <p>Prize Got: {achievement.prize_got}</p>
+                                                    <p>Date of Happened: {achievement.date_of_happened}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
                                 </>
                             )}
                         </div>
                     </div>
                 </div>
-            ) : (showMessageForm &&
+            ) : showMessageForm ? (
                 <div className="overlay">
                     <div className="overlay-content">
                         <button className="close-button" id="close-button" onClick={handleCloseOverlay}>
@@ -309,7 +374,27 @@ const MentorClassWise = ({ students }) => {
                             )}
                         </div>
                     </div>
-                </div>)
+                </div>) : showUpdateForm && (
+                    <div className="overlay">
+                        <div className="overlay-content">
+                            <button className="close-button" id="close-button" onClick={handleCloseOverlay}>
+                                Close
+                            </button>
+                            <div className="students-specific-details-container">
+                                {selectedStudent && (
+                                    <>
+                                        <div className="specific-details-header-container">
+                                            <div className="student-details-heading">
+                                                <p className='mentees-year-heading'>{selectedStudent.name} ({selectedStudent.registerNumber})</p>
+                                            </div>
+                                        </div >
+                                        <MenteeActivityUpdate student={selectedStudent} />
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )
             }
 
         </div>

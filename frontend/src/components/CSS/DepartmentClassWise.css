@@ -186,12 +186,13 @@
     align-self: flex-end; /* Align to the right */
     margin-right: 10px; 
     font-size: calc(0.7rem + 0.5vw);
-    font-weight: bold;
     cursor: pointer;
     color:rgb(36, 97, 25);
     border-radius: 1vw;
-    background-color: rgba(127, 255, 212, 0.47);
+    background-color: rgb(251, 255, 254);
     padding:0.5vw;
+    
+    box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
 
     /* Add other styles as needed */
 }

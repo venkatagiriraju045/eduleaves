@@ -10,6 +10,7 @@ import AdvisorDashboard from './AdvisorDashboard.js';
 import AdvisorMessage from './AdvisorMessage.js';
 import AdvisorTest from './AdvisorTest.js';
 import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
+import UpdateIAT from './UpdateIAT.js';
 
 
 const AdvisorMenu = () => {
@@ -24,6 +25,7 @@ const AdvisorMenu = () => {
   const [showDashboard, setShowDashboard] = useState(true);
 
   const [showAdvisorAttendancePerformace, setShowAdvisorAttendancePerformace] = useState(false);
+  const [showUpdateIATForm, setShowUpdateIATForm] = useState(false);
 
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
@@ -49,7 +51,7 @@ const AdvisorMenu = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
+        const response = await axios.get('http://localhost:3000/api/advisor_students_data', {
           params: {
             role: 'student', // Filter by role
             department: departmentName, // Filter by department
@@ -84,6 +86,7 @@ const AdvisorMenu = () => {
   }
   const handleTestPerformanceButtonClick = () => {
     setShowTestPerformanceForm(true);
+    setShowUpdateIATForm(false);
     setShowAttendanceForm(false);
     setShowMessageForm(false);
     setShowAdvisorAttendancePerformace(false);
@@ -100,6 +103,7 @@ const AdvisorMenu = () => {
       setIsLoading(false);
       messageElement.remove();
       setShowTestPerformanceForm(true);
+      setShowUpdateIATForm(false);
       setShowAttendanceForm(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
@@ -110,6 +114,7 @@ const AdvisorMenu = () => {
   const handleMessageButtonClick = () => {
     setShowTestPerformanceForm(false);
     setShowMessageForm(true);
+    setShowUpdateIATForm(false);
     setShowAdvisorAttendancePerformace(false);
     setShowDashboard(false);
     setShowUpdateAccom(false);
@@ -126,6 +131,35 @@ const AdvisorMenu = () => {
       setShowMessageForm(true);
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
+      setShowUpdateIATForm(false);
+      setShowDashboard(false);
+      setIsHomeButtonClicked(false);
+      setShowAdvisorAttendancePerformace(false);
+      setShowTestPerformanceForm(false);
+
+    }, 1000);
+  };
+  const handleUpdateIATButtonClick = () => {
+    setShowTestPerformanceForm(false);
+    setShowUpdateIATForm(true);
+    setShowMessageForm(false);
+    setShowAdvisorAttendancePerformace(false);
+    setShowDashboard(false);
+    setShowUpdateAccom(false);
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
+      setShowMessageForm(false);
+      setShowAttendanceForm(false);
+      setShowUpdateAccom(false);
+      setShowUpdateIATForm(true);
       setShowDashboard(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
@@ -137,6 +171,7 @@ const AdvisorMenu = () => {
   const handleAttendanceButtonClick = () => {
     setShowAttendanceForm(true);
     setShowMessageForm(false);
+    setShowUpdateIATForm(false);
     setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
     setShowDashboard(false);
@@ -154,6 +189,7 @@ const AdvisorMenu = () => {
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowMessageForm(false);
+      setShowUpdateIATForm(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
@@ -168,8 +204,8 @@ const AdvisorMenu = () => {
     setShowMessageForm(false);
     setShowUpdateAccom(false);
     setShowDashboard(false);
+    setShowUpdateIATForm(false);
     setShowTestPerformanceForm(false);
-
     setIsLoading(true);
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
@@ -184,6 +220,7 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
+      setShowUpdateIATForm(false);
       setShowDashboard(false);
       setShowTestPerformanceForm(false);
 
@@ -196,6 +233,7 @@ const AdvisorMenu = () => {
     setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
     setShowTestPerformanceForm(false);
+    setShowUpdateIATForm(false);
     setIsHomeButtonClicked(true);
     setIsLoading(true);
 
@@ -210,7 +248,7 @@ const AdvisorMenu = () => {
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(true);
       setShowTestPerformanceForm(false);
-
+      setShowUpdateIATForm(false);
     }, 1000);
   };
 
@@ -295,10 +333,14 @@ const AdvisorMenu = () => {
             </li>
             <br />
             <br />
+            <li>
+              <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
+                Update IAT Scores
+              </a>
+            </li>
+            <br />
+            <br />
           </ul>
-          <footer className="profile-footer">
-            &copy; The Students Gate-2023.
-          </footer>
         </nav>
       }
 
@@ -345,21 +387,22 @@ const AdvisorMenu = () => {
             </div>
             {showUpdateAccom ? (
               <UpdateAccom students={students} />
-            ) :
-              showMessageForm ? (
-                <AdvisorMessage students={students} />
-              ) : showAttendanceForm ? (
-                <AdvisorAttendance students={students} />
-              ) : showTestPerformanceForm ? (
-                <AdvisorTest students={students} />
-              ) : showAdvisorAttendancePerformace ? (
-                <AdvisorAttendancePerformance students={students} />
-              ) : (showDashboard &&
-                <div className='home-contents'>
-                  <div>
-                    <AdvisorDashboard students={students} year={year} section={section} department={departmentName} />
-                  </div>
-                </div>)}
+            ) : showUpdateIATForm ? (
+              <UpdateIAT students={students} />
+            ) : showMessageForm ? (
+              <AdvisorMessage students={students} />
+            ) : showAttendanceForm ? (
+              <AdvisorAttendance students={students} />
+            ) : showTestPerformanceForm ? (
+              <AdvisorTest students={students} />
+            ) : showAdvisorAttendancePerformace ? (
+              <AdvisorAttendancePerformance students={students} />
+            ) : (showDashboard &&
+              <div className='home-contents'>
+                <div>
+                  <AdvisorDashboard students={students} year={year} section={section} department={departmentName} />
+                </div>
+              </div>)}
           </main>
         }
       </div>

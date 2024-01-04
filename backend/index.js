@@ -45,7 +45,6 @@ const userSchema = new mongoose.Schema({
             },
         },
     ],
-
     year: { type: String },
     department: { type: String },
     total_attendance: { type: Number },
@@ -59,31 +58,45 @@ const userSchema = new mongoose.Schema({
     accomplishments: { type: String },
     institute_name: { type: String },
     role: { type: String },
-    mentor_name: { type: String }
+    mentor_name: { type: String },
 
+    // New Fields
+    courses: [
+        {
+            course_name: { type: String },
+            course_duration: { type: String },
+            date_of_completion: { type: Date },
+        },
+    ],
+    certifications: [
+        {
+            certification_name: { type: String },
+            certification_providing_organization: { type: String },
+            date_of_completion: { type: Date },
+        },
+    ],
+    achievements: [
+        {
+            achievement_name: { type: String },
+            held_at: { type: String },
+            prize_got: { type: String },
+            date_of_happened: { type: Date },
+        },
+    ],
+    internships: [
+        {
+            role_name: { type: String },
+            organization_name: { type: String },
+            duration: { type: String },
+            start_date: { type: Date },
+            end_date: { type: Date },
+        },
+    ],
 }, { versionKey: false });
+
 
 const User = mongoose.model('students', userSchema);
 
-
-app.post('/api/signup', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        const newUser = new User({ email, password });
-        await newUser.save();
-
-        res.status(200).json({ message: 'User registered successfully' });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
 
 app.post('/api/admin-login', async (req, res) => {
     const { email, password } = req.body;
@@ -199,31 +212,6 @@ app.get('/api/admin_students_data', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-/*
-app.get('/api/students_data', async (req, res) => {
-    try {
-        // Extract the filtering parameters from the query string
-        const { role, department, instituteName } = req.query;
- 
-        // Create a filter object to match the specified fields
-        const filter = {
-            role: role,
-            department: department,
-            institute_name: instituteName,
-        };
- 
-        // Use the filter to find students
-        const students = await User.find(filter);
- 
-        res.status(200).json(students);
-    } catch (error) {
-        console.error('Error fetching students data:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
- 
-*/
 
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
@@ -394,6 +382,85 @@ app.post('/api/update_messages', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+app.post('/api/update_activity', async (req, res) => {
+    const { email, activity_type, activity_details } = req.body;
+
+    try {
+        // Find the student by email
+        const student = await User.findOne({ email });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Update the activity details based on the activity type
+        switch (activity_type) {
+            case 'internship':
+                student.internships.push(activity_details);
+                break;
+            case 'certification':
+                student.certifications.push(activity_details);
+                break;
+            case 'course':
+                student.courses.push(activity_details);
+                break;
+            case 'achievement':
+                student.achievements.push(activity_details);
+                break;
+            // Add more cases for other activity types if needed
+
+            default:
+                return res.status(400).json({ message: 'Invalid activity type' });
+        }
+
+        // Save the updated student document
+        await student.save();
+
+        res.status(200).json({ message: 'Activity details updated successfully' });
+    } catch (error) {
+        console.error('Error updating activity details:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+app.post('/api/update_iat', async (req, res) => {
+    try {
+        const { iatScoresToUpdate } = req.body;
+
+        // Update IAT scores in the database
+        for (const data of iatScoresToUpdate) {
+            const { registerNumber, iatType, scores } = data;
+
+            // Iterate through each subject and update the score
+            for (const subjectCode in scores) {
+                const score = parseInt(scores[subjectCode]);
+                
+                await User.findOneAndUpdate(
+                    {
+                        'registerNumber': registerNumber,
+                        'subjects.subject_code': subjectCode
+                    },
+                    {
+                        $set: {
+                            ['subjects.$[subject].scores.' + iatType]: score
+                        }
+                        
+                    },
+                    {
+                        arrayFilters: [{ 'subject.subject_code': { $eq: subjectCode } }]
+                    }
+                );
+            }
+        }
+
+        res.status(200).json({ message: 'IAT scores updated successfully' });
+    } catch (error) {
+        console.error('Error updating IAT scores:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
