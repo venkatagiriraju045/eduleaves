@@ -1,0 +1,146 @@
+/* styles.css */
+
+.sem-result-container {
+    width: 21cm;
+    min-height: 26.7cm;
+    margin: 0 auto;
+    font-family: 'Times New Roman', Times, serif;
+    border: 1px solid black;
+    padding: 20px;
+    font-weight: 500;
+    margin-top: 20px;
+}
+
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.result-table th,
+.result-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.result-table th {
+    background-color: #f2f2f2;
+}
+
+.grade-legend {
+    margin-top: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-top: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.sem-result-header {
+    display: flex;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.sem-result-institution-logo {
+    display: flex;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.institution-details-kiot {
+    text-align: center;
+    margin-left: 1.5vw;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.sub-college-name-sem-result {
+    font-size: 18px;
+}
+
+.date-of-announcement {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.college-name-sem-result {
+    font-size: 36px;
+
+}
+
+.subjct-name-cell-sem-result {
+    max-width: 200px;
+}
+
+.result-download-button {
+    position: absolute;
+    top: 70px;
+    right: 10px;
+    background-color: rgb(176, 176, 246);
+    outline: none;
+    font-size: calc(0.5rem + 0.5vw);
+
+    border: none;
+}
+
+@media (max-width:1040px) {
+    .sem-result-container {
+        width: 100%;
+    }
+
+    .result-table th,
+    .result-table td {
+        padding: 0.5vh;
+        font-size: calc(0.5rem + 0.5vw);
+        
+    }
+    .grade-legend {
+        margin-top: 1vh;
+        font-size: calc(0.5rem + 0.4vw);
+        margin-bottom: 1vh;
+    }
+    .grade-legend {
+        overflow: auto; /* Apply overflow to the container */
+    }
+    
+    .result-table {
+        width: 100%;
+        table-layout: fixed; /* Fix the table layout */
+    }
+    
+    .result-table td {
+        word-wrap: break-word; /* Wrap long words in cells */
+    }
+    .disclaimer-para{
+        font-size: calc(0.5rem + 0.4vw);
+
+    }
+    .sem-result-institution-logo img{
+        width:15vw;
+        height:15vw;
+    }
+
+    .sub-college-name-sem-result {
+        font-size: calc(0.5rem + 0.5vw);
+    }
+    .college-name-sem-result {
+        font-size: calc(0.5rem + 3vw);
+    
+    }
+    
+.date-of-announcement {
+    margin-top: 1vh;
+    font-size: calc(0.5rem + 0.5vw);
+
+}
+
+    
+
+}

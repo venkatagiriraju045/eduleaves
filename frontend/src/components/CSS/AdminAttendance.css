@@ -282,7 +282,6 @@ font-weight: 100;
 .attendance-content-container {
     display: flex;  
     flex-direction: row;
-    gap: 110px;
 
 }
 

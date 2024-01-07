@@ -27,6 +27,7 @@ const AdvisorMenu = () => {
   const [showAdvisorAttendancePerformace, setShowAdvisorAttendancePerformace] = useState(false);
   const [showUpdateIATForm, setShowUpdateIATForm] = useState(false);
 
+
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
   const [showNavBar, setShowNavBar] = useState(true);
@@ -84,6 +85,7 @@ const AdvisorMenu = () => {
   if (error) {
     return <p>Error fetching student data: {error.message}</p>;
   }
+
   const handleTestPerformanceButtonClick = () => {
     setShowTestPerformanceForm(true);
     setShowUpdateIATForm(false);
@@ -104,7 +106,7 @@ const AdvisorMenu = () => {
       messageElement.remove();
       setShowTestPerformanceForm(true);
       setShowUpdateIATForm(false);
-      setShowAttendanceForm(false);
+        setShowAttendanceForm(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
       setShowMessageForm(false);
@@ -133,7 +135,7 @@ const AdvisorMenu = () => {
       setShowUpdateAccom(false);
       setShowUpdateIATForm(false);
       setShowDashboard(false);
-      setIsHomeButtonClicked(false);
+        setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowTestPerformanceForm(false);
 
@@ -160,7 +162,7 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setShowUpdateIATForm(true);
-      setShowDashboard(false);
+        setShowDashboard(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowTestPerformanceForm(false);
@@ -189,7 +191,7 @@ const AdvisorMenu = () => {
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowMessageForm(false);
-      setShowUpdateIATForm(false);
+        setShowUpdateIATForm(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
@@ -220,7 +222,7 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
-      setShowUpdateIATForm(false);
+        setShowUpdateIATForm(false);
       setShowDashboard(false);
       setShowTestPerformanceForm(false);
 
@@ -245,7 +247,7 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(true);
-      setShowAdvisorAttendancePerformace(false);
+        setShowAdvisorAttendancePerformace(false);
       setShowDashboard(true);
       setShowTestPerformanceForm(false);
       setShowUpdateIATForm(false);
@@ -335,7 +337,7 @@ const AdvisorMenu = () => {
             <br />
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
-                Update IAT Scores
+                Update IAT Scores 
               </a>
             </li>
             <br />
@@ -343,7 +345,6 @@ const AdvisorMenu = () => {
           </ul>
         </nav>
       }
-
       <div
         className={`profile-right-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
           }`}>

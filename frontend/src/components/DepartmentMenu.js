@@ -7,7 +7,7 @@ import DepartmentMessage from './DepartmentMessage.js'
 import UpdateAccom from './UpdateAccom';
 import './CSS/DepartmentMenu.css';
 import './CSS/Profile_model.css';
-
+import SemResultUpdate from './SemResultUpdate.js';
 import DepartmentMenuDashboard from './DepartmentMenuDashboard';
 import DepartmentAttendance from './DepartmentAttendance.js';
 
@@ -22,6 +22,7 @@ const DepartmentMenu = () => {
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
   const [showNavBar, setShowNavBar] = useState(true);
+  const [showUpdateSemResForm, setShowUpdateSemResForm] = useState(false);
   const [showConfirmationPrompt, setShowConfirmationPrompt] = useState(false);
   const [students, setStudents] = useState([]);
   const [institute, setInstitute] = useState(null);
@@ -94,6 +95,7 @@ const DepartmentMenu = () => {
 
   const handleMessageButtonClick = () => {
     setShowMessageForm(true);
+    setShowUpdateSemResForm(false);
     setShowUpdateAccom(false);
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
       element.style.display = 'none';
@@ -105,14 +107,16 @@ const DepartmentMenu = () => {
       setIsLoading(false);
       messageElement.remove();
       setShowMessageForm(true);
+      setShowUpdateSemResForm(false);
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setIsHomeButtonClicked(false);
     }, 1000);
   };
-
-  const handleAttendanceButtonClick = () => {
-    setShowAttendanceForm(true);
+  
+  const handleSemResButtonClick = () => {
+    setShowAttendanceForm(false);
+    setShowUpdateSemResForm(true);
     setShowMessageForm(false);
     setShowUpdateAccom(false);
     setIsLoading(true);
@@ -125,7 +129,29 @@ const DepartmentMenu = () => {
     setTimeout(() => {
       setIsLoading(false);
       messageElement.remove();
+      setShowAttendanceForm(false);
+      setShowUpdateSemResForm(true);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(false);
+    }, 1000);
+  };
+  const handleAttendanceButtonClick = () => {
+    setShowAttendanceForm(true);
+    setShowMessageForm(false);
+    setShowUpdateSemResForm(false);
+    setShowUpdateAccom(false);
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
       setShowAttendanceForm(true);
+      setShowUpdateSemResForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
     }, 1000);
@@ -135,6 +161,7 @@ const DepartmentMenu = () => {
     setShowAttendanceForm(false);
     setShowUpdateAccom(false);
     setIsHomeButtonClicked(true);
+    setShowUpdateSemResForm(false);
     setIsLoading(true);
 
     document.querySelectorAll('.body').forEach((element) => {
@@ -144,6 +171,7 @@ const DepartmentMenu = () => {
       setIsLoading(false);
       setShowAttendanceForm(false);
       setShowMessageForm(false);
+      setShowUpdateSemResForm(false);
       setShowUpdateAccom(false);
       setIsHomeButtonClicked(true);
 
@@ -215,6 +243,13 @@ const DepartmentMenu = () => {
             </li>
             <br />
             <br />
+            <li>
+              <a href="#" className="test-score-button" onClick={handleSemResButtonClick} title="View Attendance">
+                Update Sem Results
+              </a>
+            </li>
+            <br />
+            <br />
           </ul>
         </nav>
       }
@@ -251,26 +286,28 @@ const DepartmentMenu = () => {
           className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
             }`}>
           <div>
-                {(loading || isLoading) && <div className={overlayClass}>
-                    <div className="spinner">
-                        <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
-                    </div>
-                    <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
-                </div>}
-            </div>
+            {(loading || isLoading) && <div className={overlayClass}>
+              <div className="spinner">
+                <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
+              </div>
+              <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
+            </div>}
+          </div>
           {showUpdateAccom ? (
             <UpdateAccom students={students} />
           ) :
             showMessageForm ? (
               <DepartmentMessage students={students} />
+            ) : showUpdateSemResForm ? (
+              <SemResultUpdate students={students} />
             ) : showAttendanceForm ? (
               <DepartmentAttendance students={students} />
             ) : (
               <div className='home-contents'>
                 <div>
-                { !mobile &&
-                  <DepartmentMenuDashboard students={students} department={departmentName} />
-                }
+                  {!mobile &&
+                    <DepartmentMenuDashboard students={students} department={departmentName} />
+                  }
                 </div>
               </div>)}
         </main>

@@ -6,6 +6,7 @@ import './CSS/Profile_model.css';
 import TestScore from './TestScore';
 import Accomplishment from './Accomplishment';
 import SemesterResult from './SemesterResult';
+import SemResult from './SemResult';
 import AttendanceCalendar from './AttendanceCalendar';
 
 const Profile = () => {
@@ -14,7 +15,6 @@ const Profile = () => {
     const [showTestScore, setShowTestScore] = useState(false);
     const [showSemesterResult, setshowSemesterResult] = useState(false);
     const [enableSemesterResult, setEnableSemesterResult] = useState(true);
-
     const [isLoading, setIsLoading] = useState(false);
     const [showAccomplishments, setShowAccomplishments] = useState(false);
     const [showAttendance, setShowAttendance] = useState(false);
@@ -25,18 +25,18 @@ const Profile = () => {
     const navigate = useNavigate();
 
 
-
-
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`https://eduleaves-api.vercel.app/api/students?email=${loggedInEmail}`);
+                const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_student_data', {
+                    params: {
+                        registerNumber : loggedInEmail // Filter by institute_name
+                    }
+                });
                 const studentData = response.data;
                 setStudent(studentData);
                 setLoading(false);
-            }
-
-            catch (error) {
+            } catch (error) {
                 console.error('Error fetching student data:', error);
                 setLoading(false);
             }
@@ -604,18 +604,20 @@ const Profile = () => {
                     <ul>
                         <li>
                             <div className="student-details-card">
+                                
                                 <div className="image-container">
                                     <img src={logoImageUrl} alt="brand Logo" />
                                 </div>
+{/*
                                 <div className="image-container">
                                     <img src={imageUrl} alt="Profile Picture" />
                                 </div>
+                                */} 
                                 <p className="student-details">
                                     {student.name}
                                     <br />
                                     {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
                                     <br />
-                                    Mentor ID : {student.mentor_name}
                                     <br />
                                 </p>
                             </div>
@@ -699,10 +701,10 @@ const Profile = () => {
                         </div>
                     ) : showSemesterResult ? (
                         <div className='attendance-page-container'>
-                            <SemesterResult email={student.email} department={student.department} year={student.class} instituteName={student.institute_name} onClose={handleTestScoreClose} />
+                            <SemResult student={student} onClose={handleTestScoreClose} />
                         </div>
                     ) : showAccomplishments && (
-                    <Accomplishment student={student} onClose={handleTestScoreClose}></Accomplishment>
+                        <Accomplishment student={student} onClose={handleTestScoreClose}></Accomplishment>
                     )
                     }
 

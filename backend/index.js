@@ -23,8 +23,10 @@ mongoose.connect(MONGODB_URI, {
 console.log('Mongoose connected to MongoDB');
 
 const userSchema = new mongoose.Schema({
-    email: { type: String, required: true },
-    password: { type: String, required: true },
+    email: { type: String },
+    password: { type: String },
+    DOB: { type: String},
+    registerNumber: { type: Number },
     subjects: [
         {
             subject_code: { type: String },
@@ -38,11 +40,12 @@ const userSchema = new mongoose.Schema({
     ],
     semester_results: [
         {
-            subject_code: { type: String },
-            subject_name: { type: String },
-            score: {
-                type: String
-            },
+            semester: { type: String },
+            code: { type: String },
+            name: { type: String },
+            credit: { type: String },
+            grade: { type: String },
+            result: { type: String },
         },
     ],
     year: { type: String },
@@ -130,6 +133,21 @@ app.get('/api/students', async (req, res) => {
     }
 });
 
+app.get('/api/fetch_student_data', async (req, res) => {
+    const { registerNumber } = req.query;
+
+    try {
+        const student = await User.findOne({ registerNumber });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        res.status(200).json(student);
+    } catch (error) {
+        console.error('Error fetching student data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 app.get('/api/students_data', async (req, res) => {
     try {
         // Extract the filtering parameters from the query string
@@ -214,10 +232,11 @@ app.get('/api/admin_students_data', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { registerNumber, DOB } = req.body;
 
     try {
-        const student = await User.findOne({ email, password });
+
+        const student = await User.findOne({ registerNumber, DOB });
         if (!student) {
             return res.status(401).json({ message: 'Authentication failed' });
         }
@@ -434,7 +453,7 @@ app.post('/api/update_iat', async (req, res) => {
             // Iterate through each subject and update the score
             for (const subjectCode in scores) {
                 const score = parseInt(scores[subjectCode]);
-                
+
                 await User.findOneAndUpdate(
                     {
                         'registerNumber': registerNumber,
@@ -444,7 +463,7 @@ app.post('/api/update_iat', async (req, res) => {
                         $set: {
                             ['subjects.$[subject].scores.' + iatType]: score
                         }
-                        
+
                     },
                     {
                         arrayFilters: [{ 'subject.subject_code': { $eq: subjectCode } }]
@@ -456,6 +475,31 @@ app.post('/api/update_iat', async (req, res) => {
         res.status(200).json({ message: 'IAT scores updated successfully' });
     } catch (error) {
         console.error('Error updating IAT scores:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+app.post('/api/update_semester_results', async (req, res) => {
+    try {
+        const { semesterResultsToUpdate } = req.body;
+
+        // Update semester results in the database
+        for (const data of semesterResultsToUpdate) {
+            const { registerNumber, semester_results } = data;
+
+            // Update semester results for the specified register number
+            await User.findOneAndUpdate(
+                { 'registerNumber': registerNumber },
+                {
+                    $set: {
+                        'semester_results': semester_results
+                    }
+                }
+            );
+        }
+
+        res.status(200).json({ message: 'Semester results updated successfully' });
+    } catch (error) {
+        console.error('Error updating semester results:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

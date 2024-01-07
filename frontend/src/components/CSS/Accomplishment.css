@@ -1,13 +1,12 @@
 .accomplishments-container{
     color:rgb(32, 19, 19);
     display: flex;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+    flex-wrap: wrap;
 
-    background-color: rgb(255, 255, 255);
-    font-size:18px;
+    padding: 20px;
+    justify-content: space-between;
+    border-radius: 15px;
+    font-size: calc(0.5rem + 0.8vw);
 }
 .accomplishments-point-icon{
         width: 20px; 
@@ -17,4 +16,28 @@
 .accomplishment-error-message{
     color: rgb(32, 19, 19);
     text-align: center;
+}
+.accomplishments-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.section-container {
+    width: 250px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+
+    border: 1px solid #ccc;
+}
+.card {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
+
+}
+.section-container h2{
+    color:rgb(15, 15, 98);
 }

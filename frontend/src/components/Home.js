@@ -25,6 +25,10 @@ const Home = () => {
     const handleLoginPasswordChange = (e) => {
         setLoginPassword(e.target.value);
     };
+    useEffect(() => {
+        setLoginEmail('');
+        setLoginPassword('');
+    }, [loginAs]);
 
     useEffect(() => {
         // Detect device type and set the state
@@ -62,8 +66,8 @@ const Home = () => {
 
         try {
             const response = await axios.post(`https://eduleaves-api.vercel.app/api/login`, {
-                email: loginEmail,
-                password: loginPassword,
+                registerNumber: loginEmail,
+                DOB: loginPassword,
             });
             localStorage.setItem('loggedInEmail', loginEmail);
             setLoginSuccess(true);
@@ -130,7 +134,7 @@ const Home = () => {
         try {
             console.log(loginEmail);
             console.log(loginPassword);
-            console.log(staff);
+            console.log("staff data :"+staff);
             const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
                 email: loginEmail,
                 password: loginPassword,
@@ -145,9 +149,9 @@ const Home = () => {
                         } else if (loginAs === 'mentor' && staff.role === 'mentor' && (staff.name === 'rk@cse.kiot' || staff.name === 'rsp@cse.kiot' || staff.name === 'rsg@cse.kiot' || staff.name === 'mj@cse.kiot') && loginAs !== 'student') {
                             navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
                         }
-                    } else {
+                    }/* else {
                         navigate('/admin-home', { state: { email: loginEmail, instituteName: staff.institute_name } });
-                    }
+                    }*/
                 }
             } else {
                 setLoginError('Invalid email or password');
@@ -202,17 +206,17 @@ const Home = () => {
                         {loginSuccess && <p className="login-success">Login successful!</p>}
                         <form onSubmit={loginAs === 'student' ? handleLogin : handleSubmit}>
                             <div className="form-group">
-                                <label>Gate Address</label>
+                                <label>Gate Address{loginAs==='student'?<> (Register number [611....])</>:<></>}</label>
                                 <br />
                                 <input
-                                    type="email"
+                                    type="text"
                                     value={loginEmail}
                                     onChange={handleLoginEmailChange}
                                     required
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Password</label>
+                                <label>Password{loginAs==='student'?<> (Date Of Birth [30-05-2002])</>:<></>}</label>
                                 <br />
                                 <input
                                     type="password"
