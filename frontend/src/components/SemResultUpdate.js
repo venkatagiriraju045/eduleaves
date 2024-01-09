@@ -35,7 +35,7 @@ const SemResultUpdate = () => {
     
                     // Process each row in the Excel sheet
                     excelData.forEach((data) => {
-                        const { registerno, coursecode, coursename, credit, result, grade, gradepoint } = data;
+                        const { registerno, coursecode, coursename, credit, result, grade } = data;
     
                         // Check if register number exists in the resultsToUpdate object
                         if (!semesterResultsToUpdate[registerno]) {
@@ -44,6 +44,7 @@ const SemResultUpdate = () => {
     
                         // Add subject result object to the register number's array
                         semesterResultsToUpdate[registerno].push({
+                            semester:semester,
                             code:coursecode,
                             name: coursename,
                             credit,
