@@ -483,15 +483,15 @@ app.post('/api/update_semester_results', async (req, res) => {
         const { semesterResultsToUpdate } = req.body;
 
         // Update semester results in the database
-        for (const data of semesterResultsToUpdate) {
-            const { registerNumber, semester_results } = data;
+        for (const registerNumber in semesterResultsToUpdate) {
+            const semesterResults = semesterResultsToUpdate[registerNumber];
 
             // Update semester results for the specified register number
             await User.findOneAndUpdate(
                 { 'registerNumber': registerNumber },
                 {
-                    $set: {
-                        'semester_results': semester_results
+                    $push: {
+                        'semester_results': { $each: semesterResults }
                     }
                 }
             );
@@ -503,7 +503,6 @@ app.post('/api/update_semester_results', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 
 
 app.listen(PORT, () => {
