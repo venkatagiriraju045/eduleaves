@@ -44,12 +44,12 @@ const SemResultUpdate = () => {
     
                         // Add subject result object to the register number's array
                         semesterResultsToUpdate[registerno].push({
-                            coursecode,
-                            coursename,
+                            code:coursecode,
+                            name: coursename,
                             credit,
                             result,
                             grade,
-                            gradepoint,
+                            
                         });
                     });
     
