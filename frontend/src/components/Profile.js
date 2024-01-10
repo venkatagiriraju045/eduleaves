@@ -713,7 +713,7 @@ const Profile = () => {
                         <Accomplishment student={student} onClose={handleTestScoreClose}></Accomplishment>
                     )
                     }
-{/*
+
                     <div className="profile-chart-container">
                         <div className='attendance-chart-container'>
                             <div className="profile-attendance-chart" onClick={handleShowTestScore}>
@@ -750,8 +750,6 @@ const Profile = () => {
                     <div className='message-container'>
                         {renderMessage()}
                     </div>
-                    */
-}
                 </main>
             </div>
         </div>
