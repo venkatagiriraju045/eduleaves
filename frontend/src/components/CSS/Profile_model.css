@@ -858,3 +858,6 @@ body {
 .sender-advisor {
     color: rgb(211, 151, 21); /* Customize the color for ADVISOR */
 }
+#semester-score-button{
+    background-color: rgba(255, 255, 255, 0.295);
+}

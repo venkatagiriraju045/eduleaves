@@ -234,11 +234,11 @@ const Profile = () => {
     }, [student]);
 
     const handleAccomplishments = () => {
-        setShowAccomplishments(true);
+        setShowAccomplishments(false);
         setShowTestScore(false);
         setShowAttendance(false);
+        setshowSemesterResult(true);
         setIsLoading(true);
-        setshowSemesterResult(false);
 
 
         // Add loading class to content-container to blur the background
@@ -256,19 +256,19 @@ const Profile = () => {
         setTimeout(() => {
             setIsLoading(false);
             messageElement.remove();
+            setShowAccomplishments(false);
             setShowTestScore(false);
-            setShowAccomplishments(true);
-            setshowSemesterResult(false);
             setShowAttendance(false);
+            setshowSemesterResult(true);
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
 
     const handleShowTestScore = () => {
         setShowAccomplishments(false);
-        setShowTestScore(true);
+        setShowTestScore(false);
         setShowAttendance(false);
+        setshowSemesterResult(true);
         setIsLoading(true);
-        setshowSemesterResult(false);
 
 
         // Add loading class to content-container to blur the background
@@ -286,14 +286,18 @@ const Profile = () => {
         setTimeout(() => {
             setIsLoading(false);
             messageElement.remove();
-            setShowTestScore(true);
+            setShowAccomplishments(false);
+            setShowTestScore(false);
+            setShowAttendance(false);
+            setshowSemesterResult(true);
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
 
     const handleTestScoreClose = () => {
+        setShowAccomplishments(false);
         setShowTestScore(false);
         setShowAttendance(false);
-        setshowSemesterResult(false);
+        setshowSemesterResult(true);
 
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.chart-details-container1 ,.attendance-chart, .overall-performance-chart, .analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
@@ -331,9 +335,9 @@ const Profile = () => {
     const handleShowAttendance = () => {
         setShowAccomplishments(false);
         setShowTestScore(false);
-        setShowAttendance(true);
+        setShowAttendance(false);
+        setshowSemesterResult(true);
         setIsLoading(true);
-        setshowSemesterResult(false);
 
 
         // Add loading class to content-container to blur the background
@@ -352,9 +356,11 @@ const Profile = () => {
         setTimeout(() => {
             setIsLoading(false);
             messageElement.remove();
+            setShowAccomplishments(false);
             setShowTestScore(false);
-            setshowSemesterResult(false);
-            setShowAttendance(true);
+            setShowAttendance(false);
+            setshowSemesterResult(true);
+    
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
     const handleCloseAttendance = () => {
@@ -365,9 +371,9 @@ const Profile = () => {
     };
     const handleHomeButtonClick = () => {
         setShowAccomplishments(false);
-        setShowAttendance(false);
-        setshowSemesterResult(false);
         setShowTestScore(false);
+        setShowAttendance(false);
+        setshowSemesterResult(true);
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1 ,.attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
         });
@@ -642,7 +648,7 @@ const Profile = () => {
                         {enableSemesterResult &&
                             <li>
                                 <div>
-                                    <a href="#" className="test-score-button" onClick={handleShowSemesterResults}>Semester Results</a>
+                                    <a href="#" className="test-score-button" id='semester-score-button' onClick={handleShowSemesterResults}>Semester Results</a>
                                 </div>
                             </li>
                         }
