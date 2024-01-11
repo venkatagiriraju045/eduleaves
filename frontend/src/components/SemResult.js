@@ -26,14 +26,14 @@ const SemResult = ({ student }) => {
     });
     return (
         <div >
-            <button onClick={handlePrint} className='result-download-button'>Download as PDF</button>
+            <button onClick={handlePrint} className='result-download-button'>Print</button>
             <div className="sem-result-container" ref={componentRef}>
                 <div className='sem-result-header'>
                     <div className='sem-result-institution-logo'>
                         <img src="./uploads/knowledge-logo.png" className="knowledge-logo" />
                     </div>
                     <div className='institution-details-kiot'>
-                        <p className='college-name-sem-result'>{getInstituteFullName(student.institute_name)}</p>
+                        <p className='college-name-sem-result'>KNOWLEDGE INSTITUTE OF TECHNOLOGY</p>
                         <p className='sub-college-name-sem-result'>(An Autonomous Institution)</p>
                         <p className='sub-college-name-sem-result'>Approved by AICTE, New Delhi and Affiliated to Anna University, Chennai – 25.</p>
                         <p className='sub-college-name-sem-result'>Accredited by NAAC with ‛A’ Grade</p>

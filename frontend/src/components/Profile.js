@@ -30,7 +30,7 @@ const Profile = () => {
             try {
                 const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_student_data', {
                     params: {
-                        registerNumber : loggedInEmail // Filter by institute_name
+                        registerNumber: loggedInEmail // Filter by institute_name
                     }
                 });
                 const studentData = response.data;
@@ -360,7 +360,7 @@ const Profile = () => {
             setShowTestScore(false);
             setShowAttendance(false);
             setshowSemesterResult(true);
-    
+
         }, 1000); // Adjust the duration (in milliseconds) to control the transition time
     };
     const handleCloseAttendance = () => {
@@ -374,9 +374,12 @@ const Profile = () => {
         setShowTestScore(false);
         setShowAttendance(false);
         setshowSemesterResult(true);
+        /*
         document.querySelectorAll('.profile-attendance-chart,.chart-container1,.profile-chart-container,.chart-details-container1 ,.attendance-chart, .overall-performance-chart,.analytics-container, .message-container').forEach((element) => {
             element.style.display = 'flex';
         });
+
+        */
     };
     const renderAnalytics = (student) => {
         if (!student) {
@@ -610,17 +613,17 @@ const Profile = () => {
                     <ul>
                         <li>
                             <div className="student-details-card">
-                                
+
                                 <div className="image-container">
                                     <img src={logoImageUrl} alt="brand Logo" />
                                 </div>
-{/*
+                                {/*
                                 <div className="image-container">
                                     <img src={imageUrl} alt="Profile Picture" />
                                 </div>
-                                */} 
+                                */}
                                 <p className="student-details">
-                                    {student.name}
+                                    {student.studentName}
                                     <br />
                                     {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
                                     <br />
@@ -715,6 +718,7 @@ const Profile = () => {
                     }
 
                     <div className="profile-chart-container">
+
                         <div className='attendance-chart-container'>
                             <div className="profile-attendance-chart" onClick={handleShowTestScore}>
                                 <div className='chart-container1'>
@@ -743,6 +747,7 @@ const Profile = () => {
                             </div>
                             <p className="profile-chart-label">Overall Attendance Performance</p>
                         </div>
+                        
                     </div>
                     <div className='analytics-container'>
                         {renderAnalytics(student)}
