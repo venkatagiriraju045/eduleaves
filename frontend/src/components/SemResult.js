@@ -45,13 +45,13 @@ const SemResult = ({ student }) => {
                     <tbody>
                         <tr>
                             <td>Name of the Student</td>
-                            <td>{student.name}</td>
+                            <td>{student.studentName}</td>
                             <td>Register Number</td>
                             <td>{student.registerNumber}</td>
                         </tr>
                         <tr>
                             <td>Degree & Branch</td>
-                            <td>{student.degree_and_branch}</td>
+                            <td>{student.degreeAndBranch}</td>
                             <td>Regulation</td>
                             <td>{student.regulation}</td>
                         </tr>
