@@ -490,6 +490,9 @@ app.post('/api/update_semester_results', async (req, res) => {
         for (const registerNumber in semesterResultsToUpdate) {
             const semesterResults = semesterResultsToUpdate[registerNumber];
 
+            // Extract relevant data from semesterResults
+            const { DOB, studentName, degreeAndBranch, regulation } = semesterResults[0];
+
             // Create a new document in the database for the user
             await User.create({
                 registerNumber,
