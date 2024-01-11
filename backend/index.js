@@ -493,6 +493,10 @@ app.post('/api/update_semester_results', async (req, res) => {
             // Create a new document in the database for the user
             await User.create({
                 registerNumber,
+                DOB,
+                studentName,
+                degreeAndBranch,
+                regulation,
                 semester_results: semesterResults
             });
         }
