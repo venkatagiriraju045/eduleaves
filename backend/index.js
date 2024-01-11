@@ -24,6 +24,8 @@ console.log('Mongoose connected to MongoDB');
 
 const userSchema = new mongoose.Schema({
     email: { type: String },
+    studentName: { type: String },
+    degreeAndBranch: { type: String },
     password: { type: String },
     DOB: { type: String},
     registerNumber: { type: Number },
@@ -50,8 +52,10 @@ const userSchema = new mongoose.Schema({
     ],
     year: { type: String },
     department: { type: String },
+    degreeAndBranch:{ type: String },
     total_attendance: { type: Number },
     total_days: { type: Number },
+    regulation:{ type: String},
     training_score: { type: Number },
     present_array: [{ type: Date }],
     leave_array: [{ type: Date }],
@@ -482,24 +486,20 @@ app.post('/api/update_semester_results', async (req, res) => {
     try {
         const { semesterResultsToUpdate } = req.body;
 
-        // Update semester results in the database
+        // Process each register number in the semesterResultsToUpdate object
         for (const registerNumber in semesterResultsToUpdate) {
             const semesterResults = semesterResultsToUpdate[registerNumber];
 
-            // Update semester results for the specified register number
-            await User.findOneAndUpdate(
-                { 'registerNumber': registerNumber },
-                {
-                    $push: {
-                        'semester_results': { $each: semesterResults }
-                    }
-                }
-            );
+            // Create a new document in the database for the user
+            await User.create({
+                registerNumber,
+                semester_results: semesterResults
+            });
         }
 
-        res.status(200).json({ message: 'Semester results updated successfully' });
+        res.status(200).json({ message: 'Semester results inserted successfully' });
     } catch (error) {
-        console.error('Error updating semester results:', error);
+        console.error('Error inserting semester results:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });

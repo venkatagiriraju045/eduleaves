@@ -35,7 +35,7 @@ const SemResultUpdate = () => {
     
                     // Process each row in the Excel sheet
                     excelData.forEach((data) => {
-                        const { registerno, coursecode, coursename, credit, result, grade, semester } = data;
+                        const { registerno, coursecode, coursename, credit, result, grade, semester , DOB, studentName, degreeAndBranch, regulation} = data;
     
                         // Check if register number exists in the resultsToUpdate object
                         if (!semesterResultsToUpdate[registerno]) {
@@ -50,6 +50,10 @@ const SemResultUpdate = () => {
                             credit,
                             result,
                             grade,
+                            DOB,
+                            studentName,
+                            regulation,
+                            degreeAndBranch,
                             
                         });
                     });
