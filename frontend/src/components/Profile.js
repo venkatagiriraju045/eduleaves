@@ -537,7 +537,7 @@ const Profile = () => {
     };
 
     if (!student) {
-        return <p>No student data found.</p>;
+        return <p>loading...</p>;
     }
 
     const subjectScores = student.subjects.map((subject) => {
@@ -626,7 +626,7 @@ const Profile = () => {
                                 <p className="student-details">
                                     {student.studentName}
                                     <br />
-                                    {student.year} - {student.degreeAndBranch}
+                                    {student.degreeAndBranch}
                                     <br />
                                     <br />
                                 </p>
