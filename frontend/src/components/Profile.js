@@ -626,7 +626,7 @@ const Profile = () => {
                                 <p className="student-details">
                                     {student.studentName}
                                     <br />
-                                    {student.year} - {departmentShortNames[student.department] || student.department} - {student.section}
+                                    {student.year} - {student.degreeAndBranch}
                                     <br />
                                     <br />
                                 </p>
