@@ -46,7 +46,7 @@ const Profile = () => {
     }, [loggedInEmail]);
 
 
-
+/*
     useEffect(() => {
         const createChart = (student) => {
             // Register the required scales and controllers
@@ -232,6 +232,7 @@ const Profile = () => {
             createAttendanceChart(student);
         }
     }, [student]);
+    */
 
     const handleAccomplishments = () => {
         setShowAccomplishments(false);
