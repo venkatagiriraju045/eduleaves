@@ -26,7 +26,7 @@ const SemResult = ({ student }) => {
     });
     return (
         <div >
-            <button onClick={handlePrint} className='result-download-button'>Print</button>
+            <button onClick={handlePrint} className='result-download-button'>Print(pdf)</button>
             <div className="sem-result-container" ref={componentRef}>
                 <div className='sem-result-header'>
                     <div className='sem-result-institution-logo'>

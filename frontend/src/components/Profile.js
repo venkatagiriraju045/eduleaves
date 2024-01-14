@@ -712,49 +712,49 @@ const Profile = () => {
                         <div className='attendance-page-container'>
                             <SemResult student={student} onClose={handleTestScoreClose} />
                         </div>
-                    ) : showAccomplishments && (
+                    ) : showAccomplishments ? (
                         <Accomplishment student={student} onClose={handleTestScoreClose}></Accomplishment>
-                    )
-                    }
+                    ) : (
+                        <div>
+                            <div className="profile-chart-container">
 
-                    <div className="profile-chart-container">
+                                <div className='attendance-chart-container'>
+                                    <div className="profile-attendance-chart" onClick={handleShowTestScore}>
+                                        <div className='chart-container1'>
+                                            <canvas id="scoreChart"></canvas>
+                                        </div>
+                                        <div className='profile-chart-details'>
+                                            Scored : {isNaN(overallAverage) ? "NaN" : (overallAverage).toFixed(2)} marks
+                                            <br />
+                                            <p>(For Total of 100 marks)</p>
+                                        </div>
+                                    </div>
+                                    <p className="profile-chart-label">Overall Test Performance</p>
+                                </div>
+                                <div className='attendance-chart-container'>
+                                    <div className="profile-attendance-chart" onClick={handleShowAttendance}>
+                                        <div className='chart-container1'>
+                                            <canvas id="attendanceChart"></canvas>
+                                        </div>
+                                        <div className='profile-chart-details'>
+                                            Total Present Days: {student.total_attendance}
+                                            <br />
+                                            Total Days: {student.total_days}
+                                            <br />
+                                            Present Percentage: {((student.total_attendance / student.total_days) * 100).toFixed(2)}%
+                                        </div>
+                                    </div>
+                                    <p className="profile-chart-label">Overall Attendance Performance</p>
+                                </div>
 
-                        <div className='attendance-chart-container'>
-                            <div className="profile-attendance-chart" onClick={handleShowTestScore}>
-                                <div className='chart-container1'>
-                                    <canvas id="scoreChart"></canvas>
-                                </div>
-                                <div className='profile-chart-details'>
-                                    Scored : {isNaN(overallAverage) ? "NaN" : (overallAverage).toFixed(2)} marks
-                                    <br />
-                                    <p>(For Total of 100 marks)</p>
-                                </div>
                             </div>
-                            <p className="profile-chart-label">Overall Test Performance</p>
-                        </div>
-                        <div className='attendance-chart-container'>
-                            <div className="profile-attendance-chart" onClick={handleShowAttendance}>
-                                <div className='chart-container1'>
-                                    <canvas id="attendanceChart"></canvas>
-                                </div>
-                                <div className='profile-chart-details'>
-                                    Total Present Days: {student.total_attendance}
-                                    <br />
-                                    Total Days: {student.total_days}
-                                    <br />
-                                    Present Percentage: {((student.total_attendance / student.total_days) * 100).toFixed(2)}%
-                                </div>
+                            <div className='analytics-container'>
+                                {renderAnalytics(student)}
                             </div>
-                            <p className="profile-chart-label">Overall Attendance Performance</p>
-                        </div>
-                        
-                    </div>
-                    <div className='analytics-container'>
-                        {renderAnalytics(student)}
-                    </div>
-                    <div className='message-container'>
-                        {renderMessage()}
-                    </div>
+                            <div className='message-container'>
+                                {renderMessage()}
+                            </div>
+                        </div>)}
                 </main>
             </div>
         </div>
