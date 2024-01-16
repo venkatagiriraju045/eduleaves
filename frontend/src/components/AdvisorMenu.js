@@ -48,23 +48,22 @@ const AdvisorMenu = () => {
       setMobile(true);
     }
   }, []);
-
   useEffect(() => {
-    const fetchStudentData = async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
           params: {
-            role: 'student', // Filter by role
-            department: departmentName, // Filter by department
+            role: 'student',
+            department: departmentName,
             instituteName: instituteName,
             year: year,
-            section: section // Filter by institute_name
+            section: section
           }
         });
-        setInstitute(instituteName);
 
+        setInstitute(instituteName);
         const studentData = response.data;
-        setStudents(studentData); // Set the students state variable
+        setStudents(studentData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching student data:', error);
@@ -73,8 +72,9 @@ const AdvisorMenu = () => {
       }
     };
 
-    fetchStudentData();
-  }, []);
+    fetchData();
+  }, [departmentName, instituteName, year, section]); // Add all dependencies
+
 
   const navigate = useNavigate();
   const handleLogout = () => {
