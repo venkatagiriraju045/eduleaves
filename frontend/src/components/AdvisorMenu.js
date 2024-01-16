@@ -73,7 +73,7 @@ const AdvisorMenu = () => {
     };
 
     fetchData();
-  }, [departmentName, instituteName, year, section]); // Add all dependencies
+  }, []); // Add all dependencies
 
 
   const navigate = useNavigate();
