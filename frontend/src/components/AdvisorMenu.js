@@ -73,8 +73,7 @@ const AdvisorMenu = () => {
     };
 
     fetchData();
-  }, []); // Add all dependencies
-
+  }, []);
 
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -162,11 +161,10 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setShowUpdateIATForm(true);
-        setShowDashboard(false);
+      setShowDashboard(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowTestPerformanceForm(false);
-
     }, 1000);
   };
 
