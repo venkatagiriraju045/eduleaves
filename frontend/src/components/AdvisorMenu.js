@@ -12,7 +12,6 @@ import AdvisorTest from './AdvisorTest.js';
 import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 import UpdateIAT from './UpdateIAT.js';
 
-
 const AdvisorMenu = () => {
   const location = useLocation();
   const { instituteName, departmentName, year, section } = location.state || {};
@@ -23,11 +22,8 @@ const AdvisorMenu = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
   const [showDashboard, setShowDashboard] = useState(true);
-
   const [showAdvisorAttendancePerformace, setShowAdvisorAttendancePerformace] = useState(false);
   const [showUpdateIATForm, setShowUpdateIATForm] = useState(false);
-
-
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [showUpdateAccom, setShowUpdateAccom] = useState(false);
   const [showNavBar, setShowNavBar] = useState(true);
@@ -37,8 +33,6 @@ const AdvisorMenu = () => {
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
   const [mobile, setMobile] = useState(false);
   const [showTestPerformanceForm, setShowTestPerformanceForm] = useState(false);
-
-
 
   useEffect(() => {
     // Detect device type and set the state
@@ -60,7 +54,6 @@ const AdvisorMenu = () => {
             section: section
           }
         });
-
         setInstitute(instituteName);
         const studentData = response.data;
         setStudents(studentData);
@@ -71,20 +64,16 @@ const AdvisorMenu = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
-
   const navigate = useNavigate();
   const handleLogout = () => {
     setShowConfirmationPrompt(false);
     navigate('/');
   };
-
   if (error) {
     return <p>Error fetching student data: {error.message}</p>;
   }
-
   const handleTestPerformanceButtonClick = () => {
     setShowTestPerformanceForm(true);
     setShowUpdateIATForm(false);
@@ -105,7 +94,7 @@ const AdvisorMenu = () => {
       messageElement.remove();
       setShowTestPerformanceForm(true);
       setShowUpdateIATForm(false);
-        setShowAttendanceForm(false);
+      setShowAttendanceForm(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
       setShowMessageForm(false);
@@ -134,10 +123,9 @@ const AdvisorMenu = () => {
       setShowUpdateAccom(false);
       setShowUpdateIATForm(false);
       setShowDashboard(false);
-        setIsHomeButtonClicked(false);
+      setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowTestPerformanceForm(false);
-
     }, 1000);
   };
   const handleUpdateIATButtonClick = () => {
@@ -167,7 +155,6 @@ const AdvisorMenu = () => {
       setShowTestPerformanceForm(false);
     }, 1000);
   };
-
   const handleAttendanceButtonClick = () => {
     setShowAttendanceForm(true);
     setShowMessageForm(false);
@@ -176,7 +163,6 @@ const AdvisorMenu = () => {
     setShowUpdateAccom(false);
     setShowDashboard(false);
     setShowTestPerformanceForm(false);
-
     setIsLoading(true);
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
@@ -189,15 +175,13 @@ const AdvisorMenu = () => {
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowMessageForm(false);
-        setShowUpdateIATForm(false);
+      setShowUpdateIATForm(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
       setShowTestPerformanceForm(false);
-
     }, 1000);
   };
-
   const handleAdvisorAttendancePerformaceButtonClick = () => {
     setShowAdvisorAttendancePerformace(true);
     setShowAttendanceForm(false);
@@ -220,10 +204,9 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
-        setShowUpdateIATForm(false);
+      setShowUpdateIATForm(false);
       setShowDashboard(false);
       setShowTestPerformanceForm(false);
-
     }, 1000);
   };
   const handleHomeButtonClick = () => {
@@ -236,7 +219,6 @@ const AdvisorMenu = () => {
     setShowUpdateIATForm(false);
     setIsHomeButtonClicked(true);
     setIsLoading(true);
-
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
     });
@@ -245,17 +227,15 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(true);
-        setShowAdvisorAttendancePerformace(false);
+      setShowAdvisorAttendancePerformace(false);
       setShowDashboard(true);
       setShowTestPerformanceForm(false);
       setShowUpdateIATForm(false);
     }, 1000);
   };
-
   const handleShowNav = () => {
     setShowNavBar((prevShowNavBar) => !prevShowNavBar);
   };
-
   function getInstituteFullName(institute) {
     const instituteNameMap = {
       "KIOT": "KNOWLEDGE INSTITUTE OF TECHNOLOGY",
@@ -264,8 +244,6 @@ const AdvisorMenu = () => {
     };
     return instituteNameMap[institute] || institute;
   }
-
-
   if (deviceType === 'mobile') {
     return (
       <div className="mobile-warning-overlay-message">
@@ -273,12 +251,9 @@ const AdvisorMenu = () => {
       </div>
     );
   }
-
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
-
   return (
     <div className="dep-admin-page-container">
-
       {showNavBar &&
         <nav className="navigation1">
           <ul>
@@ -335,18 +310,16 @@ const AdvisorMenu = () => {
             <br />
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
-                Update IAT Scores 
+                Update IAT Scores
               </a>
             </li>
             <br />
             <br />
           </ul>
-        </nav>
-      }
+        </nav>}
       <div
         className={`profile-right-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
           }`}>
-
         <header
           className="admin-header">
           <div className='nav-bar-hider'>
@@ -402,8 +375,7 @@ const AdvisorMenu = () => {
                   <AdvisorDashboard students={students} year={year} section={section} department={departmentName} />
                 </div>
               </div>)}
-          </main>
-        }
+          </main>}
       </div>
     </div>
   );

@@ -24,7 +24,11 @@ const Profile = () => {
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const navigate = useNavigate();
 
-
+    useEffect(() => {
+        // Detect device type and set the state
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        isMobile ? setShowNavBar(true) : setShowNavBar(false)
+    }, []);
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
@@ -46,193 +50,193 @@ const Profile = () => {
     }, [loggedInEmail]);
 
 
-/*
-    useEffect(() => {
-        const createChart = (student) => {
-            // Register the required scales and controllers
-            Chart.register(LinearScale, CategoryScale, BarController, BarElement, DoughnutController, ArcElement);
-
-            const canvas = document.getElementById("scoreChart");
-            const ctx = canvas.getContext("2d");
-            if (typeof canvas.chart !== 'undefined') {
-                canvas.chart.destroy();
-            }
-
-            const subjectScores = student.subjects.map((subject) => {
-                const { scores } = subject;
-                if (!scores || typeof scores !== "object") {
-                    // If scores are missing or not an object, return NaN for this subject
+    /*
+        useEffect(() => {
+            const createChart = (student) => {
+                // Register the required scales and controllers
+                Chart.register(LinearScale, CategoryScale, BarController, BarElement, DoughnutController, ArcElement);
+    
+                const canvas = document.getElementById("scoreChart");
+                const ctx = canvas.getContext("2d");
+                if (typeof canvas.chart !== 'undefined') {
+                    canvas.chart.destroy();
+                } 
+    
+                const subjectScores = student.subjects.map((subject) => {
+                    const { scores } = subject;
+                    if (!scores || typeof scores !== "object") {
+                        // If scores are missing or not an object, return NaN for this subject
+                        return {
+                            subject_name: subject.subject_name,
+                            scores: "NaN",
+                        };
+                    }
+                    const validScores = Object.values(scores).filter((score) => !isNaN(parseInt(score)));
+                    const subjectScore =
+                        validScores.length > 0
+                            ? validScores.reduce((total, score) => total + parseInt(score), 0) / validScores.length
+                            : "NaN";
                     return {
                         subject_name: subject.subject_name,
-                        scores: "NaN",
+                        scores: subjectScore,
                     };
-                }
-                const validScores = Object.values(scores).filter((score) => !isNaN(parseInt(score)));
-                const subjectScore =
-                    validScores.length > 0
-                        ? validScores.reduce((total, score) => total + parseInt(score), 0) / validScores.length
-                        : "NaN";
-                return {
-                    subject_name: subject.subject_name,
-                    scores: subjectScore,
-                };
-            });
-
-            const maxScore = 100;
-
-            const subjectAverages = subjectScores.map((subject) => {
-                if (subject.scores === "NaN") {
+                });
+    
+                const maxScore = 100;
+    
+                const subjectAverages = subjectScores.map((subject) => {
+                    if (subject.scores === "NaN") {
+                        return {
+                            subject_name: subject.subject_name,
+                            average_score: "NaN",
+                        };
+                    }
+                    const average = (subject.scores / maxScore) * 100; // Scale the average score based on the maximum score
                     return {
                         subject_name: subject.subject_name,
-                        average_score: "NaN",
+                        average_score: average,
                     };
-                }
-                const average = (subject.scores / maxScore) * 100; // Scale the average score based on the maximum score
-                return {
-                    subject_name: subject.subject_name,
-                    average_score: average,
-                };
-            });
-
-            const overallAverage =
-                subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
-                subjectAverages.length;
-
-            canvas.chart = new Chart(ctx, {
-                type: "doughnut",
-                data: {
-                    labels: ["Scored", "Missed"],
-                    datasets: [
-                        {
-                            data: [isNaN(overallAverage) ? 0 : overallAverage, isNaN(overallAverage) ? 0 : 100 - overallAverage],
-                            backgroundColor: ["rgb(30,144,255)", "rgb(68, 89, 98)"],
-                            borderColor: ["rgb(30,144,255)", "rgb(68, 89, 98)"],
-                            borderWidth: 1,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true, // Allow the chart to be responsive
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        annotation: {
-                            annotations: {
-                                value: {
-                                    type: "text",
-                                    fontColor: "white",
-                                    fontSize: 24,
-                                    fontStyle: "bold",
-                                    textAlign: "center",
-                                    value: `${isNaN(overallAverage) ? "NaN" : Math.round(overallAverage)}%`,
-                                    x: "50%",
-                                    y: "50%",
+                });
+    
+                const overallAverage =
+                    subjectAverages.reduce((total, subject) => total + subject.average_score, 0) /
+                    subjectAverages.length;
+    
+                canvas.chart = new Chart(ctx, {
+                    type: "doughnut",
+                    data: {
+                        labels: ["Scored", "Missed"],
+                        datasets: [
+                            {
+                                data: [isNaN(overallAverage) ? 0 : overallAverage, isNaN(overallAverage) ? 0 : 100 - overallAverage],
+                                backgroundColor: ["rgb(30,144,255)", "rgb(68, 89, 98)"],
+                                borderColor: ["rgb(30,144,255)", "rgb(68, 89, 98)"],
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true, // Allow the chart to be responsive
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    value: {
+                                        type: "text",
+                                        fontColor: "white",
+                                        fontSize: 24,
+                                        fontStyle: "bold",
+                                        textAlign: "center",
+                                        value: `${isNaN(overallAverage) ? "NaN" : Math.round(overallAverage)}%`,
+                                        x: "50%",
+                                        y: "50%",
+                                    },
                                 },
                             },
                         },
+                        cutout: "85%",
                     },
-                    cutout: "85%",
-                },
-                plugins: [
-                    {
-                        id: "customLabel",
-                        afterDraw: (chart) => {
-                            const width = chart.width;
-                            const height = chart.height;
-                            const ctx = chart.ctx;
-
-                            ctx.save();
-                            ctx.fillStyle = "rgb(20,20,20)";
-                            ctx.textAlign = "center";
-                            ctx.textBaseline = "middle";
-                            ctx.font = "calc(1rem + 2vw) FjallaOne-Regular";
-                            ctx.fillText(`${isNaN(overallAverage) ? "NaN" : Math.round(overallAverage)}%`, width / 2, height / 2);
-                            ctx.restore();
-                        },
-                    },
-                ],
-            });
-
-        };
-        const createAttendanceChart = () => {
-            const canvas = document.getElementById('attendanceChart');
-            const ctx = canvas.getContext('2d');
-
-            // Set the desired fixed dimensions for the chart
-            if (typeof canvas.chart !== 'undefined') {
-                canvas.chart.destroy();
-            }
-
-            const totalAttendance = student.total_attendance;
-            const totalDays = student.total_days;
-            const absentDays = totalDays - totalAttendance;
-            const presentPercentage = ((totalAttendance / totalDays) * 100).toFixed(2);
-
-            canvas.chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Present', 'Absent'],
-                    datasets: [
+                    plugins: [
                         {
-                            data: [totalAttendance, absentDays],
-                            backgroundColor: ['rgb(30,144,255)', 'rgb(68, 89, 98)'],
-                            borderColor: ['rgb(30,144,255)', 'rgb(68, 89, 98)'],
-                            borderWidth: 1,
+                            id: "customLabel",
+                            afterDraw: (chart) => {
+                                const width = chart.width;
+                                const height = chart.height;
+                                const ctx = chart.ctx;
+    
+                                ctx.save();
+                                ctx.fillStyle = "rgb(20,20,20)";
+                                ctx.textAlign = "center";
+                                ctx.textBaseline = "middle";
+                                ctx.font = "calc(1rem + 2vw) FjallaOne-Regular";
+                                ctx.fillText(`${isNaN(overallAverage) ? "NaN" : Math.round(overallAverage)}%`, width / 2, height / 2);
+                                ctx.restore();
+                            },
                         },
                     ],
-                },
-                options: {
-                    responsive: true, // Allow the chart to be responsive
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false,
-                        },
-                        annotation: {
-                            annotations: {
-                                value: {
-                                    type: 'text',
-                                    fontColor: 'black',
-                                    fontSize: 16,
-                                    fontStyle: 'bold',
-                                    textAlign: 'center',
-                                    value: `${Math.round(presentPercentage)}%`,
-                                    x: '50%',
-                                    y: '50%',
+                });
+    
+            };
+            const createAttendanceChart = () => {
+                const canvas = document.getElementById('attendanceChart');
+                const ctx = canvas.getContext('2d');
+    
+                // Set the desired fixed dimensions for the chart
+                if (typeof canvas.chart !== 'undefined') {
+                    canvas.chart.destroy();
+                }
+    
+                const totalAttendance = student.total_attendance;
+                const totalDays = student.total_days;
+                const absentDays = totalDays - totalAttendance;
+                const presentPercentage = ((totalAttendance / totalDays) * 100).toFixed(2);
+    
+                canvas.chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Present', 'Absent'],
+                        datasets: [
+                            {
+                                data: [totalAttendance, absentDays],
+                                backgroundColor: ['rgb(30,144,255)', 'rgb(68, 89, 98)'],
+                                borderColor: ['rgb(30,144,255)', 'rgb(68, 89, 98)'],
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true, // Allow the chart to be responsive
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            annotation: {
+                                annotations: {
+                                    value: {
+                                        type: 'text',
+                                        fontColor: 'black',
+                                        fontSize: 16,
+                                        fontStyle: 'bold',
+                                        textAlign: 'center',
+                                        value: `${Math.round(presentPercentage)}%`,
+                                        x: '50%',
+                                        y: '50%',
+                                    },
                                 },
                             },
                         },
+                        cutout: '85%',
                     },
-                    cutout: '85%',
-                },
-                plugins: [
-                    {
-                        id: 'customLabel',
-                        afterDraw: chart => {
-                            const width = chart.width;
-                            const height = chart.height;
-                            const ctx = chart.ctx;
-                            ctx.save();
-                            ctx.fillStyle = 'rgb(20,20,20)';
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.font = 'calc(1rem + 2vw) FjallaOne-Regular';
-                            ctx.fillText(`${Math.round(presentPercentage)}%`, width / 2, height / 2);
-                            ctx.restore();
+                    plugins: [
+                        {
+                            id: 'customLabel',
+                            afterDraw: chart => {
+                                const width = chart.width;
+                                const height = chart.height;
+                                const ctx = chart.ctx;
+                                ctx.save();
+                                ctx.fillStyle = 'rgb(20,20,20)';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.font = 'calc(1rem + 2vw) FjallaOne-Regular';
+                                ctx.fillText(`${Math.round(presentPercentage)}%`, width / 2, height / 2);
+                                ctx.restore();
+                            },
                         },
-                    },
-                ],
-            });
-        };
-
-        if (student) {
-            createChart(student);
-            createAttendanceChart(student);
-        }
-    }, [student]);
-    */
+                    ],
+                });
+            };
+    
+            if (student) {
+                createChart(student);
+                createAttendanceChart(student);
+            }
+        }, [student]);
+        */
 
     const handleAccomplishments = () => {
         setShowAccomplishments(false);
@@ -525,7 +529,6 @@ const Profile = () => {
             return <p className="message">Stay tuned...</p>;
         }
     };
-
     const handleLogout = () => {
         setShowConfirmationPrompt(false);
         localStorage.removeItem('loggedInEmail');

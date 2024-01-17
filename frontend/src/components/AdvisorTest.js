@@ -14,10 +14,8 @@ const AdvisorTest = ({ students }) => {
     const navigate = useNavigate();
     const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
     const [movingLabel, setMovingLabel] = useState('');
-    const [labelWidth, setLabelWidth] = useState(0);
     const [dateError, setDateError] = useState(false);
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
-    const [isDateChosen, setIsDateChosen] = useState(false);
 
     useEffect(() => {
         setDateError(false);
@@ -27,39 +25,27 @@ const AdvisorTest = ({ students }) => {
         // Set opacity to 0 initially
         if(loading){
         document.querySelector('.loading-overlay').style.opacity = '1';
-
         // After 3 seconds, update opacity to 1 without transition
         const initialOpacityTimer = setTimeout(() => {
             document.querySelector('.loading-overlay').style.opacity = '0';
             document.querySelector('.loading-overlay').style.transition = 'opacity 3s ease'; // Add transition for the next 3 seconds
-
         }, 500);
-
         // After 6 seconds, hide the overlay
         const hideOverlayTimer = setTimeout(() => {
             setLoading(false);
         }, 800);
-
         return () => {
             clearTimeout(hideOverlayTimer);
-
             clearTimeout(initialOpacityTimer);
-        };
-    }
+        };}
     }, []);
-
-
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setMovingLabel('');
         }, 400);
-
         return () => clearTimeout(timer);
     });
-
-
-
     useEffect(() => {
         const defaultPresentData = {};
         students.forEach((student) => {
@@ -68,44 +54,33 @@ const AdvisorTest = ({ students }) => {
         setAllStudentsAttendance(defaultPresentData);
     }, [students]);
 
-
     const sortStudentsByName = (students) => {
         const yearOrder = ["First year", "Second year", "Third year", "Final year"];
-
         return students.sort((a, b) => {
             const yearIndexA = yearOrder.indexOf(a.class);
             const yearIndexB = yearOrder.indexOf(b.class);
-
             const yearComparison = yearIndexA - yearIndexB;
             if (yearComparison !== 0) return yearComparison;
-
             // Sort by register number instead of name
             return a.registerNumber - b.registerNumber;
         });
     };
 
-
-
     const handleSearch = () => {
         const searchInput = searchQuery.toLowerCase();
         const tableRows = document.querySelectorAll('tbody tr');
-
         let matchedRows = [];
-
         for (const row of tableRows) {
             const rowData = row.innerText.toLowerCase();
             const matchingScore = calculateMatchingScore(rowData, searchInput);
             if (matchingScore > 0) {
-                matchedRows.push({ row, matchingScore });
-            }
+                matchedRows.push({ row, matchingScore });}
         }
-
         if (matchedRows.length > 0) {
             matchedRows.sort((a, b) => a.row.offsetTop - b.row.offsetTop);
             const tableContainer = document.querySelector('.attendance-table-container');
             const headerHeight = document.querySelector('.attendance-table-container th').offsetHeight;
             const paddingTop = headerHeight + 5;
-
             const closestRow = matchedRows[0];
             tableContainer.scrollTop = closestRow.row.offsetTop - paddingTop;
         } else {
@@ -128,8 +103,6 @@ const AdvisorTest = ({ students }) => {
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase()))
     );
-
-
 
     const renderTableHeader = () => {
         return (
@@ -157,11 +130,9 @@ const AdvisorTest = ({ students }) => {
             return ''; // Default class when the mark is outside the specified ranges
         }
     };
-    
     const renderTableRows = (students) => {
         const sortedStudents = sortStudentsByName(students);
         let serialNumber = 1;
-
         return sortedStudents.map((student) => (
             <tr key={student._id}>
                 <td>{serialNumber++}</td>
@@ -191,7 +162,6 @@ const AdvisorTest = ({ students }) => {
             </tr>
         ));
     };
-
 
     return (
         <div>
@@ -236,7 +206,6 @@ const AdvisorTest = ({ students }) => {
                     ) : (
                         <p className="error-message">No student data available.</p>
                     )}
-
                     {message && <p className={`success-message`}>{message}</p>}
                 </div>
             </div>

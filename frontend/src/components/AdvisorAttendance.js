@@ -6,7 +6,6 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AdvisorAttendance = ({ students }) => {
-
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [date, setDate] = useState('');
@@ -14,28 +13,19 @@ const AdvisorAttendance = ({ students }) => {
   const navigate = useNavigate();
   const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
   const [movingLabel, setMovingLabel] = useState('');
-  const [labelWidth, setLabelWidth] = useState(0);
   const [dateError, setDateError] = useState(false);
   const [isDateChosen, setIsDateChosen] = useState(false);
   const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
 
-
-
   useEffect(() => {
     setDateError(false);
   }, [date]);
-
-
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setMovingLabel('');
     }, 400);
-
     return () => clearTimeout(timer);
   });
-
-
 
   useEffect(() => {
     const defaultPresentData = {};
@@ -45,31 +35,20 @@ const AdvisorAttendance = ({ students }) => {
     setAllStudentsAttendance(defaultPresentData);
   }, [students]);
 
-
   const sortStudentsByName = (students) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
-
     return students.sort((a, b) => {
-        const yearIndexA = yearOrder.indexOf(a.class);
-        const yearIndexB = yearOrder.indexOf(b.class);
-
-        const yearComparison = yearIndexA - yearIndexB;
-        if (yearComparison !== 0) return yearComparison;
-
-        // Sort by register number instead of name
-        return a.registerNumber - b.registerNumber;
+      const yearIndexA = yearOrder.indexOf(a.class);
+      const yearIndexB = yearOrder.indexOf(b.class);
+      const yearComparison = yearIndexA - yearIndexB;
+      if (yearComparison !== 0) return yearComparison;
+      return a.registerNumber - b.registerNumber;
     });
-};
-
-
-
-
+  };
   const handleSearch = () => {
     const searchInput = searchQuery.toLowerCase();
     const tableRows = document.querySelectorAll('tbody tr');
-
     let matchedRows = [];
-
     for (const row of tableRows) {
       const rowData = row.innerText.toLowerCase();
       const matchingScore = calculateMatchingScore(rowData, searchInput);
@@ -77,26 +56,22 @@ const AdvisorAttendance = ({ students }) => {
         matchedRows.push({ row, matchingScore });
       }
     }
-
     if (matchedRows.length > 0) {
       matchedRows.sort((a, b) => a.row.offsetTop - b.row.offsetTop);
       const tableContainer = document.querySelector('.attendance-table-container');
       const headerHeight = document.querySelector('.attendance-table-container th').offsetHeight;
       const paddingTop = headerHeight + 5;
-
       const closestRow = matchedRows[0];
       tableContainer.scrollTop = closestRow.row.offsetTop - paddingTop;
     } else {
       setSearchQuery('');
     }
   };
-
   const calculateMatchingScore = (text, searchInput) => {
     const regex = new RegExp(searchInput, 'g');
     const matches = text.match(regex);
     return matches ? matches.length : 0;
   };
-
   const filteredStudents = students.filter(
     (student) =>
     (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -106,53 +81,40 @@ const AdvisorAttendance = ({ students }) => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase()))
   );
-
   const handleUpdateAttendance = async () => {
     if (!isDateChosen) {
       setDateError(true);
       setLoading(false);
       return;
     }
-
     setLoading(true);
-
     try {
-
-
       // Update attendance for each student one by one
       for (const student of students) {
         const presentValue = allStudentsAttendance[student.email] || false;
-
         await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
           date,
           present: presentValue,
           email: student.email,
         });
-
-        // Update local state after making the request
         setAllStudentsAttendance((prevAttendance) => ({
           ...prevAttendance,
           [student.email]: presentValue,
         }));
       }
-
       setMessage('Attendance updated successfully!');
       setTimeout(() => {
         setMessage('');
       }, 5000);
-
       setDate('');
       setIsDateChosen(false);
     } catch (error) {
       console.error('Error updating attendance:', error);
       setMessage('An error occurred while updating attendance mod 4');
     }
-
     setLoading(false);
   };
-
   const renderTableHeader = () => {
-
     return (
       <thead>
         <tr>
@@ -165,9 +127,7 @@ const AdvisorAttendance = ({ students }) => {
         </tr>
       </thead>
     );
-
   };
-
   const departmentShortNames = {
     "Information Technology": "IT",
     "Computer Science and Engineering": "CSE",
@@ -178,7 +138,6 @@ const AdvisorAttendance = ({ students }) => {
     "Electrical and Communication Engineering": "ECE",
     "Civil Engineering": "CIVIL",
   };
-
   const renderTableRows = (students) => {
     const sortedStudents = sortStudentsByName(students);
     let serialNumber = 1;
@@ -189,7 +148,6 @@ const AdvisorAttendance = ({ students }) => {
         <td>{student.name}</td>
         <td>{departmentShortNames[student.department] || student.department}</td>
         <td>{student.year}</td>
-
         <td>
           <input
             type="checkbox"
@@ -203,7 +161,6 @@ const AdvisorAttendance = ({ students }) => {
             }}
           />
         </td>
-
       </tr>
     ));
   };
@@ -233,14 +190,13 @@ const AdvisorAttendance = ({ students }) => {
                       setDate(e.target.value);
                       setIsDateChosen(true);
                       setDateError(false);
-                    }}
+                    }
+                    }
                     required
                   />
                 </div>
               </div>
             </div>
-
-
             <div className="attendance-search-bar-container">
               <div className='search-bar'>
                 <input
@@ -268,7 +224,6 @@ const AdvisorAttendance = ({ students }) => {
               </button>
               {dateError && <p className='success-message'>please select date!</p>}
             </div>
-
           </div>
           {filteredStudents.length > 0 ? (
             <div className="attendance-table-container" style={{ height: `${Math.min(500, Math.max(150, filteredStudents.length * 50))}px`, overflow: 'auto' }}>
@@ -280,7 +235,6 @@ const AdvisorAttendance = ({ students }) => {
           ) : (
             <p className="error-message">No student data available.</p>
           )}
-
           {message && <p className={`success-message`}>{message}</p>}
         </div>
       </div>
