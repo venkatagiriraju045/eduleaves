@@ -260,10 +260,11 @@ const Home = () => {
                                     
                                 </div>
                             }
-                            <div><p>Developer: Venkatagiriraju Udayakumar, IV CSE KIOT.</p></div>
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
                     </div>
+                    <div><p>Developer: Venkatagiriraju Udayakumar, IV CSE KIOT.</p></div>
+
                 </div >
             </div >
         </div >

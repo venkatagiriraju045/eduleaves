@@ -27,8 +27,8 @@ const Profile = () => {
     useEffect(() => {
         // Detect device type and set the state
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        isMobile ? setShowNavBar(true) : setShowNavBar(false)
-    }, []);
+        isMobile ? setShowNavBar(false) : setShowNavBar(true)
+    }, [showSemesterResult, showAccomplishments, showAttendance, showTestScore]);
     useEffect(() => {
         const fetchStudentData = async () => {
             try {
