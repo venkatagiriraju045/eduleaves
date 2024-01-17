@@ -263,7 +263,7 @@ const Home = () => {
                         </form>
                         <img src="./uploads/login-page-line.png" alt="menu image" id="login-page-line" />
                     </div>
-                    <div><p>Developer: Venkatagiriraju Udayakumar, IV CSE KIOT.</p></div>
+                    <div><p className='footer-para'>Developer: Venkatagiriraju Udayakumar, IV CSE KIOT.</p></div>
 
                 </div >
             </div >
