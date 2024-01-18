@@ -14,18 +14,11 @@ import UpdateIAT from './UpdateIAT.js';
 import AdvisorClassWise from './AdvisorClassWise.js';
  
 const AdvisorMenu = () => {
-  const [advisorInfo, setAdvisorInfo] = useState(null);
 
-  useEffect(() => {
     // Retrieve the JSON string from local storage
-    const storedAdvisorInfo = localStorage.getItem('advisorInfo');
+    const advisorInfo = localStorage.getItem('advisorInfo');
 
-    // Parse the JSON string back into an object
-    const parsedAdvisorInfo = storedAdvisorInfo ? JSON.parse(storedAdvisorInfo) : null;
 
-    // Set the retrieved advisor info to the state
-    setAdvisorInfo(parsedAdvisorInfo);
-  }, []); // Empty dependency array to run the effect only once
 console.log(advisorInfo);
   const [institute, setInstitute] = useState(null);
   const [loading, setLoading] = useState(true);
