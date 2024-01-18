@@ -143,7 +143,15 @@ const Home = () => {
                 if (staff) {
                     if ((loginEmail !== 'admin@kiot') && (loginEmail !== 'admin@psg') && (loginEmail !== 'admin@mhs')) {
                         if (loginAs === 'hod' && staff.role === 'hod' && loginAs !== 'student') {
-                            navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
+                            const hodInfo = {
+                                instituteName: staff.institute_name,
+                                departmentName: staff.department,
+                            };
+                            
+                            // Convert the object to a JSON string before storing
+                            localStorage.setItem('hodInfo', JSON.stringify(hodInfo));
+
+                            navigate('/DepartmentMenu');
                         } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student') {
                             const advisorInfo = {
                                 instituteName: staff.institute_name,

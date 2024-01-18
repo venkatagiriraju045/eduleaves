@@ -12,8 +12,24 @@ import DepartmentMenuDashboard from './DepartmentMenuDashboard';
 import DepartmentAttendance from './DepartmentAttendance.js';
 
 const DepartmentMenu = () => {
-  const location = useLocation();
-  const { instituteName, departmentName } = location.state || {};
+  
+  const storedHODInfo = localStorage.getItem('hodInfo');
+
+  // Parse the JSON string back into an object
+  const hodInfo = storedHODInfo ? JSON.parse(storedHODInfo) : null;
+  
+  // Access individual properties
+  if (hodInfo) {
+    const instituteName = hodInfo.instituteName;
+    const departmentName = hodInfo.departmentName;
+  
+    console.log('Institute Name:', instituteName);
+    console.log('Department Name:', departmentName);
+
+  } else {
+    console.log('No hod info found in local storage.');
+  }
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);
