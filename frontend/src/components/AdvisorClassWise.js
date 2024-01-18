@@ -72,7 +72,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             createOverallClassPerformanceChart();
             createGenderLineChart();
             createHostelerChart();
-        }, 3000);
+        }, 1500);
 
         return () => clearTimeout(timer);
         

@@ -11,6 +11,7 @@ import AdvisorMessage from './AdvisorMessage.js';
 import AdvisorTest from './AdvisorTest.js';
 import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 import UpdateIAT from './UpdateIAT.js';
+import AdvisorClassWise from './AdvisorClassWise.js';
 
 const AdvisorMenu = () => {
   const location = useLocation();
@@ -383,8 +384,8 @@ const AdvisorMenu = () => {
               <AdvisorAttendancePerformance students={students} />
             ) : (showDashboard &&
               <div className='home-contents'>
-                <div>
-                  <AdvisorDashboard students={students} year={year} section={section} department={departmentName} />
+                <div id='class-wise-page' className='class-wise-analytics-page'>
+                <AdvisorClassWise students={students} year={year} section={section} department={department}/>
                 </div>
               </div>)}
           </main>}
