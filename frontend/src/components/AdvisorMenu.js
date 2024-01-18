@@ -42,12 +42,6 @@ const AdvisorMenu = () => {
       setMobile(true);
     }
   }, []);
-  useEffect(() => {
-    if (!instituteName || !departmentName || !year || !section || !students) {
-      return <p>loading...</p>;
-    }
-  }, [students, loading, isLoading]);
-
 
   useEffect(() => {
     const fetchData = async () => {
