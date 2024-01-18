@@ -498,9 +498,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         document.body.removeChild(textarea);
         alert('Class-wise attendance details copied to the clipboard!');
     };
-    if (!departmentName || !year || !section || !students || !classStudents) {
-        return <p>loading...</p>;
-    }
+
     return (
         <div>
             <div className='department-header-container'>
