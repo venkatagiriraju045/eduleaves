@@ -64,8 +64,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement);
 
     useEffect(() => {
-        if (department && year && section && students) {
-        
+
         setDepartmentName(department);
         setStudentSection(section);
         setStudentYear(year);
@@ -73,7 +72,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         createOverallClassPerformanceChart();
         createGenderLineChart();
         createHostelerChart();
-        }
+        
     }, [students, showDepartment]);
     useEffect(() => {
         const timer = setTimeout(() => {
