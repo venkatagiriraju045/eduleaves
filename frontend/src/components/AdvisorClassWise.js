@@ -62,6 +62,9 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         students
     );
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement);
+    if (!departmentName || !year || !section || !students || !classStudents) {
+        return <p>loading...</p>;
+    }
     useEffect(() => {
         setDepartmentName(department);
         setStudentSection(section);

@@ -167,9 +167,7 @@ const AdvisorMenu = () => {
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
     });
-    if (!instituteName || !departmentName || !year || !section || !students) {
-      return <p>loading...</p>;
-  }
+
     const messageElement = document.createElement('div');
     messageElement.style.color = 'black';
     document.querySelector('.profile-right-content-container').appendChild(messageElement);
@@ -255,6 +253,12 @@ const AdvisorMenu = () => {
     );
   }
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
+
+  if (!instituteName || !departmentName || !year || !section || !students) {
+    return <p>loading...</p>;
+}
+
+
   return (
     <div className="dep-admin-page-container">
       {showNavBar &&
