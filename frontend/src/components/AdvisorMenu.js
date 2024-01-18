@@ -385,7 +385,7 @@ const AdvisorMenu = () => {
             ) : (showDashboard &&
               <div className='home-contents'>
                 <div id='class-wise-page' className='class-wise-analytics-page'>
-                <AdvisorClassWise students={students} year={year} section={section} department={department}/>
+                <AdvisorClassWise students={students} year={year} section={section} department={departmentName}/>
                 </div>
               </div>)}
           </main>}
