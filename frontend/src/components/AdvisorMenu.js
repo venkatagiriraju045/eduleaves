@@ -167,6 +167,9 @@ const AdvisorMenu = () => {
     document.querySelectorAll('.admin-chart-container').forEach((element) => {
       element.style.display = 'none';
     });
+    if (!instituteName || !departmentName || !year || !section || !students) {
+      return <p>loading...</p>;
+  }
     const messageElement = document.createElement('div');
     messageElement.style.color = 'black';
     document.querySelector('.profile-right-content-container').appendChild(messageElement);
