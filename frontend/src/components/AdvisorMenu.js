@@ -12,10 +12,21 @@ import AdvisorTest from './AdvisorTest.js';
 import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 import UpdateIAT from './UpdateIAT.js';
 import AdvisorClassWise from './AdvisorClassWise.js';
-
+ 
 const AdvisorMenu = () => {
-  const location = useLocation();
-  const { instituteName, departmentName, year, section } = location.state || {};
+  const [advisorInfo, setAdvisorInfo] = useState(null);
+
+  useEffect(() => {
+    // Retrieve the JSON string from local storage
+    const storedAdvisorInfo = localStorage.getItem('advisorInfo');
+
+    // Parse the JSON string back into an object
+    const parsedAdvisorInfo = storedAdvisorInfo ? JSON.parse(storedAdvisorInfo) : null;
+
+    // Set the retrieved advisor info to the state
+    setAdvisorInfo(parsedAdvisorInfo);
+  }, []); // Empty dependency array to run the effect only once
+
   const [institute, setInstitute] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -53,13 +64,13 @@ const AdvisorMenu = () => {
           const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
             params: {
               role: 'student',
-              department: departmentName,
-              instituteName: instituteName,
-              year: year,
-              section: section
+              department: advisorInfo.departmentName,
+              instituteName: advisorInfo.instituteName,
+              year: advisorInfo.year,
+              section: advisorInfo.section,
             }
           });
-          setInstitute(instituteName);
+          setInstitute(advisorInfo.instituteName);
           const studentData = response.data;
           setStudents(studentData);
           setLoading(false);
@@ -385,7 +396,7 @@ const AdvisorMenu = () => {
             ) : (showDashboard &&
               <div className='home-contents'>
                 <div id='class-wise-page' className='class-wise-analytics-page'>
-                <AdvisorClassWise students={students} year={year} section={section} department={departmentName}/>
+                <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
                 </div>
               </div>)}
           </main>}

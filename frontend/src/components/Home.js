@@ -134,7 +134,7 @@ const Home = () => {
         try {
             console.log(loginEmail);
             console.log(loginPassword);
-            console.log("staff data :"+staff);
+            console.log("staff data :" + staff);
             const response = await axios.post(`https://eduleaves-api.vercel.app/api/admin-login`, {
                 email: loginEmail,
                 password: loginPassword,
@@ -145,7 +145,17 @@ const Home = () => {
                         if (loginAs === 'hod' && staff.role === 'hod' && loginAs !== 'student') {
                             navigate('/DepartmentMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department } });
                         } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student') {
-                            navigate('/AdvisorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, year: staff.year, section: staff.section } });
+                            const advisorInfo = {
+                                instituteName: staff.institute_name,
+                                departmentName: staff.department,
+                                year: staff.year,
+                                section: staff.section
+                            };
+
+                            // Convert the object to a JSON string before storing
+                            localStorage.setItem('advisorInfo', JSON.stringify(advisorInfo));
+
+                            navigate('/AdvisorMenu');
                         } else if (loginAs === 'mentor' && staff.role === 'mentor' && (staff.name === 'rk@cse.kiot' || staff.name === 'rsp@cse.kiot' || staff.name === 'rsg@cse.kiot' || staff.name === 'mj@cse.kiot') && loginAs !== 'student') {
                             navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
                         }
@@ -206,7 +216,7 @@ const Home = () => {
                         {loginSuccess && <p className="login-success">Login successful!</p>}
                         <form onSubmit={loginAs === 'student' ? handleLogin : handleSubmit}>
                             <div className="form-group">
-                                <label>Gate Address{loginAs==='student'?<> (Register number [611....])</>:<></>}</label>
+                                <label>Gate Address{loginAs === 'student' ? <> (Register number [611....])</> : <></>}</label>
                                 <br />
                                 <input
                                     type="text"
@@ -216,7 +226,7 @@ const Home = () => {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Password{loginAs==='student'?<> (Date Of Birth [30-05-2002])</>:<></>}</label>
+                                <label>Password{loginAs === 'student' ? <> (Date Of Birth [30-05-2002])</> : <></>}</label>
                                 <br />
                                 <input
                                     type="password"
@@ -257,7 +267,7 @@ const Home = () => {
                                     <br></br>
                                     <br></br>
                                     <br></br>
-                                    
+
                                 </div>
                             }
                         </form>
