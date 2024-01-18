@@ -165,7 +165,14 @@ const Home = () => {
 
                             navigate('/AdvisorMenu');
                         } else if (loginAs === 'mentor' && staff.role === 'mentor' && (staff.name === 'rk@cse.kiot' || staff.name === 'rsp@cse.kiot' || staff.name === 'rsg@cse.kiot' || staff.name === 'mj@cse.kiot') && loginAs !== 'student') {
-                            navigate('/MentorMenu', { state: { instituteName: staff.institute_name, departmentName: staff.department, mentor_name: staff.name } });
+                            const mentorInfo = {
+                                instituteName: staff.institute_name,
+                                departmentName: staff.department,
+                                mentor_name: staff.name,
+                            };
+                            // Convert the object to a JSON string before storing
+                            localStorage.setItem('mentorInfo', JSON.stringify(mentorInfo));
+                            navigate('/MentorMenu');
                         }
                     }/* else {
                         navigate('/admin-home', { state: { email: loginEmail, instituteName: staff.institute_name } });

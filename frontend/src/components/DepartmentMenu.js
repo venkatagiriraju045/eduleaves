@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
-import html2canvas from 'html2canvas';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CSS/AdminHome.css';
 import DepartmentMessage from './DepartmentMessage.js'
 import UpdateAccom from './UpdateAccom';
@@ -208,7 +207,6 @@ const DepartmentMenu = () => {
     };
     return instituteNameMap[instituteName] || instituteName;
   }
-
 
   if (deviceType === 'mobile') {
     return (

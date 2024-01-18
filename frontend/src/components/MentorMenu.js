@@ -12,8 +12,20 @@ import MentorMessage from './MentorMessage.js';
 
 
 const MentorMenu = () => {
-  const location = useLocation();
-  const { instituteName, departmentName, mentor_name } = location.state || {};
+  let instituteName, departmentName, mentor_name;
+  const storedmentorInfo = localStorage.getItem('mentorInfo');
+
+  // Parse the JSON string back into an object
+  const mentorInfo = storedmentorInfo ? JSON.parse(storedmentorInfo) : null;
+  
+  // Access individual properties
+  if (mentorInfo) {
+    instituteName = mentorInfo.instituteName;
+    departmentName = mentorInfo.departmentName;
+    mentor_name = mentorInfo.mentor_name;
+  } else {
+    console.log('No mentor info found in local storage.');
+  }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);
