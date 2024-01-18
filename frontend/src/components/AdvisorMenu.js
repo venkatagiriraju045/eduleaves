@@ -43,6 +43,12 @@ const AdvisorMenu = () => {
     }
   }, []);
   useEffect(() => {
+    if (!instituteName || !departmentName || !year || !section || !students) {
+      return <p>loading...</p>;
+  }
+  }, [showDashboard, showAdvisorAttendancePerformace, showAttendanceForm, showConfirmationPrompt, showMessageForm, showTestPerformanceForm, showUpdateAccom, showUpdateIATForm, sho]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
@@ -254,9 +260,7 @@ const AdvisorMenu = () => {
   }
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
 
-  if (!instituteName || !departmentName || !year || !section || !students) {
-    return <p>loading...</p>;
-}
+
 
 
   return (
