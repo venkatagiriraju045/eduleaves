@@ -64,16 +64,20 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
     Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement, LineController, LineElement);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setDepartmentName(department);
+            setStudentSection(section);
+            setStudentYear(year);
+            createPassFailChart();
+            createOverallClassPerformanceChart();
+            createGenderLineChart();
+            createHostelerChart();
+        }, 3000);
 
-        setDepartmentName(department);
-        setStudentSection(section);
-        setStudentYear(year);
-        createPassFailChart();
-        createOverallClassPerformanceChart();
-        createGenderLineChart();
-        createHostelerChart();
+        return () => clearTimeout(timer);
         
     }, [students, showDepartment]);
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowDepartment(true);

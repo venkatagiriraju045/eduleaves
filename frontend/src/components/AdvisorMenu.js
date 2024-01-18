@@ -44,6 +44,9 @@ const AdvisorMenu = () => {
   }, []);
 
   useEffect(() => {
+    
+      const timer = setTimeout(() => {
+
     const fetchData = async () => {
       try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
@@ -66,6 +69,10 @@ const AdvisorMenu = () => {
       }
     };
     fetchData();
+  }, 3000);
+
+  return () => clearTimeout(timer);
+
   }, []);
   const navigate = useNavigate();
   const handleLogout = () => {
