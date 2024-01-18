@@ -26,7 +26,7 @@ const AdvisorMenu = () => {
     // Set the retrieved advisor info to the state
     setAdvisorInfo(parsedAdvisorInfo);
   }, []); // Empty dependency array to run the effect only once
-
+console.log(advisorInfo);
   const [institute, setInstitute] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
