@@ -44,34 +44,34 @@ const AdvisorMenu = () => {
   }, []);
 
   useEffect(() => {
-    
-      const timer = setTimeout(() => {
 
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
-          params: {
-            role: 'student',
-            department: departmentName,
-            instituteName: instituteName,
-            year: year,
-            section: section
-          }
-        });
-        setInstitute(instituteName);
-        const studentData = response.data;
-        setStudents(studentData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching student data:', error);
-        setError(error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, 3000);
+    const timer = setTimeout(() => {
 
-  return () => clearTimeout(timer);
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
+            params: {
+              role: 'student',
+              department: departmentName,
+              instituteName: instituteName,
+              year: year,
+              section: section
+            }
+          });
+          setInstitute(instituteName);
+          const studentData = response.data;
+          setStudents(studentData);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching student data:', error);
+          setError(error);
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }, 500);
+
+    return () => clearTimeout(timer);
 
   }, []);
   const navigate = useNavigate();
