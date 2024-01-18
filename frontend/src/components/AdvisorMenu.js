@@ -46,7 +46,7 @@ const AdvisorMenu = () => {
     if (!instituteName || !departmentName || !year || !section || !students) {
       return <p>loading...</p>;
   }
-  }, [showDashboard, showAdvisorAttendancePerformace, showAttendanceForm, showConfirmationPrompt, showMessageForm, showTestPerformanceForm, showUpdateAccom, showUpdateIATForm, sho]);
+  }, [showDashboard, showAdvisorAttendancePerformace, showAttendanceForm, showConfirmationPrompt, showMessageForm, showTestPerformanceForm, showUpdateAccom, showUpdateIATForm]);
 
   useEffect(() => {
     const fetchData = async () => {
