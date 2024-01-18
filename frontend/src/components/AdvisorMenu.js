@@ -19,7 +19,7 @@ const AdvisorMenu = () => {
     const advisorInfo = localStorage.getItem('advisorInfo');
 
 
-console.log(advisorInfo[instituteName]);
+console.log(advisorInfo[0]);
   const [institute, setInstitute] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
