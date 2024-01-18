@@ -74,7 +74,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         createGenderLineChart();
         createHostelerChart();
         }
-    }, [students]);
+    }, [students, showDepartment]);
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowDepartment(true);
