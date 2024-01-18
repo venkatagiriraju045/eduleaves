@@ -19,9 +19,10 @@ const DepartmentMenu = () => {
   const hodInfo = storedHODInfo ? JSON.parse(storedHODInfo) : null;
   
   // Access individual properties
+  let instituteName, departmentName;
   if (hodInfo) {
-    const instituteName = hodInfo.instituteName;
-    const departmentName = hodInfo.departmentName;
+    instituteName = hodInfo.instituteName;
+    departmentName = hodInfo.departmentName;
   
     console.log('Institute Name:', instituteName);
     console.log('Department Name:', departmentName);
@@ -199,13 +200,13 @@ const DepartmentMenu = () => {
     setShowNavBar((prevShowNavBar) => !prevShowNavBar);
   };
 
-  function getInstituteFullName(institute) {
+  function getInstituteFullName(instituteName) {
     const instituteNameMap = {
       "KIOT": "KNOWLEDGE INSTITUTE OF TECHNOLOGY",
       "MHS": "MUNICIPAL HIGHER SECONDARY SCHOOL",
       "PSG": "PSG ENGINEERING COLLEGE",
     };
-    return instituteNameMap[institute] || institute;
+    return instituteNameMap[instituteName] || instituteName;
   }
 
 
@@ -231,7 +232,7 @@ const DepartmentMenu = () => {
                 <p>
                   HOD
                   <br />
-                  {institute}
+                  {instituteName}
                   <br />
                 </p>
               </div>
@@ -281,7 +282,7 @@ const DepartmentMenu = () => {
                 }`} />
           </div>
           <div className='header-dialogue'>
-            <p>{getInstituteFullName(institute)}</p>
+            <p>{getInstituteFullName(instituteName)}</p>
           </div>
           <div >
             <button className='logout-button' onClick={() => setShowConfirmationPrompt(true)}>
