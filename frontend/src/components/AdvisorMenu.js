@@ -15,11 +15,25 @@ import AdvisorClassWise from './AdvisorClassWise.js';
  
 const AdvisorMenu = () => {
 
-    // Retrieve the JSON string from local storage
-    const advisorInfo = localStorage.getItem('advisorInfo');
+  const storedAdvisorInfo = localStorage.getItem('advisorInfo');
 
-
-console.log(advisorInfo[0]);
+  // Parse the JSON string back into an object
+  const advisorInfo = storedAdvisorInfo ? JSON.parse(storedAdvisorInfo) : null;
+  
+  // Access individual properties
+  if (advisorInfo) {
+    const instituteName = advisorInfo.instituteName;
+    const departmentName = advisorInfo.departmentName;
+    const year = advisorInfo.year;
+    const section = advisorInfo.section;
+  
+    console.log('Institute Name:', instituteName);
+    console.log('Department Name:', departmentName);
+    console.log('Year:', year);
+    console.log('Section:', section);
+  } else {
+    console.log('No advisor info found in local storage.');
+  }
   const [institute, setInstitute] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
