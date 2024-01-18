@@ -146,11 +146,12 @@ const MenteeActivityUpdate = ({ student }) => {
                     </div>
                 )}
             </div>
-            <div className="message-students-container">
+            <div className="student-achievements-container">
                 {student && student !== '' && (
-                    <div className="message-form">
+
+                    <div className="achievement-form">
                         <div className="radio-group">
-                        <label>
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     value="achievement"
@@ -159,7 +160,7 @@ const MenteeActivityUpdate = ({ student }) => {
                                 />
                                 Achievement
                             </label>
-                        <label>
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     value="certification"
@@ -168,8 +169,7 @@ const MenteeActivityUpdate = ({ student }) => {
                                 />
                                 Certification
                             </label>
-                            
-                            <label>
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     value="course"
@@ -178,7 +178,7 @@ const MenteeActivityUpdate = ({ student }) => {
                                 />
                                 Course
                             </label>
-                            <label>
+                            <label className="radio-label">
                                 <input
                                     type="radio"
                                     value="internship"
@@ -282,8 +282,11 @@ const MenteeActivityUpdate = ({ student }) => {
                                 </>
                             )}
                         </div>
-                        <button onClick={updateStudentAccomplishments}>Update</button>
-                        {appMessage && <p className={`success-message`}>{appMessage}</p>}
+
+                        <button className="update-button" onClick={updateStudentAccomplishments}>
+                            Update
+                        </button>
+                            {appMessage && <p className={`success-message`}>{appMessage}</p>}
                     </div>
                 )}
             </div>
