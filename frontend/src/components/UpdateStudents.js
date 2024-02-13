@@ -31,21 +31,21 @@ const UpdateStudents = () => {
                         return;
                     }
 
-                    const studentDataToUpdate = excelData.map((data) => {
-                        return {
+                    // Iterate through each student data and upload one by one
+                    for (const data of excelData) {
+                        const studentDataToUpdate = {
                             regNo: data['REG. NO.'],
                             name: data['NAME OF THE STUDENT'],
                             mentor: data['MENTOR'],
                             section: data['SECTION'],
-                            year:data['YEAR'],
-                            department:data['DEPARTMENT']
+                            year: data['YEAR'],
+                            department: data['DEPARTMENT']
                         };
-                    });
 
-                    // Make a POST request to your server endpoint
-                    const response = await axios.post('https://eduleaves-api.vercel.app/api/update_students', { studentDataToUpdate });
-
-                    console.log(response.data); // Handle the response as needed
+                        // Make a POST request to your server endpoint for each student
+                        const response = await axios.post('https://eduleaves-api.vercel.app/api/update_students', { studentDataToUpdate });
+                        console.log(response.data); // Handle the response as needed
+                    }
                 } catch (error) {
                     console.error('Error parsing Excel file:', error);
                 }

@@ -448,28 +448,24 @@ app.post('/api/update_activity', async (req, res) => {
 });
 app.post('/api/update_students', async (req, res) => {
     try {
-        const { studentDataToUpdate } = req.body;
+        const { regNo, name, mentor, section, year, department } = req.body;
 
         // Update or create student data in the database
-        for (const data of studentDataToUpdate) {
-            const { regNo, name, mentor, section, year, department} = data;
-
-            // Assuming you have a Student model defined
-            // You may need to replace User with the appropriate model
-            await Student.findOneAndUpdate(
-                { 'regNo': regNo },
-                {
-                    $set: {
-                        'name': name,
-                        'mentor_name': mentor,
-                        'section': section,
-                        'year':year,
-                        'department':department
-                    }
-                },
-                { upsert: true } // Create a new student if not found
-            );
-        }
+        // Assuming you have a Student model defined
+        // You may need to replace User with the appropriate model
+        await Student.findOneAndUpdate(
+            { 'regNo': regNo },
+            {
+                $set: {
+                    'name': name,
+                    'mentor': mentor,
+                    'section': section,
+                    'year': year,
+                    'department': department
+                }
+            },
+            { upsert: true } // Create a new student if not found
+        );
 
         res.status(200).json({ message: 'Student data updated successfully' });
     } catch (error) {
