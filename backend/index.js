@@ -24,6 +24,7 @@ console.log('Mongoose connected to MongoDB');
 
 const userSchema = new mongoose.Schema({
     email: { type: String },
+    name:{ type: String },
     studentName: { type: String },
     degreeAndBranch: { type: String },
     password: { type: String },
@@ -451,7 +452,7 @@ app.post('/api/update_students', async (req, res) => {
 
         // Update or create student data in the database
         for (const data of studentDataToUpdate) {
-            const { regNo, name, mentor, section } = data;
+            const { regNo, name, mentor, section, year, department} = data;
 
             // Assuming you have a Student model defined
             // You may need to replace User with the appropriate model
@@ -460,8 +461,10 @@ app.post('/api/update_students', async (req, res) => {
                 {
                     $set: {
                         'name': name,
-                        'mentor': mentor,
-                        'section': section
+                        'mentor_name': mentor,
+                        'section': section,
+                        'year':year,
+                        'department':department
                     }
                 },
                 { upsert: true } // Create a new student if not found

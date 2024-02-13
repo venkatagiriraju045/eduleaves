@@ -37,7 +37,9 @@ const UpdateStudents = () => {
                             regNo: data['REG. NO.'],
                             name: data['NAME OF THE STUDENT'],
                             mentor: data['MENTOR'],
-                            section: data['SECTION']
+                            section: data['SECTION'],
+                            year:data['YEAR'],
+                            department:data['DEPARTMENT']
                         };
                     });
 
