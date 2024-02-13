@@ -451,7 +451,7 @@ app.post('/api/update_students', async (req, res) => {
         });
 
         await newUser.save();
-        
+
         res.status(200).json({ message: 'New student data created successfully' });
     } catch (error) {
         console.error('Error creating new student data:', error);
