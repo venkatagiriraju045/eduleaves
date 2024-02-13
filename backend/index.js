@@ -436,28 +436,23 @@ app.post('/api/update_activity', async (req, res) => {
 app.post('/api/update_students', async (req, res) => {
     try {
         const { regNo, name, mentor, section, year, department } = req.body;
-
         // Create a new instance of the User model
         const newUser = new User({
             registerNumber: regNo,
             name: name,
-            mentor: mentor,
+            mentor_name: mentor,
             section: section,
             year: year,
             department: department
         });
-
         // Save the new document to the database
         await newUser.save();
-
         res.status(200).json({ message: 'New student data created successfully' });
-    } catch (error) {
+        } catch (error) {
         console.error('Error creating new student data:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
 app.post('/api/update_iat', async (req, res) => {
     try {
         const { iatScoresToUpdate } = req.body;
