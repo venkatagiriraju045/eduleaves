@@ -37,8 +37,6 @@ const SemesterResult = ({ email}) => {
     };
     
     const getResult = (score) => (score >= 50 ? 'Pass' : 'Fail');
-    
-
     if (loading) {
         return <div>
             {loading && <div className={overlayClass}>

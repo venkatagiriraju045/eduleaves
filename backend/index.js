@@ -12,7 +12,7 @@ app.use(express.json());
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
 
 app.get('/', (req, res) => {
-    const message = "mod 4";
+    const message = "mod 5";
     res.send(`<html><body><h1>${message}</h1></body></html>`);
 });
 
@@ -445,6 +445,36 @@ app.post('/api/update_activity', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+app.post('/api/update_students', async (req, res) => {
+    try {
+        const { studentDataToUpdate } = req.body;
+
+        // Update or create student data in the database
+        for (const data of studentDataToUpdate) {
+            const { regNo, name, mentor, section } = data;
+
+            // Assuming you have a Student model defined
+            // You may need to replace User with the appropriate model
+            await Student.findOneAndUpdate(
+                { 'regNo': regNo },
+                {
+                    $set: {
+                        'name': name,
+                        'mentor': mentor,
+                        'section': section
+                    }
+                },
+                { upsert: true } // Create a new student if not found
+            );
+        }
+
+        res.status(200).json({ message: 'Student data updated successfully' });
+    } catch (error) {
+        console.error('Error updating student data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 
 app.post('/api/update_iat', async (req, res) => {
     try {

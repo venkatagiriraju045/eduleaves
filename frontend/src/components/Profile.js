@@ -635,7 +635,9 @@ const Profile = () => {
                                 </p>
                             </div>
                         </li>
-                        <li><a href="#" onClick={handleHomeButtonClick}>Home</a></li>
+
+                        {/*
+                            <li><a href="#" onClick={handleHomeButtonClick}>Home</a></li>
 
                         <li>
                             <div>
@@ -652,6 +654,7 @@ const Profile = () => {
                                 <a href="#" className="test-score-button" onClick={handleShowTestScore}>Tests</a>
                             </div>
                         </li>
+*/}
                         {enableSemesterResult &&
                             <li>
                                 <div>

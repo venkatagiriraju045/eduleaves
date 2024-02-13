@@ -80,9 +80,6 @@ const DepartmentAttendance = ({ students }) => {
         });
     };
 
-
-
-
     const handleSearch = () => {
         const searchInput = searchQuery.toLowerCase();
         const tableRows = document.querySelectorAll('tbody tr');

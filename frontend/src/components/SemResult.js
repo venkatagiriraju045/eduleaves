@@ -99,12 +99,12 @@ const SemResult = ({ student }) => {
                             </tr>
                             <tr>
                                 <td>Grade Point:</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>10</td>
+                                <td>9</td>
+                                <td>8</td>
+                                <td>7</td>
+                                <td>6</td>
+                                <td>5</td>
                                 <td>Reappear</td>
                                 <td>With Held</td>
                                 <td>Absent</td>
