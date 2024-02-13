@@ -509,7 +509,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             <div className='department-header-container'>
                 <div className='class-wise-header'>
                     {showDepartment && students && (
-                        <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
+                        <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Dashboard</h1>
                     )}</div>
 
                 <a href="#class-wise-page"><button href="#" className="today-button" onClick={handleTodayClick}>Attendance</button></a>
