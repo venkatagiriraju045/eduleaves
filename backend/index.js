@@ -438,29 +438,25 @@ app.post('/api/update_students', async (req, res) => {
     try {
         const { regNo, name, mentor, section, year, department } = req.body;
 
-        // Update or create student data in the database
+        // Create new student data in the database
         // Assuming you have a Student model defined
         // You may need to replace User with the appropriate model
-        await User.findOneAndUpdate(
-            { 'registerNumber': regNo },
-            {
-                $set: {
-                    'name': name,
-                    'mentor': mentor,
-                    'section': section,
-                    'year': year,
-                    'department': department
-                }
-            },
-            { upsert: true } // Create a new student if not found
-        );
+        await User.create({
+            registerNumber: regNo,
+            name: name,
+            mentor: mentor,
+            section: section,
+            year: year,
+            department: department
+        });
 
-        res.status(200).json({ message: 'Student data updated successfully' });
+        res.status(200).json({ message: 'New student data created successfully' });
     } catch (error) {
-        console.error('Error updating student data:', error);
+        console.error('Error creating new student data:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 app.post('/api/update_iat', async (req, res) => {
     try {
         const { iatScoresToUpdate } = req.body;
