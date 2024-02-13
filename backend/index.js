@@ -441,7 +441,7 @@ app.post('/api/update_students', async (req, res) => {
         // Create new student data in the database
         // Assuming you have a Student model defined
         // You may need to replace User with the appropriate model
-        await User.insertOne({
+        await User.create({
             registerNumber: regNo,
             name: name,
             mentor: mentor,
