@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './CSS/UpdateStudents.css';
 
 import * as XLSX from 'xlsx';
 
