@@ -215,7 +215,7 @@ const AdvisorMenu = () => {
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setShowUpdateStudents(true);
-      setShowUpdateIATForm(true);
+      setShowUpdateIATForm(false);
       setIsHomeButtonClicked(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
