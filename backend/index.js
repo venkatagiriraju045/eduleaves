@@ -404,7 +404,6 @@ app.post('/api/update_activity', async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-
         // Update the activity details based on the activity type
         switch (activity_type) {
             case 'internship':
@@ -438,18 +437,18 @@ app.post('/api/update_students', async (req, res) => {
     try {
         const { regNo, name, mentor, section, year, department } = req.body;
 
-        // Create new student data in the database
-        // Assuming you have a Student model defined
-        // You may need to replace User with the appropriate model
-        const student= {
+        // Create a new instance of the User model
+        const newUser = new User({
             registerNumber: regNo,
             name: name,
             mentor: mentor,
             section: section,
             year: year,
             department: department
-        };
-        await User.create(student);
+        });
+
+        // Save the new document to the database
+        await newUser.save();
 
         res.status(200).json({ message: 'New student data created successfully' });
     } catch (error) {
@@ -457,6 +456,7 @@ app.post('/api/update_students', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.post('/api/update_iat', async (req, res) => {
     try {
@@ -522,8 +522,6 @@ app.post('/api/update_semester_results', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
