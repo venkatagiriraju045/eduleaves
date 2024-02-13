@@ -121,7 +121,6 @@ app.post('/api/admin-login', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.get('/api/students', async (req, res) => {
     const { email } = req.query;
 
@@ -137,7 +136,6 @@ app.get('/api/students', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.get('/api/fetch_student_data', async (req, res) => {
     const { registerNumber } = req.query;
 
@@ -235,12 +233,9 @@ app.get('/api/admin_students_data', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/login', async (req, res) => {
     const { registerNumber, DOB } = req.body;
-
     try {
-
         const student = await User.findOne({ registerNumber, DOB });
         if (!student) {
             return res.status(401).json({ message: 'Authentication failed' });
@@ -251,7 +246,6 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/attendance', async (req, res) => {
     const { email, date, present } = req.body;
 
@@ -293,8 +287,6 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
 app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 
@@ -335,7 +327,6 @@ app.post('/api/update_all_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/send_message', async (req, res) => {
     const { message, selectedDepartment } = req.body;
 
@@ -354,8 +345,6 @@ app.post('/api/send_message', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
 app.post('/api/update_accomplishments', async (req, res) => {
     const { email, accomplishments } = req.body;
 
@@ -406,7 +395,6 @@ app.post('/api/update_messages', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/update_activity', async (req, res) => {
     const { email, activity_type, activity_details } = req.body;
 
@@ -453,7 +441,7 @@ app.post('/api/update_students', async (req, res) => {
         // Update or create student data in the database
         // Assuming you have a Student model defined
         // You may need to replace User with the appropriate model
-        await Student.findOneAndUpdate(
+        await User.findOneAndUpdate(
             { 'registerNumber': regNo },
             {
                 $set: {
@@ -473,8 +461,6 @@ app.post('/api/update_students', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
 app.post('/api/update_iat', async (req, res) => {
     try {
         const { iatScoresToUpdate } = req.body;
