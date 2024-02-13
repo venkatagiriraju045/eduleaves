@@ -454,7 +454,7 @@ app.post('/api/update_students', async (req, res) => {
         // Assuming you have a Student model defined
         // You may need to replace User with the appropriate model
         await Student.findOneAndUpdate(
-            { 'regNo': regNo },
+            { 'registerNumber': regNo },
             {
                 $set: {
                     'name': name,
