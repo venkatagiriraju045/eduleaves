@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema({
         },
     ],
     year: { type: String },
+    section: { type: String },
     department: { type: String },
     degreeAndBranch:{ type: String },
     total_attendance: { type: Number },

@@ -64,7 +64,7 @@ const AdvisorMenu = () => {
       setMobile(true);
     }
   }, []);
-
+console.log(advisorInfo)
   useEffect(() => {
 
     const timer = setTimeout(() => {
