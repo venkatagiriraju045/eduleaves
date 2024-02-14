@@ -20,6 +20,7 @@ mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
 console.log('Mongoose connected to MongoDB');
 
 const userSchema = new mongoose.Schema({
@@ -102,11 +103,7 @@ const userSchema = new mongoose.Schema({
         },
     ],
 }, { versionKey: false });
-
-
 const User = mongoose.model('students', userSchema);
-
-
 app.post('/api/admin-login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -245,15 +242,12 @@ app.post('/api/login', async (req, res) => {
     }
 });
 app.post('/api/attendance', async (req, res) => {
-    const { email, date, present } = req.body;
-
+    const { registerNumber, date, present } = req.body;
     try {
-        const student = await User.findOne({ email });
-
+        const student = await User.findOne({ registerNumber });
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
-
         if (present) {
             if (!student.present_array.includes(date)) {
                 student.present_array.push(date);
@@ -266,19 +260,15 @@ app.post('/api/attendance', async (req, res) => {
             if (!student.leave_array.includes(date)) {
                 student.leave_array.push(date);
             }
-
             const presentDateIndex = student.present_array.indexOf(date);
             if (presentDateIndex !== -1) {
                 student.present_array.splice(presentDateIndex, 1);
             }
         }
-
         student.total_attendance = student.present_array.length;
         student.total_days = student.present_array.length + student.leave_array.length;
-
         // Save each student's attendance individually
         await student.save();
-
         res.status(200).json({ message: 'Attendance updated successfully' });
     } catch (error) {
         console.error('Error updating attendance:', error);
@@ -366,11 +356,11 @@ app.post('/api/update_accomplishments', async (req, res) => {
     }
 });
 app.post('/api/update_messages', async (req, res) => {
-    const { email, messages, sender } = req.body;
+    const { registerNumber, messages, sender } = req.body;
 
     try {
         // Find the student by email
-        const student = await User.findOne({ email });
+        const student = await User.findOne({ registerNumber });
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
@@ -431,18 +421,14 @@ app.post('/api/update_activity', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/update_students', async (req, res) => {
     try {
         const { studentDataToUpdate } = req.body; // Access studentDataToUpdate from req.body
-
         // Destructure properties from studentDataToUpdate
         const { regNo, name, mentor, section, year, department, role } = studentDataToUpdate;
-
         if (!regNo || !name || !mentor || !section || !year || !department || !role) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-
         const newUser = new User({
             registerNumber: regNo,
             name: name,
@@ -452,16 +438,13 @@ app.post('/api/update_students', async (req, res) => {
             department: department,
             role:role,
         });
-
         await newUser.save();
-
         res.status(200).json({ message: 'New student data created successfully' });
     } catch (error) {
         console.error('Error creating new student data:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/update_iat', async (req, res) => {
     try {
         const { iatScoresToUpdate } = req.body;

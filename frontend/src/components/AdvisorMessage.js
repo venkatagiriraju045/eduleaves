@@ -7,15 +7,11 @@ const AdvisorMessage = ({ students, year, section, department}) => {
     const [appMessage, setAppMessage] = useState('');
     const [message, setMessage] = useState('');
     const [messagePreview, setMessagePreview] = useState('');
-
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
-
-
     const handleAccomplishmentsChange = (e) => {
         setMessage(e.target.value);
         handlePreviewUpdate(e);
     };
-
     const handlePreviewUpdate = (e) => {
         const messageText = e.target.value;
         const sentences = messageText;
@@ -31,32 +27,26 @@ const AdvisorMessage = ({ students, year, section, department}) => {
         );
         setMessage(messageText);
     };
-
-
     const updateStudentAccomplishments = async () => {
         if (!message.trim()) {
             setAppMessage('Please enter a valid message!');
             return;
         }
-
         setLoading(true);
-
         try {
             const sender = 'advisor';
             const dateAndTime = new Date().toLocaleString();
             const accomplishmentsToUpdate = `[${dateAndTime}] ${message.trim()}`;
             console.log(accomplishmentsToUpdate);
-
             // Send the POST request to update accomplishments for all students
             for (const student of students) {
                 await axios.post('https://eduleaves-api.vercel.app/api/update_messages', {
-                    email: student.email,
+                    registerNumber: student.registerNumber,
                     messages: accomplishmentsToUpdate,
                     sender,
                     dateAndTime,
                 });
             }
-
             setAppMessage('Messages updated successfully!');
             setTimeout(() => {
                 setAppMessage('');

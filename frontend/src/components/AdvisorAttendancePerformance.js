@@ -64,7 +64,7 @@ const AdvisorAttendancePerformance = ({ students, year, section, department }) =
     useEffect(() => {
         const defaultPresentData = {};
         students.forEach((student) => {
-            defaultPresentData[student.email] = true;
+            defaultPresentData[student.registerNumber] = true;
         });
         setAllStudentsAttendance(defaultPresentData);
     }, [students]);
@@ -124,7 +124,7 @@ const AdvisorAttendancePerformance = ({ students, year, section, department }) =
     const filteredStudents = students.filter(
         (student) =>
         (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            student.registerNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
             student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
             String(student.registerNumber)
                 .toLowerCase()

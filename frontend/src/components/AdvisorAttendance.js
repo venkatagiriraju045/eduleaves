@@ -30,7 +30,7 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
   useEffect(() => {
     const defaultPresentData = {};
     students.forEach((student) => {
-      defaultPresentData[student.email] = true;
+      defaultPresentData[student.registerNumber] = true;
     });
     setAllStudentsAttendance(defaultPresentData);
   }, [students]);
@@ -75,7 +75,6 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
   const filteredStudents = students.filter(
     (student) =>
     (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
       String(student.registerNumber)
         .toLowerCase()
@@ -91,15 +90,15 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
     try {
       // Update attendance for each student one by one
       for (const student of students) {
-        const presentValue = allStudentsAttendance[student.email] || false;
+        const presentValue = allStudentsAttendance[student.registerNumber] || false;
         await axios.post('https://eduleaves-api.vercel.app/api/attendance', {
           date,
           present: presentValue,
-          email: student.email,
+          registerNumber: student.registerNumber,
         });
         setAllStudentsAttendance((prevAttendance) => ({
           ...prevAttendance,
-          [student.email]: presentValue,
+          [student.registerNumber]: presentValue,
         }));
       }
       setMessage('Attendance updated successfully!');
@@ -151,12 +150,12 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
         <td>
           <input
             type="checkbox"
-            checked={allStudentsAttendance[student.email] || false}
+            checked={allStudentsAttendance[student.registerNumber] || false}
             onChange={(e) => {
               const { checked } = e.target;
               setAllStudentsAttendance((prevAttendance) => ({
                 ...prevAttendance,
-                [student.email]: checked,
+                [student.registerNumber]: checked,
               }));
             }}
           />
