@@ -39,7 +39,8 @@ const UpdateStudents = () => {
                             mentor: data['MENTOR'],
                             section: data['SECTION'],
                             year: data['YEAR'],
-                            department: data['DEPARTMENT']
+                            department: data['DEPARTMENT'],
+                            role:"student"
                         };
                         console.log(studentDataToUpdate);
                         // Make a POST request to your server endpoint for each student

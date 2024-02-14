@@ -437,9 +437,9 @@ app.post('/api/update_students', async (req, res) => {
         const { studentDataToUpdate } = req.body; // Access studentDataToUpdate from req.body
 
         // Destructure properties from studentDataToUpdate
-        const { regNo, name, mentor, section, year, department } = studentDataToUpdate;
+        const { regNo, name, mentor, section, year, department, role } = studentDataToUpdate;
 
-        if (!regNo || !name || !mentor || !section || !year || !department) {
+        if (!regNo || !name || !mentor || !section || !year || !department || !role) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -449,7 +449,8 @@ app.post('/api/update_students', async (req, res) => {
             mentor_name: mentor, 
             section: section,
             year: year,
-            department: department
+            department: department,
+            role:role,
         });
 
         await newUser.save();
