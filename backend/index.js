@@ -181,7 +181,7 @@ app.get('/api/advisor_students_data', async (req, res) => {
             role: role, // Filter by role
             department: department, // Filter by department
             year: year,
-            section: section,// Filter by institute_name
+            section: section.toLowerCase() ,// Filter by institute_name
         };
         // Use the filter to find students
         const students = await User.find(filter);
