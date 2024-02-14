@@ -174,19 +174,16 @@ app.get('/api/students_data', async (req, res) => {
 app.get('/api/advisor_students_data', async (req, res) => {
     try {
         // Extract the filtering parameters from the query string
-        const { role, department, instituteName, year, section } = req.query;
-
+        const { role, department, year, section } = req.query;
         // Create a filter object to match the specified fields
         const filter = {
             role: role, // Filter by role
             department: department, // Filter by department
-            institute_name: instituteName,
             year: year,
             section: section,// Filter by institute_name
         };
         // Use the filter to find students
         const students = await User.find(filter);
-
         res.status(200).json(students);
     } catch (error) {
         console.error('Error fetching students data:', error);

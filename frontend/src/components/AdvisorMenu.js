@@ -75,7 +75,6 @@ const AdvisorMenu = () => {
             params: {
               role: 'student',
               department: advisorInfo.departmentName,
-              instituteName: advisorInfo.instituteName,
               year: advisorInfo.year,
               section: advisorInfo.section,
             }
