@@ -445,17 +445,17 @@ const AdvisorMenu = () => {
               <UpdateAccom students={students} />
             ) : showUpdateIATForm ? (
               <UpdateIAT students={students} />
-            ) : showMessageForm ? (
-              <AdvisorMessage students={students} />
+            ) : showMessageForm ? ( 
+              <AdvisorMessage students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
             ) : showAttendanceForm ? (
-              <AdvisorAttendance students={students} />
+              <AdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
             ) : showUpdateStudents ? (
               <UpdateStudents />
             ) : showTestPerformanceForm ? (
-              <AdvisorTest students={students} />
+              <AdvisorTest students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
             ) : showAdvisorAttendancePerformace ? (
-              <AdvisorAttendancePerformance students={students} />
-            ) : (showDashboard &&
+              <AdvisorAttendancePerformance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
+              ) : (showDashboard &&
               <div className='home-contents'>
                 <div id='class-wise-page' className='class-wise-analytics-page'>
                   <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />

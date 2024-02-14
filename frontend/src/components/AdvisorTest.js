@@ -5,7 +5,7 @@ import './CSS/AdminAttendance.css';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AdvisorTest = ({ students }) => {
+const AdvisorTest = ({ students, year, section, department }) => {
 
     const [loading, setLoading] = useState(true); 
     const [searchQuery, setSearchQuery] = useState('');
@@ -173,7 +173,7 @@ const AdvisorTest = ({ students }) => {
                     <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
                 </div>}
             </div>
-            <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Test Performance</h1>
+            <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Test Performance</h1>
             <div className='attendance-content-container'>
                 <div className="students-container">
                     <div className="bars">

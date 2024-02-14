@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './CSS/UpdateAccom.css';
 import './CSS/Message.css';
-const AdvisorMessage = ({ students }) => {
+const AdvisorMessage = ({ students, year, section, department}) => {
     const [loading, setLoading] = useState(false);
     const [appMessage, setAppMessage] = useState('');
     const [message, setMessage] = useState('');
@@ -83,7 +83,7 @@ const AdvisorMessage = ({ students }) => {
                 )}
             </div>
             <div className='class-wise-header'>
-                <h1 className='department-wise-chart-heading'>{students[0].year} - "{students[0].section}" Section {students[0].department} Dashboard</h1>
+                <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Message Dashboard</h1>
             </div>
                 <div className="message-students-container">
                         <div className="message-form">
