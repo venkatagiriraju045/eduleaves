@@ -433,9 +433,13 @@ app.post('/api/update_activity', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 app.post('/api/update_students', async (req, res) => {
     try {
-        const { regNo, name, mentor, section, year, department } = req.body;
+        const { studentDataToUpdate } = req.body; // Access studentDataToUpdate from req.body
+
+        // Destructure properties from studentDataToUpdate
+        const { regNo, name, mentor, section, year, department } = studentDataToUpdate;
 
         if (!regNo || !name || !mentor || !section || !year || !department) {
             return res.status(400).json({ message: 'All fields are required' });
@@ -458,6 +462,7 @@ app.post('/api/update_students', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 app.post('/api/update_iat', async (req, res) => {
     try {
         const { iatScoresToUpdate } = req.body;

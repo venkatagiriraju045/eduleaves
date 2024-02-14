@@ -41,7 +41,7 @@ const UpdateStudents = () => {
                             year: data['YEAR'],
                             department: data['DEPARTMENT']
                         };
-console.log(studentDataToUpdate);
+                        console.log(studentDataToUpdate);
                         // Make a POST request to your server endpoint for each student
                         const response = await axios.post('https://eduleaves-api.vercel.app/api/update_students', { studentDataToUpdate });
                         console.log(response.data); // Handle the response as needed
