@@ -10,6 +10,7 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
+  const [studentAttendance, setStudentAttendance] = useState({});
   const navigate = useNavigate();
   const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
   const [movingLabel, setMovingLabel] = useState('');
@@ -32,9 +33,10 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
     students.forEach((student) => {
       defaultPresentData[student.registerNumber] = true;
     });
-    setAllStudentsAttendance(defaultPresentData);
+    setStudentAttendance(defaultPresentData);
   }, [students]);
 
+console.log(allStudentsAttendance)
   const sortStudentsByName = (students) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
     return students.sort((a, b) => {
@@ -150,10 +152,10 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
         <td>
           <input
             type="checkbox"
-            checked={allStudentsAttendance[student.registerNumber] || false}
+            checked={studentAttendance[student.registerNumber] || false}
             onChange={(e) => {
               const { checked } = e.target;
-              setAllStudentsAttendance((prevAttendance) => ({
+              setStudentAttendance((prevAttendance) => ({
                 ...prevAttendance,
                 [student.registerNumber]: checked,
               }));
