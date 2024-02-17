@@ -51,29 +51,38 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
 console.log("register no : "+selectedRegisterNumbers)
 console.log("date : "+date)
 
-
 const fetchExistingAttendance = async () => {
     try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
-            date,
-            registerNumbers:selectedRegisterNumbers,
+            params: {
+                date: date, // Assuming date is the state holding the selected date
+                registerNumbers: selectedRegisterNumbers, // Assuming selectedRegisterNumbers is the state holding register numbers
+            }
         });
-        setExistingAttendance(response.data.students);
+
+        // Assuming the response data has the format { studentsAttendance: [...] }
+        setExistingAttendance(response.data.studentsAttendance);
     } catch (error) {
         console.error('Error fetching existing attendance:', error);
     }
 };
 
-console.log("existing record : "+existingAttendance)
+// In your component, you should call fetchExistingAttendance when needed, for example, in a useEffect hook:
+useEffect(() => {
+    if (date && selectedRegisterNumbers.length > 0) {
+        fetchExistingAttendance();
+    }
+}, [date, selectedRegisterNumbers]);
+
+// Assuming date and selectedRegisterNumbers are state variables holding the selected date and register numbers respectively.
+
+// Then, you can log the existingAttendance state after it's set:
+console.log("existing record : ", existingAttendance);
 
 
 // Make sure to include selectedRegisterNumbers as a state variable which contains the register numbers of selected students, if any.
 
-useEffect(() => {
-    if (date) {
-        fetchExistingAttendance();
-    }
-}, [date, selectedRegisterNumbers]);
+
 
     const sortStudentsByName = (students) => {
         const yearOrder = ["First year", "Second year", "Third year", "Final year"];
