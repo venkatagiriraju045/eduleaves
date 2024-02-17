@@ -278,23 +278,35 @@ app.post('/api/attendance', async (req, res) => {
 app.get('/api/fetch_attendance', async (req, res) => {
     const { date, registerNumbers } = req.query; // Extract from query parameters
     try {
-        let students;
+        let studentsAttendance = [];
+        
         if (registerNumbers && registerNumbers.length > 0) {
             // Convert the string date to a JavaScript Date object
             const queryDate = new Date(date);
             
-            // Fetch attendance for specific register numbers on the given date
-            students = await User.find({
-                registerNumber: { $in: registerNumbers },
-                $or: [{ present_array: queryDate }, { leave_array: queryDate }]
-            });
-        } 
-        res.status(200).json({ students });
+            // Loop through each register number and fetch attendance
+            for (const regNumber of registerNumbers) {
+                // Find the student by register number and date
+                const student = await User.findOne({
+                    registerNumber: regNumber,
+                    $or: [{ present_array: queryDate }, { leave_array: queryDate }]
+                });
+
+                // Determine if the student is present or absent
+                const isPresent = student && student.present_array.includes(queryDate);
+                
+                // Push an object with register number and attendance status to the array
+                studentsAttendance.push({ registerNumber: regNumber, present: isPresent });
+            }
+        }
+
+        res.status(200).json({ studentsAttendance });
     } catch (error) {
         console.error('Error fetching attendance:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 
 

@@ -55,16 +55,15 @@ console.log("date : "+date)
 const fetchExistingAttendance = async () => {
     try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
-            
-                date,
-                registerNumbers:selectedRegisterNumbers,
-            
+            date,
+            registerNumbers:selectedRegisterNumbers,
         });
         setExistingAttendance(response.data.students);
     } catch (error) {
         console.error('Error fetching existing attendance:', error);
     }
 };
+
 console.log("existing record : "+existingAttendance)
 
 
@@ -182,20 +181,20 @@ useEffect(() => {
         "Civil Engineering": "CIVIL",
     };
     console.log(existingAttendance);
-
     const renderTableRows = (students) => {
         const sortedStudents = sortStudentsByName(students);
         let serialNumber = 1;
+    
         return sortedStudents.map((student) => {
             // Check if the student's register number exists in existingAttendance
-            const attendanceRecord = existingAttendance.find(
+            const attendanceRecord = existingAttendance ? existingAttendance.find(
                 (attendance) => attendance.registerNumber === student.registerNumber
-            );
+            ) : null;
     
             // Determine if the student was present or absent on the selected date
             const attendanceStatus = attendanceRecord ? 'Present' : 'Absent';
     
-            return (
+            return attendanceRecord !== null && (
                 <tr key={student._id}>
                     <td>{serialNumber++}</td>
                     <td>{student.registerNumber}</td>
