@@ -206,7 +206,7 @@ console.log("existing record : ", existingAttendance);
             ) : null;
     
             // Determine if the student was present or absent on the selected date
-            const attendanceStatus = attendanceRecord ? 'Present' : 'Leave';
+            const attendanceStatus = attendanceRecord === 'Present';
     
             return attendanceRecord !== null && (
                 <tr key={student._id}>
@@ -219,7 +219,7 @@ console.log("existing record : ", existingAttendance);
                     <td>
                         <input
                             type="checkbox"
-                            checked={attendanceStatus === 'Present'}
+                            checked={attendanceRecord}
                             onChange={(e) => {
                                 const { checked } = e.target;
                                 setAllStudentsAttendance((prevAttendance) => ({

@@ -281,14 +281,15 @@ app.get('/api/fetch_attendance', async (req, res) => {
         const { date, registerNumber } = req.query; // Extract from query parameters
 
         // Convert the string date to a JavaScript Date object
+        const queryDate = new Date(date);
 
         // Find the student by register number
         const student = await User.findOne({ "registerNumber": registerNumber });
 
         if (student) {
             // Check if the date exists in either the present_array or leave_array
-            const isPresent = student.present_array.some(d => new Date(d).toDateString() === date);
-            const isLeave = student.leave_array.some(d => new Date(d).toDateString() === date);
+            const isPresent = student.present_array.some(d => new Date(d).toDateString() === queryDate.toDateString());
+            const isLeave = student.leave_array.some(d => new Date(d).toDateString() === queryDate.toDateString());
 
             // Determine if the student is present or absent
             const attendanceStatus = isPresent ? 'Present' : isLeave ? 'Leave' : 'Absent';
