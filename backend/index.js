@@ -275,8 +275,8 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-app.post('/api/fetch_attendance', async (req, res) => {
-    const { date, registerNumbers } = req.body; // Assuming date is in "YYYY-MM-DD" format
+app.get('/api/fetch_attendance', async (req, res) => {
+    const { date, registerNumbers } = req.query; // Extract from query parameters
     try {
         let students;
         if (registerNumbers && registerNumbers.length > 0) {
