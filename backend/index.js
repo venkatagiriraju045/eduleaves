@@ -303,9 +303,6 @@ app.get('/api/fetch_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
-
-
 app.post('/api/modify_attendance', async (req, res) => {
     const { registerNumber, date, present } = req.body;
     try {
@@ -313,25 +310,31 @@ app.post('/api/modify_attendance', async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
+
+        // Convert the date to ISO format for comparison
+        const isoDate = new Date(date).toISOString().split('T')[0];
+
         if (present) {
-            if (!student.present_array.includes(date)) {
-                student.present_array.push(date);
+            if (!student.present_array.includes(isoDate)) {
+                student.present_array.push(isoDate);
             }
-            const leaveDateIndex = student.leave_array.indexOf(date);
+            const leaveDateIndex = student.leave_array.indexOf(isoDate);
             if (leaveDateIndex !== -1) {
                 student.leave_array.splice(leaveDateIndex, 1);
             }
         } else {
-            if (!student.leave_array.includes(date)) {
-                student.leave_array.push(date);
+            if (!student.leave_array.includes(isoDate)) {
+                student.leave_array.push(isoDate);
             }
-            const presentDateIndex = student.present_array.indexOf(date);
+            const presentDateIndex = student.present_array.indexOf(isoDate);
             if (presentDateIndex !== -1) {
                 student.present_array.splice(presentDateIndex, 1);
             }
         }
+
         student.total_attendance = student.present_array.length;
         student.total_days = student.present_array.length + student.leave_array.length;
+
         // Save each student's attendance individually
         await student.save();
         res.status(200).json({ message: 'Attendance updated successfully' });

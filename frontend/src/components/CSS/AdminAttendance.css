@@ -163,11 +163,40 @@
     vertical-align: middle;
 }
 
-.date-container input[type="date"],
+.date-container input[type="date"]{
+    margin-top:2%;
+    border-radius: 8px;
+    color: #000000;
+    width: 100%;
+    height: 25px;
+    align-items: center;
+    display:flex;
+    justify-content: center;
+    font-size: calc(0.5rem + 0.5vw);
+    outline: none;
+}
+.confirmation-box{
+    background-color: rgba(255, 255, 255, 0.518);
+    padding: 4%;
+    border-radius: 8px;
+    gap: 5%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: rgba(0, 0, 0, 0.829);
+    font-weight: 100;
+    font-size: calc(0.5rem + 0.5vw);
+    justify-content: space-between;
+    overflow-y: auto;
+}
+.confirmation-box .confirmation-buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15%;
+}
 .update-all-button {
     margin-top:2%;
     border-radius: 8px;
-    color: #261919;
+    color: #fbfbfb;
     width: 100%;
     height: 25px;
     align-items: center;

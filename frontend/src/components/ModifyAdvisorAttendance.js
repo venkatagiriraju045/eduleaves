@@ -11,9 +11,9 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
+    const [dateEntered, setDateEntered] = useState(false);
     const [modifyAttendance, setModifyAttendance] = useState(false);
-
-    
+    const [confirmedModify, setConfirmedModify] = useState(false); // State variable to track confirmation
     const navigate = useNavigate();
     const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
     const [movingLabel, setMovingLabel] = useState('');
@@ -22,6 +22,8 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     const [isDateChosen, setIsDateChosen] = useState(false);
     const overlayClass = `loading-overlay${loading ? ' visible' : ''}`;
     const [existingAttendance, setExistingAttendance] = useState([]);
+    const [modifiedAttendance, setModifiedAttendance] = useState({});
+
 
     useEffect(() => {
         setDateError(false);
@@ -45,60 +47,73 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
         setSelectedRegisterNumbers(registerNumbers);
     }, [students]);
 
-// Inside ModifyAdvisorAttendance component
+    // Inside ModifyAdvisorAttendance component
 
-// Inside your ModifyAdvisorAttendance component
-console.log("register no : "+selectedRegisterNumbers)
-console.log("date : "+date)
-const fetchExistingAttendance = async () => {
-    try {
-        const existingAttendanceData = [];
-        for (const registerNumber of selectedRegisterNumbers) {
-            const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
-                params: {
-                    date: date,
-                    registerNumber: registerNumber,
+    // Inside your ModifyAdvisorAttendance component
+    console.log("register no : " + selectedRegisterNumbers)
+    console.log("date : " + date)
+
+
+
+    const fetchExistingAttendance = async () => {
+        if (date) {
+            try {
+                const existingAttendanceData = [];
+                setLoading(true);
+                for (const registerNumber of selectedRegisterNumbers) {
+                    const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
+                        params: {
+                            date: date,
+                            registerNumber: registerNumber,
+                        }
+                    });
+
+                    // Check if the response contains the expected data structure
+                    if (response.data && response.data.hasOwnProperty('registerNumber') && response.data.hasOwnProperty('attendanceStatus')) {
+                        const { registerNumber, attendanceStatus } = response.data;
+
+                        // Push each attendance data object to the array
+                        existingAttendanceData.push({ registerNumber, attendanceStatus });
+                    } else {
+                        console.error(`Invalid response structure for register number ${registerNumber}`);
+                    }
                 }
-            });
-            console.log(registerNumber);
-            // Push each attendance data object to the array
-            existingAttendanceData.push(response.data);
+                // Set the existing attendance data state with the array containing attendance for each register number
+                setExistingAttendance(existingAttendanceData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching existing attendance:', error);
+                setLoading(false);
+
+            }
         }
-        // Set the existing attendance data state with the array containing attendance for each register number
-        setExistingAttendance(existingAttendanceData);
-    } catch (error) {
-        console.error('Error fetching existing attendance:', error);
-    }
-};
+    };
+    useEffect(() => {
+        if (dateEntered && selectedRegisterNumbers.length > 0) {
+            fetchExistingAttendance();
+        }
+    }, [dateEntered, selectedRegisterNumbers]);
+    // Assuming date and selectedRegisterNumbers are state variables holding the selected date and register numbers respectively.
+
+    // Then, you can log the existingAttendance state after it's set:
+    console.log("existing record : ", existingAttendance);
 
 
-// In your component, you should call fetchExistingAttendance when needed, for example, in a useEffect hook:
-useEffect(() => {
-    if (date && selectedRegisterNumbers.length > 0) {
-        fetchExistingAttendance();
-    }
-}, [date, selectedRegisterNumbers]);
-
-// Assuming date and selectedRegisterNumbers are state variables holding the selected date and register numbers respectively.
-
-// Then, you can log the existingAttendance state after it's set:
-console.log("existing record : ", existingAttendance);
+    // Make sure to include selectedRegisterNumbers as a state variable which contains the register numbers of selected students, if any.
+    const handleModifyAttendance = () => {
+        setModifyAttendance(true);
+    };
 
 
-// Make sure to include selectedRegisterNumbers as a state variable which contains the register numbers of selected students, if any.
-
-
-
-    const sortStudentsByName = (students) => {
-        const yearOrder = ["First year", "Second year", "Third year", "Final year"];
+    const sortStudentsByRegNo = (students) => {
         return students.sort((a, b) => {
-            const yearIndexA = yearOrder.indexOf(a.class);
-            const yearIndexB = yearOrder.indexOf(b.class);
-            const yearComparison = yearIndexA - yearIndexB;
-            if (yearComparison !== 0) return yearComparison;
-            return a.registerNumber - b.registerNumber;
+            // Convert register numbers to numbers and then compare
+            const registerNumberA = parseInt(a.registerNumber);
+            const registerNumberB = parseInt(b.registerNumber);
+            return registerNumberA - registerNumberB;
         });
     };
+
     const handleSearch = () => {
         const searchInput = searchQuery.toLowerCase();
         const tableRows = document.querySelectorAll('tbody tr');
@@ -126,6 +141,12 @@ console.log("existing record : ", existingAttendance);
         const matches = text.match(regex);
         return matches ? matches.length : 0;
     };
+    const sortExistingAttendanceByRegNo = (existingAttendance) => {
+        return existingAttendance.sort((a, b) => {
+            return a.registerNumber - b.registerNumber;
+        });
+    };
+
     const filteredStudents = students.filter(
         (student) =>
         (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -134,29 +155,28 @@ console.log("existing record : ", existingAttendance);
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase()))
     );
-    const handleModifyAttendance = () =>{
-        setModifyAttendance(true);
+
+    const handleDateEnter = () => {
+        setDateEntered(true);
     }
+    const handleCheckboxChange = (registerNumber, checked) => {
+        setModifiedAttendance((prevAttendance) => ({
+            ...prevAttendance,
+            [registerNumber]: checked,
+        }));
+    };
     const handleUpdateAttendance = async () => {
-        if (!isDateChosen) {
-            setDateError(true);
-            setLoading(false);
-            return;
-        }
+        // Update attendance logic
         setLoading(true);
         try {
             // Update attendance for each student one by one
-            for (const student of students) {
-                const presentValue = allStudentsAttendance[student.registerNumber] || false;
+            for (const registerNumber of Object.keys(modifiedAttendance)) {
+                const presentValue = modifiedAttendance[registerNumber];
                 await axios.post('https://eduleaves-api.vercel.app/api/modify_attendance', {
                     date,
                     present: presentValue,
-                    registerNumber: student.registerNumber,
+                    registerNumber,
                 });
-                setAllStudentsAttendance((prevAttendance) => ({
-                    ...prevAttendance,
-                    [student.registerNumber]: presentValue,
-                }));
             }
             setMessage('Attendance updated successfully!');
             setTimeout(() => {
@@ -164,12 +184,14 @@ console.log("existing record : ", existingAttendance);
             }, 5000);
             setDate('');
             setIsDateChosen(false);
+            setModifiedAttendance({}); // Reset modified attendance
         } catch (error) {
             console.error('Error updating attendance:', error);
             setMessage('An error occurred while updating attendance mod 4');
         }
         setLoading(false);
     };
+
     const renderTableHeader = () => {
         return (
             <thead>
@@ -179,6 +201,7 @@ console.log("existing record : ", existingAttendance);
                     <th>Name</th>
                     <th>Department</th>
                     <th>Year</th>
+                    <th>Attendance Status</th>
                     <th>Attendance</th>
                 </tr>
             </thead>
@@ -194,49 +217,81 @@ console.log("existing record : ", existingAttendance);
         "Electrical and Communication Engineering": "ECE",
         "Civil Engineering": "CIVIL",
     };
-    console.log(existingAttendance);
+
     const renderTableRows = (students) => {
-        const sortedStudents = sortStudentsByName(students);
-        let serialNumber = 1;
+        const sortedExistingAttendance = sortExistingAttendanceByRegNo(existingAttendance)
+        if (sortedExistingAttendance.length > 0) {
+            const sortedStudents = sortStudentsByRegNo(students);
+            let serialNumber = 1;
+
+            return sortedStudents.map((student, index) => {
+                // Check if the student's register number exists in sortedExistingAttendance
+                const attendanceRecord = sortedExistingAttendance.find(
+                    (attendance) => attendance.registerNumber === student.registerNumber
+                );
+                console.log("record" + attendanceRecord)
+
+                return (
+                    <tr key={student._id}>
+                        <td>{serialNumber++}</td>
+                        <td>{student.registerNumber}</td>
+                        <td>{student.name}</td>
+                        <td>{departmentShortNames[student.department] || student.department}</td>
+                        <td>{student.year}</td>
+                        <td>{sortedExistingAttendance[index].attendanceStatus}</td> {/* Display attendance status */}
+                        <td>
+                            {confirmedModify ? (
+                                <input
+                                    type="checkbox"
+                                    checked={modifiedAttendance[student.registerNumber] || false}
+                                    onChange={(e) => handleCheckboxChange(student.registerNumber, e.target.checked)}
+                                />
+                            ) : (
+                                <input
+                                    type="checkbox"
+                                    checked={sortedExistingAttendance[index].attendanceStatus === 'Present'}
+                                    disabled
+                                />
+                            )}
+                        </td>
+                    </tr>
+                );
+
+            });
+        }
+        else {
+            return null; // Return null if existingAttendance is empty
+        }
+    };
+    const handleConfirmModify = () => {
+        setConfirmedModify(true);
+        setModifyAttendance(false);
     
-        return sortedStudents.map((student) => {
-            // Check if the student's register number exists in existingAttendance
-            const attendanceRecord = existingAttendance ? existingAttendance.find(
-                (attendance) => attendance.registerNumber === student.registerNumber
-            ) : null;
-    
-            // Determine if the student was present or absent on the selected date
-            const attendanceStatus = attendanceRecord === 'Present';
-    
-            return attendanceRecord !== null && (
-                <tr key={student._id}>
-                    <td>{serialNumber++}</td>
-                    <td>{student.registerNumber}</td>
-                    <td>{student.name}</td>
-                    <td>{departmentShortNames[student.department] || student.department}</td>
-                    <td>{student.year}</td>
-                    <td>{attendanceStatus}</td> {/* Display attendance status */}
-                    <td>
-                        <input
-                            type="checkbox"
-                            checked={attendanceRecord}
-                            onChange={(e) => {
-                                const { checked } = e.target;
-                                setAllStudentsAttendance((prevAttendance) => ({
-                                    ...prevAttendance,
-                                    [student.registerNumber]: checked,
-                                }));
-                            }}
-                        />
-                    </td>
-                </tr>
-            );
+        // Initialize modifiedAttendance with existing attendance data
+        const initialModifiedAttendance = {};
+        existingAttendance.forEach((attendance) => {
+            initialModifiedAttendance[attendance.registerNumber] = attendance.attendanceStatus === 'Present';
         });
+        setModifiedAttendance(initialModifiedAttendance);
     };
     
+
+
     return (
         <div>
             <div>
+                {modifyAttendance && (
+                    <div className="overlay">
+                        <div className="confirmation-box">
+                            <p>Are you sure you want to modify attendance?</p>
+                            <div className='confirmation-buttons'>
+                                <button onClick={handleConfirmModify}>Yes</button>
+                                <button onClick={() => setModifyAttendance(false)}>No</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {loading && <div className={overlayClass}>
                     <div className="spinner">
                         <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
@@ -285,25 +340,39 @@ console.log("existing record : ", existingAttendance);
                             </div>
                         </div>
                         <div>
-                            <button
-                                className="update-all-button"
-                                onClick={handleModifyAttendance}
-                            >
-                                {loading ? 'Loading...' : 'Modify'}
-                            </button>
-                            {dateError && <p className='success-message'>please select date!</p>}
+                            <div className="update-all-container">
+                                <div className="date-container">
+                                    <button onClick={handleDateEnter} className="update-all-button">Submit</button>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <button
-                                className="update-all-button"
-                                onClick={handleUpdateAttendance}
-                            >
-                                {loading ? 'Loading...' : 'Update'}
-                            </button>
-                            {dateError && <p className='success-message'>please select date!</p>}
-                        </div>
+                        {dateEntered && (
+
+                            <div>
+                                <button
+                                    className="update-all-button"
+                                    onClick={handleModifyAttendance}
+                                >
+                                    {loading ? 'Loading...' : 'Modify'}
+                                </button>
+                                {dateError && <p className='success-message'>please select date!</p>}
+                            </div>
+                        )
+                        }
+                        {confirmedModify && (
+                            <div>
+                                <button
+                                    className="update-all-button"
+                                    onClick={handleUpdateAttendance}
+                                    disabled={Object.keys(modifiedAttendance).length === 0} // Disable update button if no modifications
+                                >
+                                    {loading ? 'Loading...' : 'Update'}
+                                </button>
+                                {dateError && <p className='success-message'>please select date!</p>}
+                            </div>
+                        )}
                     </div>
-                    {filteredStudents.length > 0 && isDateChosen ? (
+                    {dateEntered ? (
                         <div className="attendance-table-container">
                             <table>
                                 {renderTableHeader()}
@@ -313,7 +382,7 @@ console.log("existing record : ", existingAttendance);
                     ) : !isDateChosen ? (
                         <p className="error-message">Please select a date to view the attendance of the students</p>
                     ) : (
-                        <p className="error-message">No student data available.</p>
+                        <p className="error-message">Please click on submit to continue</p>
                     )}
                     {message && <p className={`success-message`}>{message}</p>}
                 </div>
