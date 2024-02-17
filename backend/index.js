@@ -280,32 +280,29 @@ app.get('/api/fetch_attendance', async (req, res) => {
     try {
         const { date, registerNumber } = req.query; // Extract from query parameters
 
-        let isPresent = false;
+        // Convert the string date to a JavaScript Date object
+        const queryDate = new Date(date);
 
-            // Convert the string date to a JavaScript Date object
-            const queryDate = new Date(date);
-            
-            // Loop through each register number and fetch attendance
-                // Find the student by register number and date
-                const student = await User.findOne({
-                    registerNumber: registerNumber,
-                    $or: [{ present_array: queryDate }, { leave_array: queryDate }]
-                });
+        // Find the student by register number
+        const student = await User.findOne({ "registerNumber": registerNumber });
 
-                // Determine if the student is present or absent
-                isPresent = student && student.present_array.includes(queryDate);
-                
-                // Push an object with register number and attendance status to the array
-            
-        
+        if (student) {
+            // Check if the date exists in either the present_array or leave_array
+            const isPresent = student.present_array.some(d => new Date(d).toDateString() === queryDate.toDateString());
+            const isLeave = student.leave_array.some(d => new Date(d).toDateString() === queryDate.toDateString());
 
-        res.status(200).json({ registerNumber, isPresent });
+            // Determine if the student is present or absent
+            const attendanceStatus = isPresent ? 'Present' : isLeave ? 'Leave' : 'Absent';
+
+            res.status(200).json({ registerNumber, attendanceStatus });
+        } else {
+            res.status(404).json({ message: 'Student not found' });
+        }
     } catch (error) {
         console.error('Error fetching attendance:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 
 
 
