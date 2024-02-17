@@ -275,6 +275,60 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+app.post('/api/fetch_attendance', async (req, res) => {
+    const { date, registerNumbers} = req.query; // Extract from query parameters
+    try {
+        let students;
+        if (registerNumbers && registerNumbers.length > 0) {
+            // Fetch attendance for specific register numbers on the given date
+            students = await User.find({
+                registerNumber: { $in: registerNumbers },
+                $or: [{ present_array: date }, { leave_array: date }]
+            });
+        } 
+        res.status(200).json({ students });
+    } catch (error) {
+        console.error('Error fetching attendance:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
+app.post('/api/modify_attendance', async (req, res) => {
+    const { registerNumber, date, present } = req.body;
+    try {
+        const student = await User.findOne({ registerNumber });
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+        if (present) {
+            if (!student.present_array.includes(date)) {
+                student.present_array.push(date);
+            }
+            const leaveDateIndex = student.leave_array.indexOf(date);
+            if (leaveDateIndex !== -1) {
+                student.leave_array.splice(leaveDateIndex, 1);
+            }
+        } else {
+            if (!student.leave_array.includes(date)) {
+                student.leave_array.push(date);
+            }
+            const presentDateIndex = student.present_array.indexOf(date);
+            if (presentDateIndex !== -1) {
+                student.present_array.splice(presentDateIndex, 1);
+            }
+        }
+        student.total_attendance = student.present_array.length;
+        student.total_days = student.present_array.length + student.leave_array.length;
+        // Save each student's attendance individually
+        await student.save();
+        res.status(200).json({ message: 'Attendance updated successfully' });
+    } catch (error) {
+        console.error('Error updating attendance:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 

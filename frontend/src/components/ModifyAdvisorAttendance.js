@@ -48,17 +48,18 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
 
 const fetchExistingAttendance = async () => {
     try {
-        let url = `https://eduleaves-api.vercel.app/api/attendance/${date}`;
-        if (selectedRegisterNumbers.length > 0) {
-            // Append register numbers as query parameter if available
-            url += `?registerNumbers=${selectedRegisterNumbers.join(',')}`;
-        }
-        const response = await axios.get(url);
+        const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
+            params: {
+                date,
+                registerNumbers:selectedRegisterNumbers,
+            }
+        });
         setExistingAttendance(response.data.students);
     } catch (error) {
         console.error('Error fetching existing attendance:', error);
     }
 };
+
 
 // Make sure to include selectedRegisterNumbers as a state variable which contains the register numbers of selected students, if any.
 
@@ -171,7 +172,7 @@ useEffect(() => {
         "Civil Engineering": "CIVIL",
     };
     console.log(existingAttendance);
-    
+
     const renderTableRows = (students) => {
         const sortedStudents = sortStudentsByName(students);
         let serialNumber = 1;
