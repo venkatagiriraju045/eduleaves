@@ -312,7 +312,7 @@ app.post('/api/modify_attendance', async (req, res) => {
         }
 
         // Convert the date to ISO format for comparison
-        const isoDate = new Date(date).toISOString().split('T')[0];
+        const isoDate = new Date(date).toISOString();
 
         if (present) {
             if (!student.present_array.includes(isoDate)) {
