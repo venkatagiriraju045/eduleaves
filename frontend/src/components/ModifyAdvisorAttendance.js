@@ -45,20 +45,24 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
 // Inside ModifyAdvisorAttendance component
 
 // Inside your ModifyAdvisorAttendance component
+console.log("register no : "+selectedRegisterNumbers)
+console.log("date : "+date)
+
 
 const fetchExistingAttendance = async () => {
     try {
         const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
-            params: {
+            
                 date,
                 registerNumbers:selectedRegisterNumbers,
-            }
+            
         });
         setExistingAttendance(response.data.students);
     } catch (error) {
         console.error('Error fetching existing attendance:', error);
     }
 };
+console.log("existing record : "+existingAttendance)
 
 
 // Make sure to include selectedRegisterNumbers as a state variable which contains the register numbers of selected students, if any.

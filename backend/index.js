@@ -276,7 +276,7 @@ app.post('/api/attendance', async (req, res) => {
     }
 });
 app.post('/api/fetch_attendance', async (req, res) => {
-    const { date, registerNumbers} = req.query; // Extract from query parameters
+    const { date, registerNumbers} = req.body; // Extract from query parameters
     try {
         let students;
         if (registerNumbers && registerNumbers.length > 0) {
