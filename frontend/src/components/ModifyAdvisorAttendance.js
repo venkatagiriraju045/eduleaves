@@ -50,22 +50,26 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
 // Inside your ModifyAdvisorAttendance component
 console.log("register no : "+selectedRegisterNumbers)
 console.log("date : "+date)
-
 const fetchExistingAttendance = async () => {
     try {
-        const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
-            params: {
-                date: date, // Assuming date is the state holding the selected date
-                registerNumbers: selectedRegisterNumbers, // Assuming selectedRegisterNumbers is the state holding register numbers
-            }
-        });
-
-        // Assuming the response data has the format { studentsAttendance: [...] }
-        setExistingAttendance(response.data.studentsAttendance);
+        const existingAttendanceData = [];
+        for (const registerNumber of selectedRegisterNumbers) {
+            const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
+                params: {
+                    date: date,
+                    registerNumber: registerNumber,
+                }
+            });
+            // Push each attendance data object to the array
+            existingAttendanceData.push(response.data);
+        }
+        // Set the existing attendance data state with the array containing attendance for each register number
+        setExistingAttendance(existingAttendanceData);
     } catch (error) {
         console.error('Error fetching existing attendance:', error);
     }
 };
+
 
 // In your component, you should call fetchExistingAttendance when needed, for example, in a useEffect hook:
 useEffect(() => {

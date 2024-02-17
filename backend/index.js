@@ -275,51 +275,31 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-app.get('/api/advisor_students_data', async (req, res) => {
-    try {
-        // Extract the filtering parameters from the query string
-        const { role, department, year, section } = req.query;
-        // Create a filter object to match the specified fields
-        const filter = {
-            role: role, // Filter by role
-            department: department, // Filter by department
-            year: year,
-            section: section,// Filter by institute_name
-        };
-        // Use the filter to find students
-        const students = await User.find(filter);
-        res.status(200).json(students);
-    } catch (error) {
-        console.error('Error fetching students data:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
+
 app.get('/api/fetch_attendance', async (req, res) => {
     try {
-        const { date, registerNumbers } = req.query; // Extract from query parameters
+        const { date, registerNumber } = req.query; // Extract from query parameters
 
-        let studentsAttendance = [];
+        let isPresent = false;
 
             // Convert the string date to a JavaScript Date object
             const queryDate = new Date(date);
             
             // Loop through each register number and fetch attendance
-            for (const regNumber of registerNumbers) {
                 // Find the student by register number and date
                 const student = await User.findOne({
-                    registerNumber: regNumber,
+                    registerNumber: registerNumber,
                     $or: [{ present_array: queryDate }, { leave_array: queryDate }]
                 });
 
                 // Determine if the student is present or absent
-                const isPresent = student && student.present_array.includes(queryDate);
+                isPresent = student && student.present_array.includes(queryDate);
                 
                 // Push an object with register number and attendance status to the array
-                studentsAttendance.push({ registerNumber: regNumber, present: isPresent });
-            }
+            
         
 
-        res.status(200).json({ studentsAttendance });
+        res.status(200).json({ registerNumber, isPresent });
     } catch (error) {
         console.error('Error fetching attendance:', error);
         res.status(500).json({ message: 'Internal Server Error' });
