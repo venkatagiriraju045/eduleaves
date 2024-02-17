@@ -60,6 +60,7 @@ const fetchExistingAttendance = async () => {
                     registerNumber: registerNumber,
                 }
             });
+            console.log(registerNumber);
             // Push each attendance data object to the array
             existingAttendanceData.push(response.data);
         }
@@ -205,7 +206,7 @@ console.log("existing record : ", existingAttendance);
             ) : null;
     
             // Determine if the student was present or absent on the selected date
-            const attendanceStatus = attendanceRecord ? 'Present' : 'Absent';
+            const attendanceStatus = attendanceRecord ? 'Present' : 'Leave';
     
             return attendanceRecord !== null && (
                 <tr key={student._id}>
