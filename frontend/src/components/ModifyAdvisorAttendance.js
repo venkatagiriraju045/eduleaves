@@ -165,6 +165,16 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
             [registerNumber]: checked,
         }));
     };
+    let isoDate;
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        isoDate = new Date(date).toISOString().split('T')[0];
+        // Proceed with further processing using isoDate
+    } else {
+        console.error('Invalid date format:', date);
+        // Handle the error or notify the user about the invalid date format
+    }    console.log("isodate"+isoDate);
+ console.log("normaldate"+date);
+
     const handleUpdateAttendance = async () => {
         // Update attendance logic
         setLoading(true);

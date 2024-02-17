@@ -25,11 +25,11 @@ console.log('Mongoose connected to MongoDB');
 
 const userSchema = new mongoose.Schema({
     email: { type: String },
-    name:{ type: String },
+    name: { type: String },
     studentName: { type: String },
     degreeAndBranch: { type: String },
     password: { type: String },
-    DOB: { type: String},
+    DOB: { type: String },
     registerNumber: { type: Number },
     subjects: [
         {
@@ -55,10 +55,10 @@ const userSchema = new mongoose.Schema({
     year: { type: String },
     section: { type: String },
     department: { type: String },
-    degreeAndBranch:{ type: String },
+    degreeAndBranch: { type: String },
     total_attendance: { type: Number },
     total_days: { type: Number },
-    regulation:{ type: String},
+    regulation: { type: String },
     training_score: { type: Number },
     present_array: [{ type: Date }],
     leave_array: [{ type: Date }],
@@ -248,33 +248,49 @@ app.post('/api/attendance', async (req, res) => {
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
+
         if (present) {
-            if (!student.present_array.includes(date)) {
-                student.present_array.push(date);
-            }
-            const leaveDateIndex = student.leave_array.indexOf(date);
-            if (leaveDateIndex !== -1) {
-                student.leave_array.splice(leaveDateIndex, 1);
-            }
+            // Add the date to the present_array if it doesn't already exist
+            await User.updateOne(
+                { registerNumber },
+                { $addToSet: { present_array: date } }
+            );
+            // Remove the date from the leave_array if it exists
+            await User.updateOne(
+                { registerNumber },
+                { $pull: { leave_array: date } }
+            );
         } else {
-            if (!student.leave_array.includes(date)) {
-                student.leave_array.push(date);
-            }
-            const presentDateIndex = student.present_array.indexOf(date);
-            if (presentDateIndex !== -1) {
-                student.present_array.splice(presentDateIndex, 1);
-            }
+            // Add the date to the leave_array if it doesn't already exist
+            await User.updateOne(
+                { registerNumber },
+                { $addToSet: { leave_array: date } }
+            );
+            // Remove the date from the present_array if it exists
+            await User.updateOne(
+                { registerNumber },
+                { $pull: { present_array: date } }
+            );
         }
-        student.total_attendance = student.present_array.length;
-        student.total_days = student.present_array.length + student.leave_array.length;
-        // Save each student's attendance individually
-        await student.save();
+
+        // Update total attendance and total days
+        const updatedStudent = await User.findOne({ registerNumber });
+        const totalAttendance = updatedStudent.present_array.length;
+        const totalDays = totalAttendance + updatedStudent.leave_array.length;
+
+        // Update the total attendance and total days fields
+        await User.updateOne(
+            { registerNumber },
+            { $set: { total_attendance: totalAttendance, total_days: totalDays } }
+        );
+
         res.status(200).json({ message: 'Attendance updated successfully' });
     } catch (error) {
         console.error('Error updating attendance:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.get('/api/fetch_attendance', async (req, res) => {
     try {
@@ -311,38 +327,48 @@ app.post('/api/modify_attendance', async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        // Convert the date to ISO format for comparison
-        const isoDate = new Date(date).toISOString();
-
         if (present) {
-            if (!student.present_array.includes(isoDate)) {
-                student.present_array.push(isoDate);
-            }
-            const leaveDateIndex = student.leave_array.indexOf(isoDate);
-            if (leaveDateIndex !== -1) {
-                student.leave_array.splice(leaveDateIndex, 1);
-            }
+            // Add the date to the present_array if it doesn't already exist
+            await User.updateOne(
+                { registerNumber },
+                { $addToSet: { present_array: date } }
+            );
+            // Remove the date from the leave_array if it exists
+            await User.updateOne(
+                { registerNumber },
+                { $pull: { leave_array: date } }
+            );
         } else {
-            if (!student.leave_array.includes(isoDate)) {
-                student.leave_array.push(isoDate);
-            }
-            const presentDateIndex = student.present_array.indexOf(isoDate);
-            if (presentDateIndex !== -1) {
-                student.present_array.splice(presentDateIndex, 1);
-            }
+            // Add the date to the leave_array if it doesn't already exist
+            await User.updateOne(
+                { registerNumber },
+                { $addToSet: { leave_array: date } }
+            );
+            // Remove the date from the present_array if it exists
+            await User.updateOne(
+                { registerNumber },
+                { $pull: { present_array: date } }
+            );
         }
 
-        student.total_attendance = student.present_array.length;
-        student.total_days = student.present_array.length + student.leave_array.length;
+        // Update total attendance and total days
+        const updatedStudent = await User.findOne({ registerNumber });
+        const totalAttendance = updatedStudent.present_array.length;
+        const totalDays = totalAttendance + updatedStudent.leave_array.length;
 
-        // Save each student's attendance individually
-        await student.save();
+        // Update the total attendance and total days fields
+        await User.updateOne(
+            { registerNumber },
+            { $set: { total_attendance: totalAttendance, total_days: totalDays } }
+        );
+
         res.status(200).json({ message: 'Attendance updated successfully' });
     } catch (error) {
         console.error('Error updating attendance:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
@@ -501,11 +527,11 @@ app.post('/api/update_students', async (req, res) => {
         const newUser = new User({
             registerNumber: regNo,
             name: name,
-            mentor_name: mentor, 
+            mentor_name: mentor,
             section: section,
             year: year,
             department: department,
-            role:role,
+            role: role,
         });
         await newUser.save();
         res.status(200).json({ message: 'New student data created successfully' });
