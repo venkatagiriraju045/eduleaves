@@ -276,14 +276,17 @@ app.post('/api/attendance', async (req, res) => {
     }
 });
 app.post('/api/fetch_attendance', async (req, res) => {
-    const { date, registerNumbers} = req.body; // Extract from query parameters
+    const { date, registerNumbers } = req.body; // Assuming date is in "YYYY-MM-DD" format
     try {
         let students;
         if (registerNumbers && registerNumbers.length > 0) {
+            // Convert the string date to a JavaScript Date object
+            const queryDate = new Date(date);
+            
             // Fetch attendance for specific register numbers on the given date
             students = await User.find({
                 registerNumber: { $in: registerNumbers },
-                $or: [{ present_array: date }, { leave_array: date }]
+                $or: [{ present_array: queryDate }, { leave_array: queryDate }]
             });
         } 
         res.status(200).json({ students });
@@ -292,6 +295,7 @@ app.post('/api/fetch_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 
 app.post('/api/modify_attendance', async (req, res) => {

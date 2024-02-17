@@ -11,6 +11,9 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
+    const [modifyAttendance, setModifyAttendance] = useState(false);
+
+    
     const navigate = useNavigate();
     const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
     const [movingLabel, setMovingLabel] = useState('');
@@ -118,6 +121,9 @@ useEffect(() => {
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase()))
     );
+    const handleModifyAttendance = () =>{
+        setModifyAttendance(true);
+    }
     const handleUpdateAttendance = async () => {
         if (!isDateChosen) {
             setDateError(true);
@@ -264,6 +270,15 @@ useEffect(() => {
                                     />
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <button
+                                className="update-all-button"
+                                onClick={handleModifyAttendance}
+                            >
+                                {loading ? 'Loading...' : 'Modify'}
+                            </button>
+                            {dateError && <p className='success-message'>please select date!</p>}
                         </div>
                         <div>
                             <button
