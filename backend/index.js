@@ -290,8 +290,10 @@ app.get('/api/fetch_attendance', async (req, res) => {
             const isPresent = student.present_array.some(d => new Date(d).toDateString() === date);
             const isLeave = student.leave_array.some(d => new Date(d).toDateString() === date);
 
+            // Determine if the student is present or absent
+            const attendanceStatus = isPresent ? 'Present' : isLeave ? 'Leave' : 'Absent';
 
-            res.status(200).json({ registerNumber, isPresent });
+            res.status(200).json({ registerNumber, attendanceStatus });
         } else {
             res.status(404).json({ message: 'Student not found' });
         }
