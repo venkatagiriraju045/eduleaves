@@ -275,12 +275,31 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-app.get('/api/fetch_attendance', async (req, res) => {
-    const { date, registerNumbers } = req.query; // Extract from query parameters
+app.get('/api/advisor_students_data', async (req, res) => {
     try {
+        // Extract the filtering parameters from the query string
+        const { role, department, year, section } = req.query;
+        // Create a filter object to match the specified fields
+        const filter = {
+            role: role, // Filter by role
+            department: department, // Filter by department
+            year: year,
+            section: section,// Filter by institute_name
+        };
+        // Use the filter to find students
+        const students = await User.find(filter);
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students data:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+app.get('/api/fetch_attendance', async (req, res) => {
+    try {
+        const { date, registerNumbers } = req.query; // Extract from query parameters
+
         let studentsAttendance = [];
-        
-        if (registerNumbers && registerNumbers.length > 0) {
+
             // Convert the string date to a JavaScript Date object
             const queryDate = new Date(date);
             
@@ -298,7 +317,7 @@ app.get('/api/fetch_attendance', async (req, res) => {
                 // Push an object with register number and attendance status to the array
                 studentsAttendance.push({ registerNumber: regNumber, present: isPresent });
             }
-        }
+        
 
         res.status(200).json({ studentsAttendance });
     } catch (error) {
