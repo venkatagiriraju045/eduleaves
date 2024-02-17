@@ -207,7 +207,7 @@ body {
 }
 
 .navigation1 ul li a {
-    font-size: calc(1rem + 0.1vw);
+    font-size: calc(0.5rem + 0.6vw);
     text-decoration: none;
     color: #ffffff;
     padding: 1vh;
@@ -215,7 +215,7 @@ body {
     display: flex;
     transition: background-color 0.5s;
     align-items: center;
-    line-height: 2vw;
+    line-height: auto;
 
 }
 
@@ -245,6 +245,7 @@ body {
     justify-content: center;
     color: #ffffff;
     width: 100%;
+    font-size:calc(0.6rem + 0.6vw);
 
 }
 

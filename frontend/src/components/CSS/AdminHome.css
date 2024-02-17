@@ -101,7 +101,9 @@
 .main-attendance-details {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 3%;
+    font-size:calc(0.5rem + 0.5vw);
+
 
 }
 
@@ -116,7 +118,8 @@
     outline: none;
     border: none;
     text-align: top;
-    margin-top: 0;
+    font-size:calc(0.5rem + 0.5vw);
+
 }
 
 .present-details-percentage {
@@ -162,6 +165,7 @@
 .admin-table-container {
     width: 100%;
     margin-top: 10px;
+    font-size:calc(0.5rem + 0.5vw);
 }
 
 .admin-table-container table {
@@ -248,7 +252,7 @@
     border: none;
     background-color: #ffffff00;
     color: rgb(33, 21, 21);
-    font-size: 15px;
+    font-size: calc(0.5rem + 0.4vw);
 }
 
 .search-bar input[type="text"]:focus {
@@ -257,7 +261,7 @@
 
 .search-bar input[type="text"]::placeholder {
     color: rgba(40, 27, 27, 0.651);
-    font-size: 15px;
+    font-size: calc(0.5rem + 0.4vw);
 }
 
 .search-bar button {

@@ -13,6 +13,7 @@ import AdvisorAttendancePerformance from './AdvisorAttendancePerformance.js';
 import UpdateIAT from './UpdateIAT.js';
 import AdvisorClassWise from './AdvisorClassWise.js';
 import UpdateStudents from './UpdateStudents.js';
+import ModifyAdvisorAttendance from './ModifyAdvisorAttendance.js';
 
 const AdvisorMenu = () => {
 
@@ -39,6 +40,8 @@ const AdvisorMenu = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showAttendanceForm, setShowAttendanceForm] = useState(false);
+  const [showModifyAttendanceForm, setShowModifyAttendanceForm] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [isHomeButtonClicked, setIsHomeButtonClicked] = useState(false);
   const [showDashboard, setShowDashboard] = useState(true);
@@ -64,7 +67,7 @@ const AdvisorMenu = () => {
       setMobile(true);
     }
   }, []);
-console.log(advisorInfo)
+  console.log(advisorInfo)
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -106,6 +109,8 @@ console.log(advisorInfo)
   const handleTestPerformanceButtonClick = () => {
     setShowTestPerformanceForm(true);
     setShowUpdateStudents(false);
+    setShowModifyAttendanceForm(false);
+
     setShowUpdateIATForm(false);
     setShowAttendanceForm(false);
     setShowMessageForm(false);
@@ -126,6 +131,7 @@ console.log(advisorInfo)
       setShowUpdateIATForm(false);
       setShowAttendanceForm(false);
       setShowUpdateStudents(false);
+      setShowModifyAttendanceForm(false);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(false);
       setShowMessageForm(false);
@@ -135,6 +141,7 @@ console.log(advisorInfo)
   const handleMessageButtonClick = () => {
     setShowTestPerformanceForm(false);
     setShowMessageForm(true);
+    setShowModifyAttendanceForm(false);
     setShowUpdateStudents(false);
     setShowUpdateIATForm(false);
     setShowAdvisorAttendancePerformace(false);
@@ -151,6 +158,7 @@ console.log(advisorInfo)
       setIsLoading(false);
       messageElement.remove();
       setShowMessageForm(true);
+      setShowModifyAttendanceForm(false);
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setShowUpdateIATForm(false);
@@ -168,6 +176,7 @@ console.log(advisorInfo)
     setShowAdvisorAttendancePerformace(false);
     setShowDashboard(false);
     setShowUpdateAccom(false);
+    setShowModifyAttendanceForm(false);
     setShowUpdateStudents(false);
     setIsLoading(true);
     document.querySelectorAll('.admin-chart-container, .admin-students-container ').forEach((element) => {
@@ -183,6 +192,7 @@ console.log(advisorInfo)
       setShowAttendanceForm(false);
       setShowUpdateAccom(false);
       setShowUpdateIATForm(true);
+      setShowModifyAttendanceForm(false);
       setShowUpdateStudents(false);
       setShowDashboard(false);
       setIsHomeButtonClicked(false);
@@ -197,6 +207,7 @@ console.log(advisorInfo)
     setShowUpdateIATForm(false);
     setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
+    setShowModifyAttendanceForm(false);
     setShowUpdateStudents(true);
     setShowDashboard(false);
     setShowTestPerformanceForm(false);
@@ -212,6 +223,7 @@ console.log(advisorInfo)
       setIsLoading(false);
       messageElement.remove();
       setShowAttendanceForm(false);
+      setShowModifyAttendanceForm(false);
       setShowMessageForm(false);
       setShowUpdateStudents(true);
       setShowUpdateIATForm(false);
@@ -225,6 +237,7 @@ console.log(advisorInfo)
     setShowAttendanceForm(true);
     setShowUpdateStudents(false);
     setShowMessageForm(false);
+    setShowModifyAttendanceForm(false);
     setShowUpdateIATForm(false);
     setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
@@ -243,6 +256,7 @@ console.log(advisorInfo)
       messageElement.remove();
       setShowAttendanceForm(true);
       setShowUpdateStudents(false);
+      setShowModifyAttendanceForm(false);
       setShowMessageForm(false);
       setShowUpdateIATForm(false);
       setIsHomeButtonClicked(false);
@@ -257,6 +271,7 @@ console.log(advisorInfo)
     setShowMessageForm(false);
     setShowUpdateAccom(false);
     setShowDashboard(false);
+    setShowModifyAttendanceForm(false);
     setShowUpdateStudents(false);
     setShowUpdateIATForm(false);
     setShowTestPerformanceForm(false);
@@ -274,6 +289,39 @@ console.log(advisorInfo)
       setShowAttendanceForm(false);
       setShowMessageForm(false);
       setIsHomeButtonClicked(false);
+      setShowModifyAttendanceForm(false);
+      setShowUpdateIATForm(false);
+      setShowUpdateStudents(false);
+      setShowDashboard(false);
+      setShowTestPerformanceForm(false);
+    }, 1000);
+  };
+
+  const handleAdvisorAttendanceModificationButtonClick = () => {
+    setShowAdvisorAttendancePerformace(false);
+    setShowModifyAttendanceForm(true);
+    setShowAttendanceForm(false);
+    setShowMessageForm(false);
+    setShowUpdateAccom(false);
+    setShowDashboard(false);
+    setShowUpdateStudents(false);
+    setShowUpdateIATForm(false);
+    setShowTestPerformanceForm(false);
+    setIsLoading(true);
+    document.querySelectorAll('.admin-chart-container').forEach((element) => {
+      element.style.display = 'none';
+    });
+    const messageElement = document.createElement('div');
+    messageElement.style.color = 'black';
+    document.querySelector('.profile-right-content-container').appendChild(messageElement);
+    setTimeout(() => {
+      setIsLoading(false);
+      messageElement.remove();
+      setShowModifyAttendanceForm(true);
+      setShowAdvisorAttendancePerformace(false);
+      setShowAttendanceForm(false);
+      setShowMessageForm(false);
+      setIsHomeButtonClicked(false);
       setShowUpdateIATForm(false);
       setShowUpdateStudents(false);
       setShowDashboard(false);
@@ -286,10 +334,11 @@ console.log(advisorInfo)
     setShowDashboard(true);
     setShowAdvisorAttendancePerformace(false);
     setShowUpdateAccom(false);
+    setShowModifyAttendanceForm(false);
     setShowUpdateStudents(false);
     setShowTestPerformanceForm(false);
     setShowUpdateIATForm(false);
-    setIsHomeButtonClicked(true);
+    setIsHomeButtonClicked(false);
     setIsLoading(true);
     document.querySelectorAll('.body').forEach((element) => {
       element.style.display = 'block';
@@ -298,6 +347,7 @@ console.log(advisorInfo)
       setIsLoading(false);
       setShowAttendanceForm(false);
       setShowMessageForm(false);
+      setShowModifyAttendanceForm(false);
       setIsHomeButtonClicked(true);
       setShowAdvisorAttendancePerformace(false);
       setShowDashboard(true);
@@ -326,9 +376,6 @@ console.log(advisorInfo)
     );
   }
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
-
-
-
   return (
     <div className="dep-admin-page-container">
       {showNavBar &&
@@ -352,53 +399,50 @@ console.log(advisorInfo)
             <br />
             <li>
               <a href="#" onClick={handleHomeButtonClick} className="test-score-button" title="Go to Home">
-                Dashboard
+                Home
               </a>
             </li>
-            <br />
-            <br />
+
             <li>
               <a href="#" className="test-score-button" onClick={handleAttendanceButtonClick} title="View Attendance">
                 Attendance
               </a>
             </li>
-            <br />
-            <br />
-            <li>
+
+            {/* <li>
               <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
                 Test Performance
               </a>
             </li>
-            <br />
-            <br />
+             */}
+            <li>
+              <a href="#" className="test-score-button" onClick={handleAdvisorAttendanceModificationButtonClick} title="View Attendance">
+                Modify Attendance
+              </a>
+            </li>
             <li>
               <a href="#" className="test-score-button" onClick={handleAdvisorAttendancePerformaceButtonClick} title="View Attendance">
                 Attendance Details
               </a>
             </li>
-            <br />
-            <br />
-            <li>
+            {/* <li>
               <a href="#" className="test-score-button" onClick={handleMessageButtonClick} title="Send Messages">
                 Message
               </a>
-            </li>
-            <br />
-            <br />
+            </li> */}
+            {/*             
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
                 Update IAT Scores
               </a>
-            </li>
-            <br />
-            <br />
+            </li> */}
+
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateStudentsButtonClick} title="Send Messages">
                 Update Students
               </a>
             </li>
-            <br />
-            <br />
+
           </ul>
         </nav>}
       <div
@@ -445,17 +489,19 @@ console.log(advisorInfo)
               <UpdateAccom students={students} />
             ) : showUpdateIATForm ? (
               <UpdateIAT students={students} />
-            ) : showMessageForm ? ( 
-              <AdvisorMessage students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
+            ) : showMessageForm ? (
+              <AdvisorMessage students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
             ) : showAttendanceForm ? (
-              <AdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
+              <AdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
             ) : showUpdateStudents ? (
               <UpdateStudents />
             ) : showTestPerformanceForm ? (
-              <AdvisorTest students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
+              <AdvisorTest students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+            ) : showModifyAttendanceForm ? (
+              <ModifyAdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
             ) : showAdvisorAttendancePerformace ? (
-              <AdvisorAttendancePerformance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName}/>
-              ) : (showDashboard &&
+              <AdvisorAttendancePerformance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+            ) : (showDashboard &&
               <div className='home-contents'>
                 <div id='class-wise-page' className='class-wise-analytics-page'>
                   <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />

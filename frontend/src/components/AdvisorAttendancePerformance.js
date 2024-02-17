@@ -91,27 +91,23 @@ const AdvisorAttendancePerformance = ({ students, year, section, department }) =
     const handleSearch = () => {
         const searchInput = searchQuery.toLowerCase();
         const tableRows = document.querySelectorAll('tbody tr');
-
         let matchedRows = [];
-
         for (const row of tableRows) {
-            const rowData = row.innerText.toLowerCase();
-            const matchingScore = calculateMatchingScore(rowData, searchInput);
-            if (matchingScore > 0) {
-                matchedRows.push({ row, matchingScore });
-            }
+          const rowData = row.innerText.toLowerCase();
+          const matchingScore = calculateMatchingScore(rowData, searchInput);
+          if (matchingScore > 0) {
+            matchedRows.push({ row, matchingScore });
+          }
         }
-
         if (matchedRows.length > 0) {
-            matchedRows.sort((a, b) => a.row.offsetTop - b.row.offsetTop);
-            const tableContainer = document.querySelector('.attendance-table-container');
-            const headerHeight = document.querySelector('.attendance-table-container th').offsetHeight;
-            const paddingTop = headerHeight + 5;
-
-            const closestRow = matchedRows[0];
-            tableContainer.scrollTop = closestRow.row.offsetTop - paddingTop;
+          matchedRows.sort((a, b) => a.row.offsetTop - b.row.offsetTop);
+          const tableContainer = document.querySelector('.attendance-table-container');
+          const headerHeight = document.querySelector('.attendance-table-container th').offsetHeight;
+          const paddingTop = headerHeight + 5;
+          const closestRow = matchedRows[0];
+          tableContainer.scrollTop = closestRow.row.offsetTop - paddingTop;
         } else {
-            setSearchQuery('');
+          setSearchQuery('');
         }
     };
 
@@ -124,12 +120,11 @@ const AdvisorAttendancePerformance = ({ students, year, section, department }) =
     const filteredStudents = students.filter(
         (student) =>
         (student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.registerNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            String(student.registerNumber)
-                .toLowerCase()
-                .includes(searchQuery.toLowerCase()))
-    );
+          student.department.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          String(student.registerNumber)
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()))
+      );
 
     const renderTableHeader = () => {
         return (

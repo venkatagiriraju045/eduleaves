@@ -10,7 +10,6 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
-  const [studentAttendance, setStudentAttendance] = useState({});
   const navigate = useNavigate();
   const [allStudentsAttendance, setAllStudentsAttendance] = useState({});
   const [movingLabel, setMovingLabel] = useState('');
@@ -33,9 +32,8 @@ const AdvisorAttendance = ({ students, year, section, department}) => {
     students.forEach((student) => {
       defaultPresentData[student.registerNumber] = true;
     });
-    setStudentAttendance(defaultPresentData);
+    setAllStudentsAttendance(defaultPresentData);
   }, [students]);
-
 console.log(allStudentsAttendance)
   const sortStudentsByName = (students) => {
     const yearOrder = ["First year", "Second year", "Third year", "Final year"];
@@ -152,10 +150,10 @@ console.log(allStudentsAttendance)
         <td>
           <input
             type="checkbox"
-            checked={studentAttendance[student.registerNumber] || false}
+            checked={allStudentsAttendance[student.registerNumber] || false}
             onChange={(e) => {
               const { checked } = e.target;
-              setStudentAttendance((prevAttendance) => ({
+              setAllStudentsAttendance((prevAttendance) => ({
                 ...prevAttendance,
                 [student.registerNumber]: checked,
               }));
@@ -179,6 +177,24 @@ console.log(allStudentsAttendance)
       <h1 className='department-wise-chart-heading'>{year} - "{section}" Section {department} Attendance</h1>
       <div className='attendance-content-container'>
         <div className="students-container">
+        <div className="attendance-search-bar-container">
+              <div className='search-bar'>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch();
+                    }
+                  }}
+                  placeholder="Search"
+                />
+                <button onClick={handleSearch}>
+                  <FontAwesomeIcon icon={faSearch} />
+                </button>
+              </div>
+            </div>
           <div className="bars">
             <div>
               <div className="update-all-container">
@@ -198,24 +214,6 @@ console.log(allStudentsAttendance)
                 </div>
               </div>
             </div>
-            <div className="attendance-search-bar-container">
-              <div className='search-bar'>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSearch();
-                    }
-                  }}
-                  placeholder="Search"
-                />
-                <button onClick={handleSearch}>
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-              </div>
-            </div>
             <div>
               <button
                 className="update-all-button"
@@ -227,7 +225,7 @@ console.log(allStudentsAttendance)
             </div>
           </div>
           {filteredStudents.length > 0 ? (
-            <div className="attendance-table-container" style={{ height: `${Math.min(500, Math.max(150, filteredStudents.length * 50))}px`, overflow: 'auto' }}>
+            <div className="attendance-table-container">
               <table>
                 {renderTableHeader()}
                 <tbody>{renderTableRows(filteredStudents)}</tbody>

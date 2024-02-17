@@ -52,6 +52,8 @@ const calculateOverallAttendance = (students) => {
 const AdvisorClassWise = ({ students, year, section, department }) => {
     const classStudents = students;
     const [departmentName, setDepartmentName] = useState("");
+    const [isEnableCharts, setIsEnableCharts]=useState(false);
+
     const [studentYear, setStudentYear] = useState("");
     const [studentSection, setStudentSection] = useState("");
     const [showDepartment, setShowDepartment] = useState(false);
@@ -68,14 +70,14 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             setDepartmentName(department);
             setStudentSection(section);
             setStudentYear(year);
-            createPassFailChart();
-            createOverallClassPerformanceChart();
-            createGenderLineChart();
-            createHostelerChart();
+            // createPassFailChart();
+            // createOverallClassPerformanceChart();
+            // createGenderLineChart();
+            // createHostelerChart();
         }, 1500);
 
         return () => clearTimeout(timer);
-        
+
     }, [students, showDepartment]);
 
     useEffect(() => {
@@ -99,10 +101,10 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         canvas.height = chartHeight;
         const passColor = 'rgb(14, 129, 116)';
         const failColor = 'rgb(255, 99, 71)';
-    
+
         // Calculate pass/fail statistics for all subjects
         const passFailStats = calculatePassFailRatio(students);
-    
+
         canvas.chart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -408,7 +410,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
         let passCount = 0;
         let failCount = 0;
         let totalSubjects = 0;
-    
+
         students.forEach((student) => {
             student.subjects.forEach((subject) => {
                 for (let i = 1; i <= 3; i++) {
@@ -452,7 +454,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             }
             return total;
         }, 0);
-    
+
         const totalIATs = subjects.reduce((total, subject) => {
             for (let i = 1; i <= 3; i++) {
                 if (!isNaN(parseFloat(subject.scores[`iat_${i}`]))) {
@@ -461,7 +463,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             }
             return total;
         }, 0);
-    
+
         const average = totalScores / totalIATs;
         return isNaN(average) ? NaN : average;
     };
@@ -483,9 +485,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
     }
     const handleCopyClassAttendance = () => {
         const classAttendanceText = `
-        
-        Total Students: ${totalCount}
-        Students Present Today: ${presentCount}
+        Students Present Today: ${presentCount} / ${totalCount}
         Present Percentage: ${presentPercentage}%
     
     ${absentees.length > 0 ?
@@ -517,23 +517,22 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
             {showAttendanceOverlay && (
                 <div className="overlay">
                     <div className="overlay-content">
-                        <button className="close-button" id="close-button" onClick={handleCloseOverlay}>
+                        <button id="attendance-close-button" onClick={handleCloseOverlay}>
                             Close
                         </button>
                         <div className="attendance-details-container">
                             <div className='main-attendance-details'>
                                 <p className='present-details-percentage'>Present Percentage: {presentPercentage}%</p>
                                 <p className='absent-details-percentage'>Absent Percentage: {absentPercentage}%</p>
-                                <p>Students Present Today: {presentCount}</p>
-                                <p>Total Students: {totalCount}</p>
-                                <button className="copy-button" onClick={handleCopyClassAttendance}>
+                                <p>Students Present Today: {presentCount} / {totalCount}</p>
+                                <a className="copy-button" onClick={handleCopyClassAttendance}>
                                     Copy Class Report
-                                </button>
+                                </a>
                             </div>
-                            <br></br>
-                            <br></br>
-                            <br></br>
-                            <h2>Absentees:</h2>
+                            <br/>
+                            <br/>
+                            <br/>
+                                <p id='absentees-header'>Absentees:</p>
                             <div className='admin-table-container'>
                                 {absentees.length > 0 ? (
                                     <table>
@@ -565,45 +564,58 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
                     </div>
                 </div>
             )}
+            {isEnableCharts ? (
+                <div>
 
-            <div className='class-wise-overlay-chart-container'>
-                <div className='overall-department-performance-chart-container-class-wise'>
-                    <div className='inside-container'>
-                        <div className='sub-charts-container'>
-                            <canvas id="pass-fail-chart"></canvas>
-                            <p className='chart-heads'>Class Pass Fail Ratio (in percentage)</p>
-                        </div>
-                    </div>
+                {/* // <div>
+                //     <div className='class-wise-overlay-chart-container'>
+                //         <div className='overall-department-performance-chart-container-class-wise'>
+                //             <div className='inside-container'>
+                //                 <div className='sub-charts-container'>
+                //                     <canvas id="pass-fail-chart"></canvas>
+                //                     <p className='chart-heads'>Class Pass Fail Ratio (in percentage)</p>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //         <div className='overall-department-performance-chart-container-class-wise'>
+                //             <div className='inside-container'>
+                //                 <div className='sub-charts-container'>
+                //                     <canvas id="class-chart-test"></canvas>
+                //                     <p className='chart-heads'>Test Scores Range</p>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //         <div className='overall-department-performance-chart-container-class-wise'>
+                //             <div className='inside-container'>
+                //                 <div className='sub-charts-container'>
+                //                     <canvas id="iat-performance-chart"></canvas>
+                //                     <p className='chart-heads'>Gender Wise IAT Performance</p>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </div>
+                //     <div className='department-class-wise-hosteler-monthly-container'>
+                //         <div className='monthly-class-attendance-chart-container'>
+                //             <div className='inside-container'>
+                //                 <div className='sub-charts-container'>
+                //                     <canvas id="iat-performance-hosteler-chart"></canvas>
+                //                     <p className='chart-heads'>Hosteler vs Day-Scholar Performance</p>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //         <ClassAttendance classStudents={classStudents} />
+                //     </div>
+
+
+                // </div> */}
+                </div>) : (
+                <div>
+                    <h1>Please choose any of the option from the navigation bar</h1>
                 </div>
-                <div className='overall-department-performance-chart-container-class-wise'>
-                    <div className='inside-container'>
-                        <div className='sub-charts-container'>
-                            <canvas id="class-chart-test"></canvas>
-                            <p className='chart-heads'>Test Scores Range</p>
-                        </div>
-                    </div>
-                </div>
-                <div className='overall-department-performance-chart-container-class-wise'>
-                    <div className='inside-container'>
-                        <div className='sub-charts-container'>
-                            <canvas id="iat-performance-chart"></canvas>
-                            <p className='chart-heads'>Gender Wise IAT Performance</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className='department-class-wise-hosteler-monthly-container'>
-                <div className='monthly-class-attendance-chart-container'>
-                    <div className='inside-container'>
-                        <div className='sub-charts-container'>
-                            <canvas id="iat-performance-hosteler-chart"></canvas>
-                            <p className='chart-heads'>Hosteler vs Day-Scholar Performance</p>
-                        </div>
-                    </div>
-                </div>
-                <ClassAttendance classStudents={classStudents} />
-            </div>
+            )}
+
         </div>
+
     );
 };
 export default AdvisorClassWise;

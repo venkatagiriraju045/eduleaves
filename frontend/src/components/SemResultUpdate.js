@@ -57,12 +57,9 @@ const SemResultUpdate = () => {
                             
                         });
                     });
-    
                     console.log(semesterResultsToUpdate);
-    
                     // Make a POST request to your server endpoint
                     const response = await axios.post('https://eduleaves-api.vercel.app/api/update_semester_results', { semesterResultsToUpdate });
-    
                     console.log(response.data); // Handle the response as needed
                 } catch (error) {
                     console.error('Error parsing Excel file:', error);

@@ -3,20 +3,22 @@
     flex-direction: column;
     align-items: center;
 }
+
 .admin-logo {
     width: 450px;
     height: auto;
     margin-left: 30px;
 }
-.students-container{
+
+.students-container {
     margin: 20px;
     margin-top: 0;
     padding: 20px;
     border-radius: 8px;
-    width:85vw;
+    width: 85vw;
     box-shadow: inset 16px 16px 20px #ffffff, 10px 10px 18px rgba(0, 0, 0, 0.16);
 
-    
+
 }
 
 .admin-attendance-container {
@@ -67,49 +69,53 @@
 }
 
 .attendance-table-container {
-    min-width: 1000px;
     margin-top: 10px;
-    min-height:400px;
-    
+
 }
+
 .attendance-table-container tr:nth-child(even) {
-    background-color: #138e5528; 
-    }
+    background-color: #138e5528;
+}
 
 .attendance-table-container table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.attendance-table-container th{
-    padding: 8px;
-text-align: center;
-border-bottom: 1px solid #dddddd94;
-color: #261919;
-font-weight: 100;
+.attendance-table-container th {
+    padding: 4px;
+    text-align: center;
+    border-bottom: 1px solid #dddddd94;
+    color: #261919;
+    font-weight: 100;
 }
 
 .attendance-table-container td {
     padding: 8px;
-text-align: center;
-color: #261919;
-font-weight: 100;
+    text-align: center;
+    color: #261919;
+    font-weight: 100;
+    font-size: calc(0.5rem + 0.2vw);
+
 }
 
 .attendance-table-container th {
     position: sticky;
     top: 0;
     color: #261919;
-    backdrop-filter: blur(4px); 
+    backdrop-filter: blur(4px);
+    font-size: calc(0.5rem + 0.3vw);
     background-color: rgb(72, 189, 144);
 }
-.serial-num-header{
+
+.serial-num-header {
     position: sticky;
     top: 0;
     color: #261919;
-    backdrop-filter: blur(4px); 
+    backdrop-filter: blur(4px);
     background-color: rgb(72, 189, 144);
 }
+
 .attendance-table-container::-webkit-scrollbar {
     width: 15px;
 }
@@ -119,7 +125,7 @@ font-weight: 100;
 }
 
 .attendance-table-container::-webkit-scrollbar-thumb {
-    background-color:  rgba(79, 160, 160, 0.788); 
+    background-color: rgba(79, 160, 160, 0.788);
     border-radius: 10px;
 
 }
@@ -127,15 +133,18 @@ font-weight: 100;
 .attendance-table-container::-webkit-scrollbar-thumb:hover {
     background-color: rgba(56, 96, 96, 0.788);
 }
+
 .attendance-search-bar-container {
     margin-top: 0;
     display: flex;
     height: 25px;
-    
+
 }
-.attendance-search-bar-container .search-bar{
+
+.attendance-search-bar-container .search-bar {
     margin-top: 0;
 }
+
 .update-all-container {
     display: flex;
     align-items: center;
@@ -156,29 +165,38 @@ font-weight: 100;
 
 .date-container input[type="date"],
 .update-all-button {
+    margin-top:2%;
     border-radius: 8px;
     color: #261919;
-    width: 150px;
+    width: 100%;
     height: 25px;
-    outline:none;
-    box-shadow: inset 8px 8px 10px #ffffff, 5px 5px 8px rgba(0, 0, 0, 0.16);
+    align-items: center;
+    display:flex;
+    justify-content: center;
+    font-size: calc(0.5rem + 0.5vw);
+    outline: none;
 
 }
-.date-container input[type="date"]:focus, .date-container input[type="date"]:active{
+
+.date-container input[type="date"]:focus,
+.date-container input[type="date"]:active {
     outline: none;
 }
 
-.date-box{
+.date-box {
     border-radius: 8px;
     color: #261919;
     outline: none;
     box-shadow: inset 8px 8px 10px #ffffff, 5px 5px 8px rgba(0, 0, 0, 0.16);
 }
+
 .bars {
     display: flex;
     flex-direction: row;
-    gap:10px;
+    gap: 2%;
+    font-size: calc(0.5rem + 0.4vw);
     justify-content: space-between;
+    margin-top: 2%;
 }
 
 .department-selection {
@@ -188,11 +206,11 @@ font-weight: 100;
 
 .toggle-switch-container {
     display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
+    flex-direction: column;
+    align-items: flex-start;
     margin-top: 20px;
     margin-left: 10px;
-    gap:20px;
+    gap: 20px;
     background-color: white;
     justify-content: space-between;
 }
@@ -203,7 +221,7 @@ font-weight: 100;
     align-items: center;
     width: 141px;
     height: 34px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     overflow: hidden;
     position: relative;
     background-color: white;
@@ -211,6 +229,7 @@ font-weight: 100;
 
 
 }
+
 .switch input {
     opacity: 0;
     width: 0;
@@ -224,11 +243,11 @@ font-weight: 100;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color:rgba(0, 0, 0, 0.447);
+    background-color: rgba(0, 0, 0, 0.447);
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
-    color:#fff;
+    color: #fff;
 
 }
 
@@ -239,20 +258,18 @@ font-weight: 100;
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: rgba(253, 253, 253, 0.928); 
+    background-color: rgba(253, 253, 253, 0.928);
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 50%;
-    color:#fff;
+    color: #fff;
 }
 
 .switch.active .slider {
     background-color: rgb(29, 139, 242)
-
-
 }
 
-.switch input:checked + .slider:before {
+.switch input:checked+.slider:before {
     -webkit-transform: translateX(104px);
     -ms-transform: translateX(104px);
     transform: translateX(104px);
@@ -261,26 +278,26 @@ font-weight: 100;
 .toggle-label {
     position: absolute;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     top: 50%;
     transform: translateY(-50%);
     transition: left 0.4s ease, right 0.4s ease;
     width: calc(100% - 8px);
-    text-align: right; 
+    text-align: right;
     padding-right: 4px;
-    color:#fff;
+    color: #fff;
 }
 
 .switch.active .toggle-label {
     left: auto;
-    right: 4px; 
+    right: 4px;
     text-align: left;
-    left:10px;
-    color:white;
+    left: 10px;
+    color: white;
 }
 
 .attendance-content-container {
-    display: flex;  
+    display: flex;
     flex-direction: row;
 
 }
@@ -295,6 +312,7 @@ font-weight: 100;
     margin-left: 20px;
     margin-bottom: 10px;
 }
+
 .success-message {
     color: #261919;
     align-items: center;
@@ -302,6 +320,7 @@ font-weight: 100;
     margin-bottom: 0;
     margin-top: 5px;
 }
+
 .low-mark {
     background-color: rgba(255, 98, 0, 0.511);
     border: 1px solid black;
@@ -310,6 +329,7 @@ font-weight: 100;
 
 
 }
+
 .average-mark {
     background-color: rgba(255, 255, 0, 0.571);
     border: 1px solid black;
@@ -318,7 +338,8 @@ font-weight: 100;
 
 
 }
-.good-mark{
+
+.good-mark {
     background-color: rgba(0, 255, 13, 0.516);
     border: 1px solid black;
     margin-bottom: 2px;
@@ -326,6 +347,7 @@ font-weight: 100;
 
 
 }
+
 .outstanding-mark {
     background-color: rgba(8, 219, 8, 0.941);
 }

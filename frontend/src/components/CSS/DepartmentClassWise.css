@@ -67,6 +67,7 @@
     margin-left: 20px;
     margin-top: 18px;
     color: rgba(57, 57, 57, 0.486);
+    font-size: calc(0.6rem + 0.7vw);
 }
 
 .chart-heads {
@@ -193,6 +194,17 @@
     padding:0.5vw;
     
     box-shadow: inset 20px 20px 22px #ffffff, 10px 10px 17px rgba(0, 0, 0, 0.16);
-
     /* Add other styles as needed */
+}
+#attendance-close-button{
+    right: 5px;
+    top:5px;
+    position: absolute;
+    width: 15%;
+    font-size:calc(0.5rem + 0.5vw);
+
+    height: 5%;
+}
+#absentees-header{
+    font-size:calc(0.5rem + 0.6vw);
 }
