@@ -144,7 +144,9 @@
 .attendance-search-bar-container .search-bar {
     margin-top: 0;
 }
-
+.update-students-specific-container{
+    font-size: calc(0.5rem + 0.4vw);
+}
 .update-all-container {
     display: flex;
     align-items: center;

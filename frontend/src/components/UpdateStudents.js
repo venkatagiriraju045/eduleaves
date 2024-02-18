@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 import * as XLSX from 'xlsx';
-
+import './CSS/AdminAttendance.css';
 const UpdateStudents = () => {
     const [excelFile, setExcelFile] = useState(null);
 
@@ -60,7 +60,7 @@ const UpdateStudents = () => {
 
     return (
         <div className="update-students-container">
-            <h1>Update Student Data</h1>
+            <p>Update Student Data</p>
             <div className='update-students-specific-container'>
                 <input className="file-input" type="file" accept=".xlsx, .xls" onChange={handleFileChange} />
                 <button className="upload-button" onClick={handleUpload}>Upload</button>

@@ -186,6 +186,7 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     // Update handleDateEnter to trigger data fetching
     const handleDateEnter = () => {
         if (date) {
+            setConfirmedModify(false);
             setDateEntered(true);
             setExistingAttendance([]); // Clear existing attendance data when a new date is chosen
             handleDateChangeAndSubmit(); // Fetch new attendance data
