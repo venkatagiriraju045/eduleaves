@@ -11,11 +11,11 @@
 }
 
 .students-container {
-    margin: 20px;
+    margin: 5px;
     margin-top: 0;
     padding: 20px;
     border-radius: 8px;
-    width: 85vw;
+    width: 100%;
     box-shadow: inset 16px 16px 20px #ffffff, 10px 10px 18px rgba(0, 0, 0, 0.16);
 
 
@@ -150,11 +150,17 @@
     align-items: center;
     margin-right: 0;
 }
-
+.select-all-update-button{
+    display: flex;
+    align-items: center;
+}
+.select-all-button{
+    display: flex;
+}
 .date-container {
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .date-container label,
@@ -162,20 +168,26 @@
     display: inline-block;
     vertical-align: middle;
 }
+.select-all-button{
+    margin:10px;
+    font-size: calc(0.5rem + 0.3vw);
 
-.date-container input[type="date"]{
-    margin-top:2%;
+}
+
+.date-container input[type="date"] {
+    margin-top: 2%;
     border-radius: 8px;
     color: #000000;
     width: 100%;
     height: 25px;
     align-items: center;
-    display:flex;
+    display: flex;
     justify-content: center;
-    font-size: calc(0.5rem + 0.5vw);
+    font-size: calc(0.5rem + 0.3vw);
     outline: none;
 }
-.confirmation-box{
+
+.confirmation-box {
     background-color: rgba(255, 255, 255, 0.518);
     padding: 4%;
     border-radius: 8px;
@@ -187,24 +199,76 @@
     justify-content: space-between;
     overflow-y: auto;
 }
-.confirmation-box .confirmation-buttons{
+
+.date-submit-button {
+    display: flex;
+    width: 30%;
+    justify-content: space-between;
+}
+
+/* CSS */
+input[type="checkbox"].custom-checkbox {
+    -webkit-appearance: none;
+    /* Remove default styles for WebKit browsers */
+    -moz-appearance: none;
+    /* Remove default styles for Firefox */
+    appearance: none;
+    /* Remove default styles for modern browsers */
+
+    /* Adjust height as needed */
+    border: 1px solid #ccc;
+    /* Add border color */
+    border-radius: 3px;
+    /* Add border radius */
+    background-color: #fff;
+    /* Add background color */
+    cursor: not-allowed;
+    /* Change cursor to not-allowed */
+    pointer-events: none;
+    /* Disable pointer events */
+}
+
+/* Style the checked state */
+input[type="checkbox"].custom-checkbox:checked {
+    background-color: #007bff;
+    /* Change background color when checked */
+    border-color: #007bff;
+    /* Change border color when checked */
+}
+
+/* Style the checkmark */
+input[type="checkbox"].custom-checkbox:checked::before {
+    /* Unicode checkmark character */
+    color: #fff;
+    /* Color of the checkmark */
+    /* Adjust font size as needed */
+    text-align: center;
+    /* Center the checkmark */
+    line-height: 16px;
+    /* Adjust line height to center vertically */
+}
+
+
+
+.confirmation-box .confirmation-buttons {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 15%;
 }
+
 .update-all-button {
-    margin-top:2%;
+    margin-top: 2%;
     border-radius: 8px;
     color: #fbfbfb;
     width: 100%;
     height: 25px;
     align-items: center;
-    display:flex;
+    display: flex;
     justify-content: center;
-    font-size: calc(0.5rem + 0.5vw);
+    font-size: calc(0.5rem + 0.3vw);
     outline: none;
-
+    padding: 5px;
 }
 
 .date-container input[type="date"]:focus,
@@ -222,10 +286,10 @@
 .bars {
     display: flex;
     flex-direction: row;
-    gap: 2%;
-    font-size: calc(0.5rem + 0.4vw);
+    font-size: calc(0.5rem + 0.3vw);
     justify-content: space-between;
     margin-top: 2%;
+    overflow: hidden;
 }
 
 .department-selection {
@@ -334,12 +398,22 @@
 .students-table-container {
     flex: 1;
 }
+.select-all-button-container{
+    display: flex;
+    align-items: center;
 
+}
+.submit-button-container-center{
+    display: flex;
+
+    align-items: center;
+}
 .error-message {
     color: #871919;
     margin-top: 15px;
     margin-left: 20px;
     margin-bottom: 10px;
+    font-size:calc(0.5rem + 0.4vw);
 }
 
 .success-message {

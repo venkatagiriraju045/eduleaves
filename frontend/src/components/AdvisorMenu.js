@@ -56,18 +56,9 @@ const AdvisorMenu = () => {
   const [students, setStudents] = useState([]);
   const [deviceType, setDeviceType] = useState(null);
   const overlayClass = `loading-overlay${loading || isLoading ? ' visible' : ''}`;
-  const [mobile, setMobile] = useState(false);
   const [showTestPerformanceForm, setShowTestPerformanceForm] = useState(false);
 
-  useEffect(() => {
-    // Detect device type and set the state
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    setDeviceType(isMobile ? 'mobile' : 'desktop');
-    if (deviceType === 'mobile') {
-      setMobile(true);
-    }
-  }, []);
-  console.log(advisorInfo)
+
   useEffect(() => {
 
     const timer = setTimeout(() => {
@@ -368,13 +359,7 @@ const AdvisorMenu = () => {
     };
     return instituteNameMap[institute] || institute;
   }
-  if (deviceType === 'mobile') {
-    return (
-      <div className="mobile-warning-overlay-message">
-        <p>You are logged in on a mobile device. Please logout from the mobile device to access this page on a computer or laptop.</p>
-      </div>
-    );
-  }
+
   const logoImageUrl = `./uploads/dashboard-brand-logo.JPG`;
   return (
     <div className="dep-admin-page-container">
@@ -473,7 +458,6 @@ const AdvisorMenu = () => {
             </div>
           )}
         </header>
-        {!mobile &&
           <main
             className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
               }`}>
@@ -507,7 +491,7 @@ const AdvisorMenu = () => {
                   <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
                 </div>
               </div>)}
-          </main>}
+          </main>
       </div>
     </div>
   );

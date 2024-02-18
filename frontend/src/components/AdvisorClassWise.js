@@ -610,7 +610,7 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
                 // </div> */}
                 </div>) : (
                 <div>
-                    <h1>Please choose any of the option from the navigation bar</h1>
+                    <p>Please choose any of the option from the navigation bar</p>
                 </div>
             )}
 

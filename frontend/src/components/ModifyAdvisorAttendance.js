@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     const [loading, setLoading] = useState(false);
+    const [selectAllChecked, setSelectAllChecked] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [date, setDate] = useState('');
     const [message, setMessage] = useState('');
@@ -47,14 +47,6 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
         setSelectedRegisterNumbers(registerNumbers);
     }, [students]);
 
-    // Inside ModifyAdvisorAttendance component
-
-    // Inside your ModifyAdvisorAttendance component
-    console.log("register no : " + selectedRegisterNumbers)
-    console.log("date : " + date)
-
-
-
     const fetchExistingAttendance = async () => {
         if (date) {
             try {
@@ -67,7 +59,6 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
                             registerNumber: registerNumber,
                         }
                     });
-
                     // Check if the response contains the expected data structure
                     if (response.data && response.data.hasOwnProperty('registerNumber') && response.data.hasOwnProperty('attendanceStatus')) {
                         const { registerNumber, attendanceStatus } = response.data;
@@ -104,7 +95,15 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
         setModifyAttendance(true);
     };
 
-
+    const handleSelectAllToggle = () => {
+        setSelectAllChecked(prevState => !prevState);
+        // Toggle between select all and deselect all based on the current state of selectAllChecked
+        if (!selectAllChecked) {
+            handleSelectAll();
+        } else {
+            handleDeselectAll();
+        }
+    };
     const sortStudentsByRegNo = (students) => {
         return students.sort((a, b) => {
             // Convert register numbers to numbers and then compare
@@ -155,25 +154,49 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase()))
     );
+    const handleDateChangeAndSubmit = async () => {
+        if (date && selectedRegisterNumbers.length > 0) {
+            try {
+                setLoading(true);
+                const newAttendanceData = [];
+                for (const registerNumber of selectedRegisterNumbers) {
+                    const response = await axios.get('https://eduleaves-api.vercel.app/api/fetch_attendance', {
+                        params: {
+                            date: date,
+                            registerNumber: registerNumber,
+                        }
+                    });
+                    // Check if the response contains the expected data structure
+                    if (response.data && response.data.hasOwnProperty('registerNumber') && response.data.hasOwnProperty('attendanceStatus')) {
+                        const { registerNumber, attendanceStatus } = response.data;
+                        newAttendanceData.push({ registerNumber, attendanceStatus });
+                    } else {
+                        console.error(`Invalid response structure for register number ${registerNumber}`);
+                    }
+                }
+                setExistingAttendance(newAttendanceData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching new attendance:', error);
+                setLoading(false);
+            }
+        }
+    };
 
+    // Update handleDateEnter to trigger data fetching
     const handleDateEnter = () => {
-        setDateEntered(true);
-    }
+        if (date) {
+            setDateEntered(true);
+            setExistingAttendance([]); // Clear existing attendance data when a new date is chosen
+            handleDateChangeAndSubmit(); // Fetch new attendance data
+        }
+    };
     const handleCheckboxChange = (registerNumber, checked) => {
         setModifiedAttendance((prevAttendance) => ({
             ...prevAttendance,
             [registerNumber]: checked,
         }));
     };
-    let isoDate;
-    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        isoDate = new Date(date).toISOString().split('T')[0];
-        // Proceed with further processing using isoDate
-    } else {
-        console.error('Invalid date format:', date);
-        // Handle the error or notify the user about the invalid date format
-    }    console.log("isodate"+isoDate);
- console.log("normaldate"+date);
 
     const handleUpdateAttendance = async () => {
         // Update attendance logic
@@ -261,12 +284,12 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
                                     type="checkbox"
                                     checked={sortedExistingAttendance[index].attendanceStatus === 'Present'}
                                     disabled
+                                    className="custom-checkbox"
                                 />
                             )}
                         </td>
                     </tr>
                 );
-
             });
         }
         else {
@@ -276,7 +299,6 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
     const handleConfirmModify = () => {
         setConfirmedModify(true);
         setModifyAttendance(false);
-    
         // Initialize modifiedAttendance with existing attendance data
         const initialModifiedAttendance = {};
         existingAttendance.forEach((attendance) => {
@@ -284,8 +306,24 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
         });
         setModifiedAttendance(initialModifiedAttendance);
     };
-    
 
+    const handleSelectAll = () => {
+        const updatedModifiedAttendance = {};
+        // Set all students' attendance to true
+        selectedRegisterNumbers.forEach(registerNumber => {
+            updatedModifiedAttendance[registerNumber] = true;
+        });
+        setModifiedAttendance(updatedModifiedAttendance);
+    };
+
+    const handleDeselectAll = () => {
+        const updatedModifiedAttendance = {};
+        // Set all students' attendance to false
+        selectedRegisterNumbers.forEach(registerNumber => {
+            updatedModifiedAttendance[registerNumber] = false;
+        });
+        setModifiedAttendance(updatedModifiedAttendance);
+    };
 
     return (
         <div>
@@ -331,7 +369,7 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
                         </div>
                     </div>
                     <div className="bars">
-                        <div>
+                        <div className='date-submit-button'>
                             <div className="update-all-container">
                                 <div className="date-container">
                                     <input
@@ -348,39 +386,55 @@ const ModifyAdvisorAttendance = ({ students, year, section, department }) => {
                                     />
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <div className="update-all-container">
-                                <div className="date-container">
-                                    <button onClick={handleDateEnter} className="update-all-button">Submit</button>
+                            <div className='submit-button-container-center'>
+                                <div className="update-all-container">
+                                    <div className="date-container">
+                                        <button onClick={handleDateEnter} className="update-all-button">Submit</button>
+                                        {dateError && <p className='success-message'>please select date!</p>}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {dateEntered && (
+                        <div className='date-submit-button'>
 
-                            <div>
-                                <button
-                                    className="update-all-button"
-                                    onClick={handleModifyAttendance}
-                                >
-                                    {loading ? 'Loading...' : 'Modify'}
-                                </button>
-                                {dateError && <p className='success-message'>please select date!</p>}
-                            </div>
-                        )
-                        }
-                        {confirmedModify && (
-                            <div>
-                                <button
-                                    className="update-all-button"
-                                    onClick={handleUpdateAttendance}
-                                    disabled={Object.keys(modifiedAttendance).length === 0} // Disable update button if no modifications
-                                >
-                                    {loading ? 'Loading...' : 'Update'}
-                                </button>
-                                {dateError && <p className='success-message'>please select date!</p>}
-                            </div>
-                        )}
+                            {dateEntered && (
+                                <div>
+                                    <button
+                                        className="update-all-button"
+                                        onClick={handleModifyAttendance}
+                                    >
+                                        {loading ? 'Loading...' : 'Modify'}
+                                    </button>
+                                    {dateError && <p className='success-message'>please select date!</p>}
+                                </div>
+                            )
+                            }
+                            {confirmedModify && (
+
+                                <div className='select-all-button-container'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectAllChecked}
+                                        onChange={handleSelectAllToggle}
+
+                                    />
+                                    <label className='select-all-button'>{selectAllChecked ? 'Deselect All' : 'Select All'}</label>
+                                </div>)}
+                            {confirmedModify && (
+                                <div className='select-all-update-button'>
+
+
+                                    <button
+                                        className="update-all-button"
+                                        onClick={handleUpdateAttendance}
+                                        disabled={Object.keys(modifiedAttendance).length === 0} // Disable update button if no modifications
+                                    >
+                                        {loading ? 'Loading...' : 'Update'}
+                                    </button>
+                                    {dateError && <p className='success-message'>please select date!</p>}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     {dateEntered ? (
                         <div className="attendance-table-container">

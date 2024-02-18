@@ -84,26 +84,7 @@
     box-shadow: 0 0 15px #177e55cd;
 }
 
-.menu-buttons .today-button {
-    background-color: rgba(33, 107, 225, 0.482);
-    outline: none;
-    border: none;
-    color: rgb(37, 26, 26);
-    margin-top: 0px;
-    align-items: top;
-}
 
-.today-button {
-    background-color: rgba(66, 223, 108, 0.482);
-    outline: none;
-    border: none;
-    color: rgb(37, 26, 26);
-    margin-right: 40px;
-    margin-top: 25px;
-    cursor: pointer;
-
-
-}
 
 .mentor-student-name-card {
     border-radius: 3vw;

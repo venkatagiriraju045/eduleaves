@@ -83,11 +83,12 @@ justify-content: space-between;
     align-items: top;
 }
 .today-button{
-    background-color: rgba(66, 223, 108, 0.482);
+    background-color: rgba(38, 126, 62, 0.785);
     outline: none;
     border: none;
     color: aliceblue;
-    margin-right: 40px;
+    margin-right: 10px;
+    font-size: calc(0.5rem + 0.3vw);
 
 }
 .main-admin-overlay-close-button{
