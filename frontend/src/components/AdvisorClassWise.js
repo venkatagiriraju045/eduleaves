@@ -58,7 +58,6 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
     const [studentSection, setStudentSection] = useState("");
     const [showDepartment, setShowDepartment] = useState(false);
 
-
     const [showAttendanceOverlay, setShowAttendanceOverlay] = useState(false);
     const { presentPercentage, absentPercentage, presentCount, totalCount, absentees } = calculateOverallAttendance(
         students
@@ -87,7 +86,10 @@ const AdvisorClassWise = ({ students, year, section, department }) => {
 
         return () => clearTimeout(timer);
     }, []); // This effect runs once on component mount
-
+    if(!students){
+        return <p>no data recei</p>
+    }
+    
     const createPassFailChart = () => {
         Chart.register(LinearScale, CategoryScale, DoughnutController, ArcElement);
         const canvas = document.getElementById('pass-fail-chart');
