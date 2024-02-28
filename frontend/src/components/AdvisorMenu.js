@@ -395,12 +395,12 @@ const AdvisorMenu = () => {
               </a>
             </li>
 
-          <li>
+            <li>
               <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
                 Test Performance
               </a>
             </li>
-            
+
             <li>
               <a href="#" className="test-score-button" onClick={handleAdvisorAttendanceModificationButtonClick} title="View Attendance">
                 Modify Attendance
@@ -416,12 +416,12 @@ const AdvisorMenu = () => {
                 Message
               </a>
             </li>
-              
+
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
                 Update IAT Scores
               </a>
-            </li> 
+            </li>
 
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateStudentsButtonClick} title="Send Messages">
@@ -459,40 +459,40 @@ const AdvisorMenu = () => {
             </div>
           )}
         </header>
-          <main
-            className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
-              }`}>
-            <div>
-              {(loading || isLoading) && <div className={overlayClass}>
-                <div className="spinner">
-                  <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
-                </div>
-                <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
-              </div>}
-            </div>
-            {showUpdateAccom ? (
-              <UpdateAccom students={students} />
-            ) : showUpdateIATForm ? (
-              <UpdateIAT students={students} />
-            ) : showMessageForm ? (
-              <AdvisorMessage students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-            ) : showAttendanceForm ? (
-              <AdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-            ) : showUpdateStudents ? (
-              <UpdateStudents />
-            ) : showTestPerformanceForm ? (
-              <AdvisorTest students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-            ) : showModifyAttendanceForm ? (
-              <ModifyAdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-            ) : showAdvisorAttendancePerformace ? (
-              <AdvisorAttendancePerformance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-            ) : (showDashboard &&
-              <div className='home-contents'>
-                <div id='class-wise-page' className='class-wise-analytics-page'>
-                  <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
-                </div>
-              </div>)}
-          </main>
+        <main
+          className={`profile-content-container ${showNavBar ? "with-nav-bar" : "without-nav-bar"
+            }`}>
+          <div>
+            {(loading || isLoading) && <div className={overlayClass}>
+              <div className="spinner">
+                <img src="./uploads/loading-brand-logo.png" alt="loading-brand-logo" id="loading-brand-logo" />
+              </div>
+              <img src="./uploads/loading-brand-title.png" alt="loading-brand-title" id="loading-brand-title" />
+            </div>}
+          </div>
+          {showUpdateAccom ? (
+            <UpdateAccom students={students} />
+          ) : showUpdateIATForm ? (
+            <UpdateIAT students={students} />
+          ) : showMessageForm ? (
+            <AdvisorMessage students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+          ) : showAttendanceForm ? (
+            <AdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+          ) : showUpdateStudents ? (
+            <UpdateStudents />
+          ) : showTestPerformanceForm ? (
+            <AdvisorTest students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+          ) : showModifyAttendanceForm ? (
+            <ModifyAdvisorAttendance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+          ) : showAdvisorAttendancePerformace ? (
+            <AdvisorAttendancePerformance students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+          ) : (showDashboard &&
+            <div className='home-contents'>
+              <div id='class-wise-page' className='class-wise-analytics-page'>
+                <AdvisorClassWise students={students} year={advisorInfo.year} section={advisorInfo.section} department={advisorInfo.departmentName} />
+              </div>
+            </div>)}
+        </main>
       </div>
     </div>
   );
