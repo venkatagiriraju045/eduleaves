@@ -150,16 +150,14 @@ const Home = () => {
                             
                             // Convert the object to a JSON string before storing
                             localStorage.setItem('hodInfo', JSON.stringify(hodInfo));
-
                             navigate('/DepartmentMenu');
-                        } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec@kiot' || staff.name === 'firstcsec@kiot') && loginAs !== 'student') {
+                        } else if (loginAs === 'advisor' && staff.role === 'advisor' && (staff.name === 'finalcsec@kiot' || staff.name === 'secondcsec@kiot' || staff.name === 'thirdcsec' || staff.name === 'firstcsec@kiot') && loginAs !== 'student') {
                             const advisorInfo = {
                                 instituteName: staff.institute_name,
                                 departmentName: staff.department,
                                 year: staff.year,
                                 section: staff.section
                             };
-
                             // Convert the object to a JSON string before storing
                             localStorage.setItem('advisorInfo', JSON.stringify(advisorInfo));
 
@@ -194,6 +192,8 @@ const Home = () => {
             setLoading(false);
         }
     };
+
+    
 
     return (
         <div>

@@ -54,7 +54,6 @@ const MentorMessage = ({ student }) => {
                 sender,
                 dateAndTime,
             });
-    
             setAppMessage('Messages updated successfully!');
             setTimeout(() => {
                 setAppMessage('');

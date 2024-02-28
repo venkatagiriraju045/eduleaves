@@ -68,9 +68,7 @@ const AdvisorMenu = () => {
           const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
             params: {
               role: 'student',
-              department: advisorInfo.departmentName,
-              year: advisorInfo.year,
-              section: advisorInfo.section,
+             
             }
           });
           setInstitute(advisorInfo.instituteName);
@@ -191,6 +189,7 @@ const AdvisorMenu = () => {
       setShowTestPerformanceForm(false);
     }, 1000);
   };
+  console.log(students);
 
   const handleUpdateStudentsButtonClick = () => {
     setShowAttendanceForm(false);
@@ -394,12 +393,12 @@ const AdvisorMenu = () => {
               </a>
             </li>
 
-            {/* <li>
+          <li>
               <a href="#" className="test-score-button" onClick={handleTestPerformanceButtonClick} title="View Attendance">
                 Test Performance
               </a>
             </li>
-             */}
+            
             <li>
               <a href="#" className="test-score-button" onClick={handleAdvisorAttendanceModificationButtonClick} title="View Attendance">
                 Modify Attendance
@@ -410,17 +409,17 @@ const AdvisorMenu = () => {
                 Attendance Details
               </a>
             </li>
-            {/* <li>
+            <li>
               <a href="#" className="test-score-button" onClick={handleMessageButtonClick} title="Send Messages">
                 Message
               </a>
-            </li> */}
-            {/*             
+            </li>
+              
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateIATButtonClick} title="Send Messages">
                 Update IAT Scores
               </a>
-            </li> */}
+            </li> 
 
             <li>
               <a href="#" className="test-score-button" onClick={handleUpdateStudentsButtonClick} title="Send Messages">
