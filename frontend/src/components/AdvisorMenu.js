@@ -68,7 +68,9 @@ const AdvisorMenu = () => {
           const response = await axios.get('https://eduleaves-api.vercel.app/api/advisor_students_data', {
             params: {
               role: 'student',
-             
+              department: advisorInfo.departmentName,
+              year: advisorInfo.year,
+              section: advisorInfo.section,
             }
           });
           setInstitute(advisorInfo.instituteName);

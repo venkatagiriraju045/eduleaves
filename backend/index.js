@@ -10,9 +10,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 const MONGODB_URI = 'mongodb+srv://Venkatagiriraju:King%40123@kiot.mmjm1ma.mongodb.net/test?retryWrites=true&w=majority';
-    
+
 app.get('/', (req, res) => {
-    const message = "mod 5";
+    const message = "mod 7";
     res.send(`<html><body><h1>${message}</h1></body></html>`);
 });
 
