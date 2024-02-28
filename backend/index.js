@@ -290,6 +290,8 @@ app.post('/api/attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+
 app.get('/api/fetch_attendance', async (req, res) => {
     try {
         const { date, registerNumber } = req.query; // Extract from query parameters
@@ -366,6 +368,8 @@ app.post('/api/modify_attendance', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+
 app.post('/api/update_all_attendance', async (req, res) => {
     const { date, present, selectedDepartment, selectedYear, instituteName } = req.body;
 
@@ -548,25 +552,20 @@ app.post('/api/update_iat', async (req, res) => {
             for (const subjectCode in scores) {
                 const score = parseInt(scores[subjectCode]);
 
-                // Check if registerNumber and subjectCode exist
-                if (!registerNumber) {
-                    console.error('Register number or subject code missing.');
-                    continue; // Skip this iteration if data is incomplete
-                }
-
-                // Update or insert data into the database
                 await User.findOneAndUpdate(
                     {
                         'registerNumber': registerNumber,
+                        'subjects.subject_code': subjectCode
                     },
                     {
                         $set: {
                             ['subjects.$[subject].scores.' + iatType]: score
                         }
+
                     },
                     {
                         arrayFilters: [{ 'subject.subject_code': { $eq: subjectCode } }],
-                        upsert: true // Create a new document if it doesn't exist
+                        upsert: true
                     }
                 );
             }
@@ -578,7 +577,6 @@ app.post('/api/update_iat', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 app.post('/api/update_semester_results', async (req, res) => {
     try {
         const { semesterResultsToUpdate } = req.body;
